@@ -1,5 +1,5 @@
 footer {
-  background-color: #279f8d;
+  background-color: #000;
   color: #fff;
   padding: 50px 0;
   margin-top: 50px;
@@ -20,29 +20,44 @@ footer h3 {
   font-weight: 500;
 }
 
-footer ul {
-  list-style-type: none;
-  padding: 0;
+footer .item {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+footer .item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+footer .item p {
+  padding: 10px 20px;
 }
 
 footer ul li {
   margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
   padding-bottom: 5px;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
 footer ul li:nth-last-child(1) {
-  margin-bottom: 0;
+  border-bottom: none;
 }
 
-footer ul li i {
+footer ul li span::before {
+  content: ">";
+  top: 0;
+  left: 0;
   margin-right: 10px;
 }
 
 .legal {
   padding: 15px;
-  background-color: #093641;
+  background-color: #000;
   color: grey;
   border-top: 2px solid rgba(255, 255, 255, 0.3);
 }
@@ -55,19 +70,4 @@ footer ul li i {
   footer .container {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-
-footer .logo img {
-  width: 150px;
-  height: auto;
-  object-fit: contain;
-}
-
-footer a {
-  color: #fff !important;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
 }
