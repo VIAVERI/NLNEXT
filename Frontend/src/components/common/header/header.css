@@ -1,0 +1,223 @@
+header {
+  background-color: #ffffff;
+  padding: 5px 0; /* Reduced padding */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px; /* Set a fixed height for the navbar */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-height: 30px; /* Reduced logo size */
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-links li {
+  margin: 0 15px;
+  position: relative;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding-bottom: 2px; /* Reduced padding */
+  font-size: 14px; /* Smaller font size */
+  line-height: 1; /* Tighter line height */
+}
+
+.nav-links li:hover a,
+.nav-links li.active a {
+  color: #279f8d;
+}
+
+.nav-links li::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #279f8d;
+  transition: width 0.3s ease;
+}
+
+.nav-links li:hover::after,
+.nav-links li.active::after {
+  width: 100%;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px; /* Slightly smaller switch */
+  height: 20px;
+  margin-right: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px; /* Adjusted for smaller switch */
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px); /* Adjusted for smaller switch */
+}
+
+.fa-search {
+  font-size: 16px; /* Smaller icon */
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.barIcon {
+  font-size: 20px; /* Smaller icon */
+  background: none;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+/* Media queries and theme styles remain the same */
+
+/* Dark theme styles */
+[data-theme="dark"] {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+[data-theme="dark"] header {
+  background-color: #222; /* Dark navbar for dark theme */
+}
+
+[data-theme="dark"] header a,
+[data-theme="dark"] .fa-search {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .slider {
+  background-color: #555;
+}
+
+/* Light theme styles */
+[data-theme="light"] {
+  background-color: #ffffff;
+  color: #000;
+}
+
+[data-theme="light"] header {
+  background-color: #ffffff; /* White navbar for light theme */
+}
+
+[data-theme="light"] header a,
+[data-theme="light"] .fa-search {
+  color: #000 !important;
+}
+
+[data-theme="light"] .slider {
+  background-color: #ccc;
+}
+
+/* Common theme styles */
+.nav-links li:hover a,
+.nav-links li.active a {
+  color: #279f8d !important;
+}
+
+.nav-links li::after {
+  background-color: #279f8d;
+}
+
+/* Adjust the switch colors for better visibility in both themes */
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  background-color: #ffffff;
+}
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+  }
+
+  .icons {
+    margin-left: auto;
+  }
+
+  .barIcon {
+    display: block;
+  }
+}
