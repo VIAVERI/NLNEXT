@@ -51,7 +51,7 @@ a {
   font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
-  color: #fff;
+  color: #f9f3ec;
   padding: 5px 10px;
   letter-spacing: 2px;
   background-color: purple;
@@ -66,17 +66,17 @@ a {
   position: absolute;
   top: 0;
   left: 0;
-  border-left: 5px solid #fb4c35;
+  border-left: 5px solid #279f8d;
   width: auto;
   display: block;
-  background: linear-gradient(to right, #fb4c35 50%, black 50%);
+  background: linear-gradient(to right, #279f8d 50%, black 50%);
   background-size: 200% 100%;
   background-position: right bottom;
   transition: all 0.5s ease-out;
   cursor: pointer;
 }
 .category1 span {
-  color: #fff;
+  color: #f9f3ec;
   text-transform: capitalize;
   letter-spacing: 0;
 }
@@ -84,7 +84,7 @@ a {
   background-position: left bottom;
 }
 .category1 span:hover {
-  color: #fff;
+  color: #f9f3ec;
 }
 .title {
   font-weight: 500;
@@ -94,7 +94,7 @@ a {
 .comment i,
 .date i {
   width: 30px;
-  color: #fb4c35;
+  color: #279f8d;
   font-size: 13px;
 }
 

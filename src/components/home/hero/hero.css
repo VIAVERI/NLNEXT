@@ -1,9 +1,9 @@
 .hero {
   margin: 30px 0;
-  color: #fff;
+  color: #f9f3ec;
 }
 .hero a {
-  color: #fff;
+  color: #f9f3ec;
 }
 .hero .box {
   position: relative;
@@ -65,7 +65,7 @@
   font-size: 28px;
 }
 .hero .box:nth-child(1) .category {
-  background-color: crimson;
+  background-color: #279f8d;
 }
 .hero .box:nth-child(2) .category {
   background-color: #0b9931;

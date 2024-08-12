@@ -50,11 +50,11 @@ main {
 }
 .quote {
   padding-left: 50px;
-  border-left: 5px solid red;
+  border-left: 5px solid #279f8d;
 }
 .quote i {
   font-size: 50px;
-  color: red;
+  color: #279f8d;
   margin-bottom: 20px;
 }
 .quote p {
