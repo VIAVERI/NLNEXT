@@ -1,5 +1,5 @@
 footer {
-  background-color: #000;
+  background-color: #279f8d;
   color: #fff;
   padding: 50px 0;
   margin-top: 50px;
@@ -20,6 +20,7 @@ footer h3 {
   font-weight: 500;
 }
 
+<<<<<<< HEAD
 footer .item {
   display: flex;
   margin-bottom: 30px;
@@ -33,31 +34,38 @@ footer .item img {
 
 footer .item p {
   padding: 10px 20px;
+=======
+footer ul {
+  list-style-type: none;
+  padding: 0;
+>>>>>>> 1b076263 (bottom nav)
 }
 
 footer ul li {
   margin-bottom: 20px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
   padding-bottom: 5px;
   display: flex;
-  justify-content: space-between;
-  position: relative;
+  align-items: center;
 }
 
 footer ul li:nth-last-child(1) {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
+<<<<<<< HEAD
 footer ul li span::before {
   content: ">";
   top: 0;
   left: 0;
+=======
+footer ul li i {
+>>>>>>> 1b076263 (bottom nav)
   margin-right: 10px;
 }
 
 .legal {
   padding: 15px;
-  background-color: #000;
+  background-color: #093641;
   color: grey;
   border-top: 2px solid rgba(255, 255, 255, 0.3);
 }
@@ -70,4 +78,22 @@ footer ul li span::before {
   footer .container {
     grid-template-columns: repeat(2, 1fr);
   }
+<<<<<<< HEAD
+=======
+}
+
+footer .logo img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+}
+
+footer a {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+>>>>>>> 1b076263 (bottom nav)
 }
