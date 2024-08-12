@@ -20,25 +20,9 @@ footer h3 {
   font-weight: 500;
 }
 
-<<<<<<< HEAD
-footer .item {
-  display: flex;
-  margin-bottom: 30px;
-}
-
-footer .item img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-}
-
-footer .item p {
-  padding: 10px 20px;
-=======
 footer ul {
   list-style-type: none;
   padding: 0;
->>>>>>> 1b076263 (bottom nav)
 }
 
 footer ul li {
@@ -52,14 +36,7 @@ footer ul li:nth-last-child(1) {
   margin-bottom: 0;
 }
 
-<<<<<<< HEAD
-footer ul li span::before {
-  content: ">";
-  top: 0;
-  left: 0;
-=======
 footer ul li i {
->>>>>>> 1b076263 (bottom nav)
   margin-right: 10px;
 }
 
@@ -78,8 +55,6 @@ footer ul li i {
   footer .container {
     grid-template-columns: repeat(2, 1fr);
   }
-<<<<<<< HEAD
-=======
 }
 
 footer .logo img {
@@ -95,5 +70,4 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
->>>>>>> 1b076263 (bottom nav)
 }
