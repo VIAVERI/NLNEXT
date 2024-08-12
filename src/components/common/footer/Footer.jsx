@@ -1,5 +1,5 @@
-import React from "react"
-import "./footer.css"
+import React from "react";
+import "./footer.css";
 
 const Footer = () => {
   return (
@@ -7,65 +7,65 @@ const Footer = () => {
       <footer>
         <div className='container'>
           <div className='box logo'>
-            <img src='../images/tech-logo-footer.png' alt='' />
-            <p>Busan is an amazing magazine Blogger theme that is easy to customize for your needs</p>
+            <img src='../images/logo.png' alt='Logo' />
+            <p>Empowering connections and content management for a vibrant marketplace.</p>
             <i className='fa fa-envelope'></i>
-            <span> hello@beautiful.com </span> <br />
+            <span> contact@huisrijk.nl </span> <br />
             <i className='fa fa-headphones'></i>
-            <span> +91 60521488</span>
+            <span> 013-8228697</span>
           </div>
           <div className='box'>
-            <h3>SPORT</h3>
-            <div className='item'>
-              <img src='../images/hero/hero1.jpg' alt='' />
-              <p>Google To Boost Android Security In Few Days</p>
-            </div>
-            <div className='item'>
-              <img src='../images/hero/hero2.jpg' alt='' />
-              <p>Cespedes play the winning Baseball Game</p>
-            </div>
+            <h3>Snel navigeren</h3>
+            <ul>
+              <li>Startpagina</li>
+              <li>Ons verhaal</li>
+              <li>Nieuws</li>
+              <li>Portfolio</li>
+              <li>Contact</li>
+            </ul>
           </div>
           <div className='box'>
-            <h3>CRICKET</h3>
-            <div className='item'>
-              <img src='../images/hero/hero3.jpg' alt='' />
-              <p>US Promises to give Intel aid to locate the soldiers</p>
-            </div>
-            <div className='item'>
-              <img src='../images/hero/hero1.jpg' alt='' />
-              <p>Renewable energy dead as industry waits for Policy</p>
-            </div>
+            <h3>Meer info</h3>
+            <ul>
+              <li>Veelgestelde vragen</li>
+              <li>Privacy policy</li>
+            </ul>
           </div>
           <div className='box'>
-            <h3>LABELS</h3>
-            {/*<i className='fa fa-chevron-right'></i>*/}
+            <h3>Socials</h3>
             <ul>
               <li>
-                <span>Boxing</span> <label>(5)</label>
+                <a href="https://www.facebook.com/Huisrijk/" target="_blank" rel="noopener noreferrer">
+                  <i className="fab fa-facebook"></i> Facebook
+                </a>
               </li>
               <li>
-                <span>Fashion</span> <label>(6)</label>
+                <a href="https://www.instagram.com/huisrijk/" target="_blank" rel="noopener noreferrer">
+                  <i className="fab fa-instagram"></i> Instagram
+                </a>
               </li>
               <li>
-                <span>Health</span> <label>(7)</label>
+                <a href="https://nl.linkedin.com/company/huisrijk" target="_blank" rel="noopener noreferrer">
+                  <i className="fab fa-linkedin"></i> LinkedIn
+                </a>
               </li>
               <li>
-                <span>Nature</span> <label>(9)</label>
+                <a href="https://www.youtube.com/channel/UCd7ABXnNenqdPPHrokrNCmA" target="_blank" rel="noopener noreferrer">
+                  <i className="fab fa-youtube"></i> YouTube
+                </a>
               </li>
             </ul>
           </div>
         </div>
       </footer>
-      <div className='legal  '>
+      <div className='legal'>
         <div className='container flexSB'>
           <p>© all rights reserved</p>
-          <p>
-            made with <i className='fa fa-heart'></i> by gorkhcoder
-          </p>
+          <p>By Bluemill Studio</p>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
