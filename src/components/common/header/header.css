@@ -1,0 +1,186 @@
+.head {
+  cursor: pointer;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000;
+}
+
+.head .logo img {
+  width: 100px;
+}
+
+header {
+  background-color: #000;
+}
+
+header .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+header ul {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+}
+
+header li {
+  margin-right: 30px;
+  transition: 0.5s;
+  list-style: none;
+  position: relative;
+}
+
+header li:hover {
+  color: crimson;
+  cursor: pointer;
+}
+
+header a {
+  color: #fff !important;
+  text-decoration: none;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+header li:hover a {
+  border-bottom: 2px solid crimson;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-right: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.fa-search {
+  font-size: 20px;
+  color: #ffffff;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.barIcon {
+  font-size: 25px;
+  background: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+/* Dark theme styles */
+[data-theme="dark"] {
+  background-color: #333;
+  color: #fff;
+}
+
+[data-theme="dark"] a {
+  color: #fff;
+}
+
+/* Light theme styles */
+[data-theme="light"] {
+  background-color: #fff;
+  color: #000;
+}
+
+[data-theme="light"] a {
+  color: #000;
+}
+
+[data-theme="light"] header {
+  background-color: #000;
+}
+
+[data-theme="light"] header a {
+  color: #fff !important;
+}
+
+@media screen and (max-width: 768px) {
+  .head {
+    flex-wrap: wrap;
+  }
+
+  header .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    display: none;
+  }
+
+  header .navbar.active {
+    display: flex;
+  }
+
+  header ul {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  header li {
+    margin: 10px 0;
+  }
+
+  .icons {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  .barIcon {
+    display: block;
+  }
+}
