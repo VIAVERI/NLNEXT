@@ -6,6 +6,8 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.3",
+    "dotenv": "^16.4.5",
     "lucide-react": "^0.426.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^5.2.0",
@@ -43,5 +45,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-private-property-in-object": "^7.24.7",
     "concurrently": "^8.2.2"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

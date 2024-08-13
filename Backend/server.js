@@ -1,22 +1,16 @@
 const express = require("express");
-const { Pool } = require("pg");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware
+// Enable CORS for all routes
 app.use(cors());
-app.use(express.json());
 
-// Database connection
-const pool = new Pool({
-  user: "nlnext-go",
-  host: "localhost",
-  database: "nlnext-go",
-  password: "23gqPd4hP3&fAG3mkp6BD&$C4CfMyTdE",
-  port: 5432,
-});
+// Import and use routes
+const articleRoutes = require("./src/Routes/Articles");
+app.use("/api/articles", articleRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
