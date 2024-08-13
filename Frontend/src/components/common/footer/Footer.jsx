@@ -21,19 +21,19 @@ const Footer = () => {
             </div>
           </div>
           <div className='box'>
-            <h3>Snel navigeren</h3>
+            <h3>Quick navigation</h3>
             <ul>
-              <li>Startpagina</li>
-              <li>Ons verhaal</li>
-              <li>Nieuws</li>
+              <li>Home page</li>
+              <li>Our Story</li>
+              <li>News</li>
               <li>Portfolio</li>
               <li>Contact</li>
             </ul>
           </div>
           <div className='box'>
-            <h3>Meer info</h3>
+            <h3>More info</h3>
             <ul>
-              <li>Veelgestelde vragen</li>
+              <li>Frequently Asked Questions</li>
               <li>Privacy policy</li>
             </ul>
           </div>
