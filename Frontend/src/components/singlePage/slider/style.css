@@ -11,6 +11,8 @@
   width: 210px;
   height: 100px;
   border-radius: 5px;
+  transition: 0.5s;
+  align-items: self-start;
 }
 .singlePopular .text {
   position: absolute;

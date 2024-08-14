@@ -10,6 +10,7 @@ app.use(cors());
 
 // Import and use routes
 const articleRoutes = require("./src/Routes/Articles");
+
 app.use("/api/articles", articleRoutes);
 
 app.listen(port, () => {
