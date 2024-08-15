@@ -3,6 +3,9 @@ import "./login.css";
 import { registerUser, signInUser } from "../../firebase";
 import { Store } from "react-notifications-component";
 import { useHistory } from "react-router-dom"; // Import useHistory for navigation
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+
+const db = getFirestore();
 
 const SignInSignUp = ({ onSuccessfulLogin }) => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -10,6 +13,28 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const history = useHistory();
+
+  const checkUserRole = async (user) => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        if (userData.role === "admin") {
+          history.push("/admin-dashboard");
+          onSuccessfulLogin(); // Redirect admin users to the admin dashboard
+        } else {
+          onSuccessfulLogin(); // Redirect non-admin users as before
+        }
+      } else {
+        console.log("No such user document!");
+        onSuccessfulLogin(); // Treat as non-admin if document doesn't exist
+      }
+    } catch (error) {
+      console.error("Error checking user role:", error);
+      onSuccessfulLogin(); // Fallback to non-admin in case of error
+    }
+  };
 
   const handleToggle = () => {
     setIsSignUpActive((prev) => !prev);
@@ -22,7 +47,7 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      await registerUser(email, password, name);
+      const user = await registerUser(email, password, name);
       Store.addNotification({
         title: "Wonderful!",
         message: "User registered successfully!",
@@ -36,7 +61,7 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
           onScreen: true,
         },
       });
-      onSuccessfulLogin(); // Close modal and navigate home
+      checkUserRole(user); // Check role after successful registration
     } catch (error) {
       setError(error.message);
       Store.addNotification({
@@ -61,7 +86,9 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      await signInUser(email, password);
+      const userCredential = await signInUser(email, password);
+      const user = userCredential.user;
+
       Store.addNotification({
         title: "Welcome Back!",
         message: "Signed in successfully!",
@@ -78,7 +105,7 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
 
       setEmail("");
       setPassword("");
-      onSuccessfulLogin(); // Close modal and navigate home
+      checkUserRole(user);
     } catch (error) {
       Store.addNotification({
         title: "Error!",

@@ -1,12 +1,11 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  onAuthStateChanged,
 } from "firebase/auth";
-
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -33,15 +32,15 @@ export const registerUser = async (email, password, name) => {
     );
     const user = userCredential.user;
 
-    // Create a Firestore document for the new user
     await setDoc(doc(db, "users", user.uid), {
       name: name,
       email: email,
       createdAt: new Date(),
+      role: "user", // Set default role to 'user'
     });
 
     await updateProfile(user, { displayName: name });
-    return userCredential;
+    return user;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -59,3 +58,18 @@ export const signInUser = async (email, password) => {
     throw new Error(error.message);
   }
 };
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe();
+        resolve(user);
+      },
+      reject
+    );
+  });
+};
+
+export { auth };

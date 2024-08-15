@@ -40,7 +40,6 @@ const Header = () => {
   };
   const handleSuccessfulLogin = () => {
     closeLoginModal();
-    history.push("/");
   };
   return (
     <>
