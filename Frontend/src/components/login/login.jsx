@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./login.css";
 import { registerUser, signInUser } from "../../firebase";
+import { Store } from "react-notifications-component";
+import { useHistory } from "react-router-dom"; // Import useHistory for navigation
 
-const SignInSignUp = () => {
+const SignInSignUp = ({ onSuccessfulLogin }) => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,7 +13,6 @@ const SignInSignUp = () => {
 
   const handleToggle = () => {
     setIsSignUpActive((prev) => !prev);
-    // Clear form fields and errors when toggling
     setName("");
     setEmail("");
     setPassword("");
@@ -22,10 +23,38 @@ const SignInSignUp = () => {
     e.preventDefault();
     try {
       await registerUser(email, password, name);
-      setError("User registered successfully!");
-      // Optionally, you can redirect the user or update the UI here
+      Store.addNotification({
+        title: "Wonderful!",
+        message: "User registered successfully!",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
+      onSuccessfulLogin(); // Close modal and navigate home
     } catch (error) {
       setError(error.message);
+      Store.addNotification({
+        title: "Error!",
+        message: error.message,
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
+      setEmail("");
+      setPassword("");
+      setName("");
     }
   };
 
@@ -33,10 +62,39 @@ const SignInSignUp = () => {
     e.preventDefault();
     try {
       await signInUser(email, password);
-      setError("Signed in successfully!");
-      // Optionally, you can redirect the user or update the UI here
+      Store.addNotification({
+        title: "Welcome Back!",
+        message: "Signed in successfully!",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
+
+      setEmail("");
+      setPassword("");
+      onSuccessfulLogin(); // Close modal and navigate home
     } catch (error) {
-      setError(error.message);
+      Store.addNotification({
+        title: "Error!",
+        message: "Invalid email or password",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -111,7 +169,6 @@ const SignInSignUp = () => {
           </form>
         </div>
 
-        {/* Overlay container remains the same */}
         <div className="auth-overlay-container">
           <div className="auth-overlay">
             <div className="auth-overlay-panel auth-overlay-left">
@@ -133,7 +190,6 @@ const SignInSignUp = () => {
           </div>
         </div>
       </div>
-      {error && <p className="auth-error">{error}</p>}
     </div>
   );
 };

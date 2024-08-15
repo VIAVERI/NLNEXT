@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import "./header.css";
 import Head from "./Head";
 import SignInSignUp from "../../login/login";
@@ -11,6 +11,7 @@ const Header = () => {
   const [theme, setTheme] = useState("light");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const location = useLocation();
+  const history = useHistory();
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -37,7 +38,10 @@ const Header = () => {
     setIsLoginModalOpen(false);
     document.body.style.overflow = "unset"; // Re-enable scrolling
   };
-
+  const handleSuccessfulLogin = () => {
+    closeLoginModal();
+    history.push("/");
+  };
   return (
     <>
       <header className={isLoginModalOpen ? "blur" : ""}>
@@ -95,7 +99,7 @@ const Header = () => {
               className="modal-close-icon"
               onClick={closeLoginModal}
             />
-            <SignInSignUp />
+            <SignInSignUp onSuccessfulLogin={handleSuccessfulLogin} />
           </div>
         </div>
       )}
