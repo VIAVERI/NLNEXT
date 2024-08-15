@@ -112,6 +112,58 @@ header {
   border-radius: 50%;
 }
 
+.icons {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  margin-right: 15px;
+}
+
+/* ... (switch styles remain the same) ... */
+
+.profile-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fa-search {
+  font-size: 16px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.login-button {
+  background-color: #279f8d;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #1a7f6d;
+}
+
 input:checked + .slider {
   background-color: #2196f3;
 }
@@ -156,6 +208,11 @@ input:checked + .slider:before {
   background-color: #555;
 }
 
+[data-theme="dark"] .fa-search,
+[data-theme="dark"] .profile-icon {
+  color: #ffffff !important;
+}
+
 /* Light theme styles */
 [data-theme="light"] {
   background-color: #ffffff;
@@ -173,6 +230,11 @@ input:checked + .slider:before {
 
 [data-theme="light"] .slider {
   background-color: #ccc;
+}
+
+[data-theme="light"] .fa-search,
+[data-theme="light"] .profile-icon {
+  color: #000 !important;
 }
 
 /* Common theme styles */
@@ -220,4 +282,65 @@ input:checked + .slider:before {
   .barIcon {
     display: block;
   }
+
+  .icons {
+    margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .login-button {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
+/* Blur effect for the background */
+.blur {
+  filter: blur(65px);
+  transition: filter 0.3s ease;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Ensure the SignInSignUp component fits well within the modal */
+.modal-content .auth-body {
+  height: auto;
+  padding: 0;
+}
+
+.modal-content .auth-container {
+  box-shadow: none;
 }
