@@ -30,7 +30,7 @@ html {
 
 .sidebar-logo {
   font-size: 24px;
-  color: #007bff;
+  color: #279f8d;
   margin-right: 10px;
 }
 
@@ -63,7 +63,7 @@ html {
 }
 
 .sidebar-nav li.active {
-  background-color: #007bff;
+  background-color: #279f8d;
   color: white;
 }
 

@@ -1,0 +1,84 @@
+.partners-page {
+  padding: 20px;
+}
+
+.partners-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-partner-btn {
+  background-color: #279f8d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 85%;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.partner-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.partner-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.partner-name {
+  font-size: 18px;
+  color: #3d5170;
+  margin-bottom: 5px;
+}
+
+.partner-company {
+  font-size: 14px;
+  color: #5a6169;
+  margin-bottom: 5px;
+}
+
+.partner-email {
+  font-size: 14px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.partner-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.partner-status.active {
+  background-color: #28a745;
+  color: white;
+}
+
+.partner-status.pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.partner-status.inactive {
+  background-color: #dc3545;
+  color: white;
+}

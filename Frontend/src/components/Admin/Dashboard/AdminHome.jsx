@@ -11,6 +11,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./admin.css";
 import logo from "../../../assets/logo.png";
+import Articles from "./Articles";
+import PartnerAccounts from "./Partners";
 
 const AdminDashboard = () => {
   const [activeItem, setActiveItem] = useState("Blog Posts");
@@ -24,6 +26,18 @@ const AdminDashboard = () => {
     { name: "Source", icon: faDatabase },
     { name: "Errors", icon: faExclamationTriangle },
   ];
+
+  const renderContent = () => {
+    switch (activeItem) {
+      case "Articles":
+        return <Articles />;
+
+      case "Partner Accounts":
+        return <PartnerAccounts />;
+      default:
+        return <p>Content for {activeItem} will be displayed here.</p>;
+    }
+  };
 
   return (
     <div className="admin-dashboard">
@@ -63,9 +77,7 @@ const AdminDashboard = () => {
             />
           </div>
         </header>
-        <div className="content-area">
-          <p>Content for {activeItem} will be displayed here.</p>
-        </div>
+        <div className="content-area">{renderContent()}</div>
       </main>
     </div>
   );
