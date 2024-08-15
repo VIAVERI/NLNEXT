@@ -97,10 +97,10 @@ const PartnersPage = () => {
                 <div className="row">
                     {/* New full-width row for selected partner image */}
                     {selectedPartnerImage && (
-                        <div className="selected-partner-image">
-                            <div className="partner-image-container">
+                        <div className="selected-partner-image-a">
+                            <div className="partner-image-container-a">
                                 <img src={selectedPartnerImage} alt={selectedPartner?.name} />
-                                <div className="partner-name-overlay">
+                                <div className="partner-name-overlay-a">
                                     {selectedPartner?.name}
                                 </div>
 

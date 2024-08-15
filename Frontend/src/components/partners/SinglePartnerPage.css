@@ -28,19 +28,24 @@
 
 .partner-name-overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 52%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
-    padding: 10px 20px;
-    font-size: 2em;
+    font-size: 2.5em;
+    opacity: 1;
+    transition: background-color 0.3s ease;
 }
 
 .partner-key-points {
     background-color: #f9f3ec;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     padding-left: 200px;
     margin: 0;
 }
