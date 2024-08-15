@@ -192,7 +192,7 @@
     margin-top: 5px;
 }
 
-.partner-image-container {
+.partner-image-container-a {
     position: relative;
     width: 100%;
     height: 200px;
@@ -202,20 +202,20 @@
     transition: all 0.3s ease;
 }
 
-.partner-image-container img {
+.partner-image-container-a img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.partner-image-container:hover img,
-.partner-image-container img:hover {
+.partner-image-container-a:hover img,
+.partner-image-container-a img:hover {
     opacity: 0.7;
     transform: scale(1.02);
 }
 
-.partner-name-overlay {
+.partner-name-overlay-a {
     position: absolute;
     top: 0;
     left: 0;
@@ -231,7 +231,7 @@
     transition: background-color 0.3s ease;
 }
 
-.selected-partner-image {
+.selected-partner-image-a {
     width: 100%;
     margin-top: 20px;
     /* Adjust margin as needed */
@@ -239,17 +239,17 @@
     justify-content: center;
 }
 
-.partner-image-container img {
+.partner-image-container-a img {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 /* Add a slight transform for the image when selecting another partner */
-.partner-image-container img {
+.partner-image-container-a img {
     transform: scale(1);
     transition: transform 0.3s ease-in-out;
 }
 
-.partner-image-container:hover img {
+.partner-image-container-a:hover img {
     transform: scale(1.02);
     /* Slight scale on hover */
 }
