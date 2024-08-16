@@ -57,8 +57,8 @@ const Header = () => {
               <li className={location.pathname === "/culture" ? "active" : ""}>
                 <Link to="/culture">Culture</Link>
               </li>
-              <li className={location.pathname === "/politics" ? "active" : ""}>
-                <Link to="/politics">Politics</Link>
+              <li className={location.pathname === "/favorites" ? "active" : ""}>
+                <Link to="/favorites">Favorites</Link>
               </li>
               <li className={location.pathname === "/partners" ? "active" : ""}>
                 <Link to="/partners">Partners</Link>

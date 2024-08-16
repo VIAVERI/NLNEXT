@@ -1,19 +1,23 @@
 header {
   background-color: #ffffff;
-  padding: 5px 0; /* Reduced padding */
+  padding: 5px 0;
+  /* Reduced padding */
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  width: 100%;
+  /* Add this line */
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 50px; /* Set a fixed height for the navbar */
+  height: 60px;
+  width: 100%;
 }
 
 .logo {
@@ -22,7 +26,8 @@ header {
 }
 
 .logo img {
-  max-height: 30px; /* Reduced logo size */
+  max-height: 30px;
+  /* Reduced logo size */
   width: auto;
 }
 
@@ -32,6 +37,8 @@ header {
   margin: 0;
   padding: 0;
   list-style: none;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .nav-links li {
@@ -43,9 +50,12 @@ header {
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
-  padding-bottom: 2px; /* Reduced padding */
-  font-size: 14px; /* Smaller font size */
-  line-height: 1; /* Tighter line height */
+  padding-bottom: 2px;
+  /* Reduced padding */
+  font-size: 14px;
+  /* Smaller font size */
+  line-height: 1;
+  /* Tighter line height */
 }
 
 .nav-links li:hover a,
@@ -72,12 +82,14 @@ header {
 .icons {
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px; /* Slightly smaller switch */
+  width: 40px;
+  /* Slightly smaller switch */
   height: 20px;
   margin-right: 15px;
 }
@@ -103,7 +115,8 @@ header {
 .slider:before {
   position: absolute;
   content: "";
-  height: 16px; /* Adjusted for smaller switch */
+  height: 16px;
+  /* Adjusted for smaller switch */
   width: 16px;
   left: 2px;
   bottom: 2px;
@@ -164,22 +177,25 @@ header {
   background-color: #1a7f6d;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #2196f3;
 }
 
-input:checked + .slider:before {
-  transform: translateX(20px); /* Adjusted for smaller switch */
+input:checked+.slider:before {
+  transform: translateX(20px);
+  /* Adjusted for smaller switch */
 }
 
 .fa-search {
-  font-size: 16px; /* Smaller icon */
+  font-size: 16px;
+  /* Smaller icon */
   color: #ffffff;
   cursor: pointer;
 }
 
 .barIcon {
-  font-size: 20px; /* Smaller icon */
+  font-size: 20px;
+  /* Smaller icon */
   background: none;
   color: #ffffff;
   border: none;
@@ -196,7 +212,8 @@ input:checked + .slider:before {
 }
 
 [data-theme="dark"] header {
-  background-color: #222; /* Dark navbar for dark theme */
+  background-color: #222;
+  /* Dark navbar for dark theme */
 }
 
 [data-theme="dark"] header a,
@@ -220,7 +237,8 @@ input:checked + .slider:before {
 }
 
 [data-theme="light"] header {
-  background-color: #ffffff; /* White navbar for light theme */
+  background-color: #ffffff;
+  /* White navbar for light theme */
 }
 
 [data-theme="light"] header a,
@@ -248,13 +266,14 @@ input:checked + .slider:before {
 }
 
 /* Adjust the switch colors for better visibility in both themes */
-input:checked + .slider {
+input:checked+.slider {
   background-color: #2196f3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   background-color: #ffffff;
 }
+
 @media screen and (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;

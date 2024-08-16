@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AllPartners from "./components/partners/AllPartners";
 import SinglePartnerPage from "./components/partners/SinglePartnerPage"
 import OurServices from "./components/partners/OurServices";
-
+import FavoriteArticlePage from "./components/favoriteArticles/FavoriteArticlesPage"
 const App = () => {
   return (
     <>
@@ -25,6 +25,7 @@ const App = () => {
           <Route exact path='/partners' component={AllPartners} />
           <Route path="/partner/:partnerId" component={SinglePartnerPage} />
           <Route exact path="/services" component={OurServices} />
+          <Route path="/favorites" exact component={FavoriteArticlePage} />
         </Switch>
         <Footer />
       </Router>
