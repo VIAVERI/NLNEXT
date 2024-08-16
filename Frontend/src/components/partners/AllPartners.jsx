@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import './Partners.css';
-import PartnerServices from './PartnerServices';
+import OurServices from './OurServices';
+import Heading from "../common/heading/Heading"
 
 const PartnersPage = () => {
     const [partners, setPartners] = useState([]);
     const [selectedPartner, setSelectedPartner] = useState(null);
     const [relatedPosts, setRelatedPosts] = useState([]);
-    const [selectedPartnerImage, setSelectedPartnerImage] = useState(null);
     const history = useHistory();
 
     useEffect(() => {
@@ -18,7 +21,6 @@ const PartnersPage = () => {
                 setPartners(data);
                 if (data.length > 0) {
                     setSelectedPartner(data[0]);
-                    setSelectedPartnerImage(data[0].logo_url);
                 }
             } catch (error) {
                 console.error("Error fetching partners:", error);
@@ -27,6 +29,10 @@ const PartnersPage = () => {
 
         fetchPartners();
     }, []);
+
+    const handlePartnerClick = (partner) => {
+        setSelectedPartner(partner);
+    };
 
     useEffect(() => {
         if (selectedPartner) {
@@ -45,122 +51,116 @@ const PartnersPage = () => {
         }
     }, [selectedPartner]);
 
-    const handlePartnerClick = (partner) => {
-        setSelectedPartner(partner);
-        setSelectedPartnerImage(partner.logo_url);
-    };
-
     const handleLearnMore = () => {
         if (selectedPartner) {
             history.push(`/partner/${selectedPartner.partner_id}`);
         }
     };
 
+    const settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 800,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                },
+            },
+        ],
+    };
     return (
         <div className="partners-page">
             <h1>Onze partners</h1>
-            <br />
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-            < br />            < br />
+            <p className="partners-intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
 
             <div className="partners-content">
-                <div className="row">
-                    <div className="column">
-                        <div className="partners-list">
-                            {partners.map((partner) => (
-                                <div
-                                    key={partner.partner_id}
-                                    className={`partner-card ${selectedPartner?.partner_id === partner.partner_id ? 'selected' : ''}`}
-                                    onClick={() => handlePartnerClick(partner)}
-                                >
-                                    <div className="partner-logo">
-                                        <img src={partner.logo_url} alt={partner.name} />
-                                    </div>
-                                    <div className="partner-details">
-                                        <h3 className="partner-name">{partner.name}</h3>
-                                        <p className="partner-description-a">{partner.description.slice(0, 60)}...</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="column">
-                        <div className="partners-map">
-                            <img
-                                src="https://www.worldeasyguides.com/wp-content/uploads/2014/04/Where-is-Tilburg-on-map-Netherlands-457x480.jpg"
-                                alt="World Map"
-                            />
-                        </div>
-                    </div>
-                </div>
-                < br />
-                <div className="row">
-                    {/* New full-width row for selected partner image */}
-                    {selectedPartnerImage && (
-                        <div className="selected-partner-image-a">
-                            <div className="partner-image-container-a">
-                                <img src={selectedPartnerImage} alt={selectedPartner?.name} />
-                                <div className="partner-name-overlay-a">
-                                    {selectedPartner?.name}
-                                </div>
-
+                <div className="partners-grid">
+                    {partners.map((partner) => (
+                        <div
+                            key={partner.partner_id}
+                            className={`partner-card ${selectedPartner?.partner_id === partner.partner_id ? 'selected' : ''}`}
+                            onClick={() => handlePartnerClick(partner)}
+                        >
+                            <div className="partner-logo">
+                                <img src={partner.logo_url} alt={partner.name} />
                             </div>
+                            <h3 className="partner-name">{partner.name}</h3>
                         </div>
-                    )}
+                    ))}
                 </div>
-                < br />
 
-                <div className="row">
-                    {selectedPartner && <PartnerServices />}
+                <div className="partners-map">
+                    <img
+                        src="https://www.worldeasyguides.com/wp-content/uploads/2014/04/Where-is-Tilburg-on-map-Netherlands-457x480.jpg"
+                        alt="Partners Map"
+                    />
+                </div>
 
-                    {selectedPartner && relatedPosts.length > 0 && (
-                        <div className="related-posts">
-                            <h2>Related Posts for {selectedPartner.name}</h2>
-                            <div className="popular">
+                {selectedPartner && (
+                    <div className="selected-partner-image">
+                        <img src={selectedPartner.image} alt={selectedPartner.name} />
+                        <div className="partner-info-overlay">
+                            <div className="partner-name-overlay-a">
+                                {selectedPartner.name}
+                            </div>
+                            <div className="partner-description">
+                                {selectedPartner.description}
+                            </div>
+                            <button className="learn-more-button" onClick={handleLearnMore}>
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+
+                <div className="services-container">
+                    <Heading title='Our Services' />
+                    <OurServices />
+                </div>
+
+                {selectedPartner && relatedPosts.length > 0 && (
+                    <section className='popularPost life'>
+                        <Heading title='Related Posts' />
+                        <div className='content'>
+                            <Slider {...settings}>
                                 {relatedPosts.map((post) => (
-                                    <div className="items" key={post.article_id}>
-                                        <div className="box shadow">
-                                            <div className="images row">
-                                                <div className="img">
+                                    <div className='items' key={post.article_id}>
+                                        <div className='box shadow'>
+                                            <div className='images'>
+                                                <div className='img'>
                                                     <img src={post.image_url} alt={post.title} />
                                                 </div>
-                                                <div className="category category1">
+                                                <div className='category category1'>
                                                     <span>{post.category}</span>
                                                 </div>
                                             </div>
-                                            <div className="text row">
-                                                <h1 className="title">{post.title.slice(0, 40)}...</h1>
-                                                <div className="date">
-                                                    <i className="fas fa-calendar-days"></i>
+                                            <div className='text'>
+                                                <h1 className='title'>{post.title.slice(0, 40)}...</h1>
+                                                <div className='date'>
+                                                    <i className='fas fa-calendar-days'></i>
                                                     <label>{new Date(post.published_at).toLocaleDateString()}</label>
-                                                </div>
-                                                <div className="comment">
-                                                    <i className="fas fa-comments"></i>
-                                                    <label>{post.rating}</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 ))}
-                            </div>
+                            </Slider>
                         </div>
-                    )}
-                    {selectedPartner && relatedPosts.length === 0 && (
-                        <div className="related-posts">
-                            <h3>No Related Posts for {selectedPartner.name}</h3>
-                            <p>There are currently no articles associated with this partner.</p>
-                        </div>
-                    )}
-                </div>
-
+                    </section>
+                )}
                 {selectedPartner && (
-                    <div className="learn-more-container">
-                        <button className="learn-more-button" onClick={handleLearnMore}>
-                            Learn More about {selectedPartner.name}
+                    <div className="load-more-container">
+                        <button className="load-more-button" >
+                            Load More
                         </button>
                     </div>
                 )}
-
             </div>
         </div>
     );

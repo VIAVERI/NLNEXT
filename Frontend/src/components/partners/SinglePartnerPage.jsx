@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './SinglePartnerPage.css';
+import OurServices from './OurServices';
+import ContactUs from './ContactUs';
+import Heading from "../common/heading/Heading"
 
 const SinglePartnerPage = () => {
     const [partner, setPartner] = useState(null);
@@ -38,9 +41,10 @@ const SinglePartnerPage = () => {
             <div className="partner-header-wrapper">
                 <div className="partner-header">
                     <div className="partner-image-container">
-                        <img src={partner.logo_url} alt={partner?.name} className="partner-image" />
+                        <img src={partner.image} alt={partner?.name} className="partner-image" />
                         <div className="partner-name-overlay">
-                            {partner?.name}
+                            <div className="partner-name">{partner?.name}</div>
+                            <div className="partner-description">{partner?.description}</div>
                         </div>
                     </div>
                 </div>
@@ -66,7 +70,7 @@ const SinglePartnerPage = () => {
             <div className="partner-content">
                 <div className="partner-main">
                     <h2 className="partner-headline">Innovating for a brighter future</h2>
-                    <div className="partner-description">
+                    <div className="partner-description-s">
                         <p>Our teams are up to date with the latest technologies, media trends and are keen to prove themselves in this industry. That's what you want from a partner, not someone who is relying on the same way of doing things that worked 10 years, 5 years or even a year ago.</p>
 
                         <div className="highlight-quote">
@@ -77,64 +81,19 @@ const SinglePartnerPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div className="s-container">
+                <Heading title='Our Services' />
+                <OurServices />
+            </div>
+            <div className="s-container">
+                <Heading title='Contact Us' />
+                <ContactUs partner={partner} />
+            </div>
+        </div >
+
     );
 };
 
+
 export default SinglePartnerPage;
-
-//                     <div className="partner-map">
-//                         <img
-//                             src="https://www.worldeasyguides.com/wp-content/uploads/2014/04/Where-is-Tilburg-on-map-Netherlands-457x480.jpg"
-//                             alt="Partner Location Map"
-//                         />
-//                     </div>
-//                 </div>
-
-//                 <div className="partner-services">
-//                     <h2>Services</h2>
-//                     <div className="services-grid">
-//                         {partner.services && partner.services.map((service, index) => (
-//                             <div key={index} className="service-card">
-//                                 <h3>{service.name}</h3>
-//                                 <p>{service.description}</p>
-//                             </div>
-//                         ))}
-//                     </div>
-//                 </div>
-
-//                 <div className="partner-contact-hours">
-//                     <h2>Contact and opening hours</h2>
-//                     <div className="contact-hours-grid">
-//                         <div className="contact-hours-item">
-//                             <h3>Address</h3>
-//                             <p>{partner.address}</p>
-//                         </div>
-//                         <div className="contact-hours-item">
-//                             <h3>Phone</h3>
-//                             <p>{partner.phone}</p>
-//                         </div>
-//                         <div className="contact-hours-item">
-//                             <h3>Email</h3>
-//                             <p>{partner.email}</p>
-//                         </div>
-//                         <div className="contact-hours-item">
-//                             <h3>Opening Hours</h3>
-//                             <p>{partner.openingHours}</p>
-//                         </div>
-//                         <div className="contact-hours-item">
-//                             <h3>Website</h3>
-//                             <p>{partner.website}</p>
-//                         </div>
-//                         <div className="contact-hours-item">
-//                             <h3>Social Media</h3>
-//                             <p>{partner.socialMedia}</p>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default SinglePartnerPage;
