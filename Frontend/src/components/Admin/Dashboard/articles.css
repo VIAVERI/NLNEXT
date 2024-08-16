@@ -1,37 +1,37 @@
-.articles-page {
+.art-page {
   padding: 20px;
 }
 
-.page-title {
+.art-page-title {
   font-size: 24px;
   color: #3d5170;
   margin-bottom: 20px;
 }
 
-.articles-grid {
+.art-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
-.article-card {
+.art-card {
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.article-image {
+.art-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
 
-.article-content {
+.art-content {
   padding: 15px;
 }
 
-.article-category {
+.art-category {
   display: inline-block;
   padding: 5px 10px;
   background-color: #279f8d;
@@ -41,31 +41,31 @@
   margin-bottom: 10px;
 }
 
-.article-title {
+.art-title {
   font-size: 18px;
   color: #3d5170;
   margin-bottom: 10px;
 }
 
-.article-excerpt {
+.art-excerpt {
   font-size: 14px;
   color: #5a6169;
   margin-bottom: 15px;
 }
 
-.article-meta {
+.art-meta {
   display: flex;
   align-items: center;
 }
 
-.author-avatar {
+.art-author-avatar {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
 }
 
-.article-date {
+.art-date {
   font-size: 12px;
   color: #868e96;
 }

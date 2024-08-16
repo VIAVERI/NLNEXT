@@ -24,43 +24,43 @@ const PartnerCard = ({ partner, onStatusUpdate }) => {
   };
 
   return (
-    <div className="partner-card">
+    <div className="ptn-card">
       <img
         src={partner.profile_image_url}
         alt={`${partner.name}'s profile`}
-        className="partner-image"
+        className="ptn-image"
       />
-      <h3 className="partner-name">{partner.name}</h3>
-      <p className="partner-email">{partner.email}</p>
-      <div className="partner-status-container">
+      <h3 className="ptn-name">{partner.name}</h3>
+      <p className="ptn-email">{partner.email}</p>
+      <div className="ptn-status-container">
         <span
-          className={`partner-status ${partner.account_status.toLowerCase()}`}
+          className={`ptn-status ptn-${partner.account_status.toLowerCase()}`}
         >
           {partner.account_status}
         </span>
         <button
-          className="status-update-btn"
+          className="ptn-status-update-btn"
           onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
         >
           <Shield size={16} />
           <ChevronDown size={16} />
         </button>
         {isStatusDropdownOpen && (
-          <div className="status-dropdown">
+          <div className="ptn-status-dropdown">
             <button
-              className="status-option active"
+              className="ptn-status-option ptn-active"
               onClick={() => handleStatusChange("Active")}
             >
               Active
             </button>
             <button
-              className="status-option inactive"
+              className="ptn-status-option ptn-inactive"
               onClick={() => handleStatusChange("Inactive")}
             >
               Inactive
             </button>
             <button
-              className="status-option pending"
+              className="ptn-status-option ptn-pending"
               onClick={() => handleStatusChange("Pending")}
             >
               Pending
@@ -121,13 +121,13 @@ const Partners = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="partners-page">
-      <div className="partners-header">
-        <button onClick={handleCreatePartner} className="create-partner-btn">
+    <div className="ptn-page">
+      <div className="ptn-header">
+        <button onClick={handleCreatePartner} className="ptn-create-btn">
           Create Partner Account
         </button>
       </div>
-      <div className="partners-grid">
+      <div className="ptn-grid">
         {partners.map((partner) => (
           <PartnerCard
             key={partner.id}
