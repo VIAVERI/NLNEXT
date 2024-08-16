@@ -1,0 +1,141 @@
+.partners-page {
+  padding: 20px;
+}
+
+.partners-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-partner-btn {
+  background-color: #279f8d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 85%;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.partner-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.partner-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.partner-name {
+  font-size: 18px;
+  color: #3d5170;
+  margin-bottom: 5px;
+}
+
+.partner-company {
+  font-size: 14px;
+  color: #5a6169;
+  margin-bottom: 5px;
+}
+
+.partner-email {
+  font-size: 14px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.partner-status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  width: 100%;
+  position: relative;
+}
+
+.partner-status,
+.status-option {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+.partner-status.active,
+.status-option.active {
+  background-color: #4caf50;
+}
+
+.partner-status.inactive,
+.status-option.inactive {
+  background-color: #f44336;
+}
+
+.partner-status.pending,
+.status-option.pending {
+  background-color: #ff9800;
+}
+
+.status-update-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.status-update-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.status-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow: hidden;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-option {
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.status-option:hover {
+  opacity: 0.8;
+}
