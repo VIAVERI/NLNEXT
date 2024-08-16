@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./partners.css";
+import CreatePartnerAccount from "./PartnerAcc"; // Make sure to import the CreatePartnerAccount component
 
 const PartnerCard = ({ partner }) => (
   <div className="partner-card">
@@ -22,6 +23,7 @@ const Partners = () => {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchPartners = async () => {
@@ -41,8 +43,15 @@ const Partners = () => {
   }, []);
 
   const handleCreatePartner = () => {
-    // Implement partner creation logic
-    console.log("Creating new partner");
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsCreateModalOpen(false);
+  };
+
+  const handlePartnerCreated = (newPartner) => {
+    setPartners([...partners, newPartner]);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -60,6 +69,12 @@ const Partners = () => {
           <PartnerCard key={partner.id} partner={partner} />
         ))}
       </div>
+      {isCreateModalOpen && (
+        <CreatePartnerAccount
+          onClose={handleCloseModal}
+          onCreatePartner={handlePartnerCreated}
+        />
+      )}
     </div>
   );
 };

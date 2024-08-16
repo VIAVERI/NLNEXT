@@ -12,7 +12,7 @@ import {
 import "./admin.css";
 import logo from "../../../assets/logo.png";
 import Articles from "./Articles";
-import PartnerAccounts from "./Partners";
+import Partners from "./Partners";
 
 const AdminDashboard = () => {
   const [activeItem, setActiveItem] = useState("Blog Posts");
@@ -33,7 +33,8 @@ const AdminDashboard = () => {
         return <Articles />;
 
       case "Partner Accounts":
-        return <PartnerAccounts />;
+        return <Partners />;
+
       default:
         return <p>Content for {activeItem} will be displayed here.</p>;
     }

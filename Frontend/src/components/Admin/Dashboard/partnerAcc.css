@@ -1,0 +1,156 @@
+.partner-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.partner-modal-content {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+}
+
+.partner-modal-header {
+  background: linear-gradient(to right, #279f8d, #037564);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.partner-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.partner-close-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+}
+
+.partner-form {
+  padding: 1.5rem;
+}
+
+.partner-image-upload {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.partner-image-upload-label {
+  position: relative;
+  cursor: pointer;
+}
+
+.partner-profile-preview,
+.partner-profile-placeholder {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 4px solid #279f8d;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  transition: border-color 0.3s ease;
+}
+
+.partner-profile-preview:hover,
+.partner-profile-placeholder:hover {
+  border-color: #047564;
+}
+
+.partner-profile-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.partner-upload-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #279f8d;
+  color: white;
+  border-radius: 50%;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.partner-image-upload-label:hover .partner-upload-icon {
+  background-color: #279f8d;
+}
+
+.partner-form-group {
+  margin-bottom: 1rem;
+}
+
+.partner-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.partner-form-group input,
+.partner-form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.partner-form-group input:focus,
+.partner-form-group textarea:focus {
+  outline: none;
+  border-color: #279f8d;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.partner-submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #279f8d, #085f52);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.partner-submit-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.partner-submit-button:active {
+  transform: translateY(1px);
+}
+
+.partner-hidden {
+  display: none;
+}
