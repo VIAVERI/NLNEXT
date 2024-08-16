@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./articles.css"; // We'll create this CSS file for styling
+import "./articles.css"; // Make sure this points to the correct CSS file
 
 const ArticleCard = ({ article }) => (
-  <div className="article-card">
-    <img
-      src={article.image_url}
-      alt={article.title}
-      className="article-image"
-    />
-    <div className="article-content">
-      <span className="article-category">{article.category}</span>
-      <h3 className="article-title">{article.title}</h3>
-      <p className="article-excerpt">{article.content.substring(0, 100)}...</p>
-      <div className="article-meta">
+  <div className="art-card">
+    <img src={article.image_url} alt={article.title} className="art-image" />
+    <div className="art-content">
+      <span className="art-category">{article.category}</span>
+      <h3 className="art-title">{article.title}</h3>
+      <p className="art-excerpt">{article.content.substring(0, 100)}...</p>
+      <div className="art-meta">
         <img
           src={`https://ui-avatars.com/api/?name=${article.author}&background=random`}
           alt={article.author}
-          className="author-avatar"
+          className="art-author-avatar"
         />
-        <span className="article-date">
+        <span className="art-date">
           {new Date(article.published_at).toLocaleDateString()}
         </span>
       </div>
@@ -51,8 +47,8 @@ const Articles = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="articles-page">
-      <div className="articles-grid">
+    <div className="art-page">
+      <div className="art-grid">
         {articles.map((article) => (
           <ArticleCard key={article.article_id} article={article} />
         ))}
