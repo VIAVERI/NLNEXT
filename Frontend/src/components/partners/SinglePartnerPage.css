@@ -1,0 +1,237 @@
+.single-partner-page {
+    font-family: 'Roboto', sans-serif;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #ffffff;
+}
+
+.partner-header-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.partner-header {
+    height: 300px;
+    /* Increased height to accommodate description */
+    position: relative;
+    overflow: hidden;
+}
+
+.partner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+    /* Darkened slightly for better text visibility */
+}
+
+.partner-name-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* Changed to column layout */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Slightly darker overlay */
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+.partner-name-overlay .partner-name {
+    font-size: 3em;
+    font-weight: 700;
+    color: #ffffff;
+    /* Explicitly set to white */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    /* Increased shadow for better visibility */
+    margin-bottom: 15px;
+}
+
+.partner-name-overlay .partner-description {
+    font-size: 1.2em;
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    /* Limit width for better readability */
+    line-height: 1.4;
+}
+
+.partner-key-points {
+    background-color: #f9f3ec;
+    padding: 20px 10%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.partner-key-points ul {
+    list-style-type: none;
+    padding-left: 40px;
+    padding-top: 20px;
+    /* Reduced from 30px */
+    padding-bottom: 20px;
+    /* Reduced from 30px */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.partner-key-points li {
+    padding: 8px 0;
+    /* Reduced from 15px */
+    position: relative;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.partner-key-points li::before {
+    content: '✓';
+    margin-right: 12px;
+    /* Slightly reduced from 15px */
+    color: #269d8d;
+    font-size: 1.2em;
+}
+
+/* New style for tighter line spacing within list items */
+.partner-key-points li span {
+    line-height: 1.3;
+    /* Tighter line height for multi-line items */
+}
+
+@media (max-width: 768px) {
+    .partner-key-points ul {
+        padding-left: 20px;
+        /* Reduced left padding for mobile */
+    }
+
+    .partner-key-points li {
+        padding: 6px 0;
+        /* Further reduced for mobile */
+    }
+}
+
+.partner-map-overlay {
+    position: absolute;
+    top: 150px;
+    right: 10%;
+    width: 300px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.partner-map-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.partner-contact-info {
+    padding: 20px;
+}
+
+.partner-content {
+    padding: 20px 10%;
+    background-color: #ffffff;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.partner-main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.partner-headline {
+    font-size: 2.5em;
+    color: #2C3E50;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.partner-description-s {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #555;
+}
+
+.highlight-quote {
+    position: relative;
+    padding: 30px 40px;
+    margin: 40px 0;
+    background-color: #f1f8e9;
+    border-left: 4px solid #269d8d;
+    font-style: italic;
+}
+
+.highlight-quote::before,
+.highlight-quote::after {
+    content: '"';
+    position: absolute;
+    font-size: 4em;
+    color: #269d8d;
+    opacity: 0.3;
+}
+
+.highlight-quote::before {
+    top: -10px;
+    left: 10px;
+}
+
+.highlight-quote::after {
+    bottom: -40px;
+    right: 10px;
+}
+
+.highlight-quote p {
+    font-size: 1.3em;
+    color: #333;
+    line-height: 1.6;
+}
+
+.s-container {
+    padding: 30px 10%;
+    /* Reduced from 60px to 30px */
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+    /* Added to create some space between containers */
+    background-color: #ffffff;
+}
+
+/* Add this new style to remove bottom margin from the last .s-container */
+.s-container:last-child {
+    margin-bottom: 0;
+}
+
+
+@media (max-width: 768px) {
+    .partner-header {
+        height: 350px;
+        /* Adjusted for mobile */
+    }
+
+    .partner-name-overlay .partner-name {
+        font-size: 2em;
+    }
+
+    .partner-name-overlay .partner-description {
+        font-size: 1em;
+    }
+
+    .partner-headline {
+        font-size: 2em;
+    }
+}

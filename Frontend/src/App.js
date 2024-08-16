@@ -12,6 +12,10 @@ import SinglePage from "./components/singlePage/SinglePage";
 import Culture from "./components/culture/Culture";
 import AdminDashboard from "./components/Admin/Dashboard/AdminHome";
 import SignInSignUp from "./components/login/login";
+import AllPartners from "./components/partners/AllPartners";
+import SinglePartnerPage from "./components/partners/SinglePartnerPage"
+import OurServices from "./components/partners/OurServices";
+import FavoriteArticlePage from "./components/favoriteArticles/FavoriteArticlesPage"
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import "./App.css";
@@ -50,6 +54,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
+
 const App = () => {
   const [user, setUser] = useState(null);
 
@@ -61,6 +66,7 @@ const App = () => {
   }, []);
 
   return (
+
     <Router>
       <ReactNotifications />
       <Switch>
@@ -80,6 +86,10 @@ const App = () => {
                 <Route exact path="/" component={Homepages} />
                 <Route path="/singlepage/:id" exact component={SinglePage} />
                 <Route exact path="/culture" component={Culture} />
+                <Route exact path='/partners' component={AllPartners} />
+                <Route path="/partner/:partnerId" component={SinglePartnerPage} />
+                <Route exact path="/services" component={OurServices} />
+                <Route path="/favorites" exact component={FavoriteArticlePage} />
               </Switch>
               <Footer />
             </>
@@ -87,7 +97,8 @@ const App = () => {
         />
       </Switch>
     </Router>
+
   );
 };
 
-export default App;
+export default App

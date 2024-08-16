@@ -56,11 +56,11 @@ const Header = () => {
               <li className={location.pathname === "/culture" ? "active" : ""}>
                 <Link to="/culture">Culture</Link>
               </li>
-              <li className={location.pathname === "/politics" ? "active" : ""}>
-                <Link to="/politics">Politics</Link>
+              <li className={location.pathname === "/favorites" ? "active" : ""}>
+                <Link to="/favorites">Favorites</Link>
               </li>
-              <li className={location.pathname === "/memes" ? "active" : ""}>
-                <Link to="/memes">Memes</Link>
+              <li className={location.pathname === "/partners" ? "active" : ""}>
+                <Link to="/partners">Partners</Link>
               </li>
             </ul>
             <div className="icons">
