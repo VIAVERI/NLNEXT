@@ -7,7 +7,7 @@ const path = require("path");
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../../uploads/")); // Adjust the path as needed
+    cb(null, path.join(__dirname, "../../uploads/"));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -64,5 +64,28 @@ router.post(
     }
   }
 );
+
+router.put("/:id/status", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const updatedPartner = await pool.query(
+      "UPDATE PARTNERs_ACCOUNT SET account_status = $1 WHERE id = $2 RETURNING *",
+      [status, id]
+    );
+
+    if (updatedPartner.rows.length === 0) {
+      return res.status(404).json({ error: "Partner not found" });
+    }
+
+    res.json(updatedPartner.rows[0]);
+  } catch (error) {
+    console.error("Error updating partner status:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating partner status" });
+  }
+});
 
 module.exports = router;

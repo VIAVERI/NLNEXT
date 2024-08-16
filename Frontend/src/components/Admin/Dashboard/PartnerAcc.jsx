@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, Upload, User } from "lucide-react";
+import { Store } from "react-notifications-component";
 import "./partnerAcc.css";
 
 const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
@@ -56,9 +57,33 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
       const result = await response.json();
       onCreatePartner(result);
       onClose();
+      Store.addNotification({
+        title: "Success!",
+        message: "Partner account created successfully!",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
     } catch (error) {
-      console.error("Error creating partner account:", error);
-      // TODO: Handle error (e.g., show error message to user)
+      Store.addNotification({
+        title: "Error!",
+        message: "Failed to create partner account. Please try again.",
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 4000,
+          onScreen: true,
+        },
+      });
     }
   };
 
