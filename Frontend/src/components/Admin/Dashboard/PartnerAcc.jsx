@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { X, Upload, User } from "lucide-react";
 import { Store } from "react-notifications-component";
 import "./partnerAcc.css";
+import axios from "axios";
 
 const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
   const [formData, setFormData] = useState({
@@ -42,19 +43,21 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
     }
 
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "http://localhost:5000/api/partners_acc/create_partner",
-        {
-          method: "POST",
-          body: data,
-        }
+        data
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to create partner account");
+      if (response.data) {
+        // Send email with account details
+        await sendAccountEmail(
+          formData.email,
+          formData.name,
+          formData.login_credentials
+        );
       }
 
-      const result = await response.json();
+      const result = response.data;
       onCreatePartner(result);
       onClose();
       Store.addNotification({
@@ -84,6 +87,20 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
           onScreen: true,
         },
       });
+    }
+  };
+
+  const sendAccountEmail = async (email, name, login_credentials) => {
+    try {
+      await axios.post("http://localhost:5000/api/send-email", {
+        to: email,
+        subject: "Your New Partner Account",
+        name: name,
+        password: login_credentials,
+      });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      // Handle error (e.g., show error message to user)
     }
   };
 

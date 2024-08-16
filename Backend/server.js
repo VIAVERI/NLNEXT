@@ -19,10 +19,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Import routes
 const articleRoutes = require("./src/Routes/Articles");
 const partnerRoutes = require("./src/Routes/Partners");
+const emailRoutes = require("./src/Routes/Email");
 
 // Use routes
 app.use("/api/articles", articleRoutes);
 app.use("/api/partners_acc", partnerRoutes);
+app.use("/api", emailRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
