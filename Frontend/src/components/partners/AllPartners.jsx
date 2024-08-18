@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Slider from "react-slick";
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './Partners.css';
@@ -11,7 +12,13 @@ const PartnersPage = () => {
     const [partners, setPartners] = useState([]);
     const [selectedPartner, setSelectedPartner] = useState(null);
     const [relatedPosts, setRelatedPosts] = useState([]);
+    const [mapCenter, setMapCenter] = useState({ lat: 51.560514, lng: 5.091052 }); // Default to Tilburg
     const history = useHistory();
+
+    const mapContainerStyle = {
+        width: '100%',
+        height: '400px'
+    };
 
     useEffect(() => {
         const fetchPartners = async () => {
@@ -21,6 +28,9 @@ const PartnersPage = () => {
                 setPartners(data);
                 if (data.length > 0) {
                     setSelectedPartner(data[0]);
+                    if (data[0].latitude && data[0].longitude) {
+                        setMapCenter({ lat: data[0].latitude, lng: data[0].longitude });
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching partners:", error);
@@ -32,8 +42,10 @@ const PartnersPage = () => {
 
     const handlePartnerClick = (partner) => {
         setSelectedPartner(partner);
+        if (partner.latitude && partner.longitude) {
+            setMapCenter({ lat: partner.latitude, lng: partner.longitude });
+        }
     };
-
     useEffect(() => {
         if (selectedPartner) {
             const fetchRelatedPosts = async () => {
