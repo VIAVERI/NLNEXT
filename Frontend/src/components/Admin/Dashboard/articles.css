@@ -18,7 +18,7 @@
 
 .show-filters-btn {
   padding: 10px 20px;
-  background-color: #279f8d;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -67,6 +67,12 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.art-card:hover {
+  transform: translateY(-5px);
 }
 
 .art-image {
@@ -82,7 +88,7 @@
 .art-category {
   display: inline-block;
   padding: 5px 10px;
-  background-color: #000000;
+  background-color: #279f8d;
   color: #fff;
   border-radius: 15px;
   font-size: 12px;
@@ -106,4 +112,164 @@
   justify-content: space-between;
   font-size: 12px;
   color: #868e96;
+}
+
+/* Existing styles remain the same */
+
+.art-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.art-popup {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.art-popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3d5170;
+  transition: color 0.2s;
+}
+
+.art-popup-close:hover {
+  color: #007bff;
+}
+
+.art-popup-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.art-popup h2 {
+  font-size: 28px;
+  color: #3d5170;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.art-popup-category {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #279f8d;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.art-popup-content {
+  font-size: 16px;
+  color: #5a6169;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.art-popup-meta {
+  font-size: 14px;
+  color: #868e96;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.art-popup-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.art-popup-status p {
+  margin: 0;
+  font-weight: bold;
+  color: #3d5170;
+}
+
+.art-popup-status select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #495057;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.art-popup-status select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Add this if you want to style the scrollbar */
+.art-popup::-webkit-scrollbar {
+  width: 8px;
+}
+
+.art-popup::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.art-popup::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.art-popup::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
