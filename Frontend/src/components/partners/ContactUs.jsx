@@ -49,7 +49,7 @@ const ContactUs = ({ partner }) => {
 
                 </div>
             </div>
-
+            {/* 
             <div className="subscribe-section">
                 <h3>Subscribe</h3>
                 <div className='subscribe'>
@@ -61,7 +61,7 @@ const ContactUs = ({ partner }) => {
                         </button>
                     </form>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };
