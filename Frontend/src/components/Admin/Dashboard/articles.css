@@ -1,16 +1,64 @@
 .art-page {
   padding: 20px;
+  position: relative;
+}
+
+.art-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .art-page-title {
   font-size: 24px;
   color: #3d5170;
+  margin: 0;
+}
+
+.show-filters-btn {
+  padding: 10px 20px;
+  background-color: #279f8d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.art-content-wrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.art-main-content {
+  flex-grow: 1;
+}
+
+.art-filter-panel {
+  width: 250px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-left: 1px solid #dee2e6;
+}
+
+.art-filter-panel h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #3d5170;
+}
+
+.art-filter-panel select {
+  width: 100%;
+  padding: 8px;
   margin-bottom: 20px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
 }
 
 .art-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
@@ -34,7 +82,7 @@
 .art-category {
   display: inline-block;
   padding: 5px 10px;
-  background-color: #279f8d;
+  background-color: #000000;
   color: #fff;
   border-radius: 15px;
   font-size: 12px;
@@ -55,17 +103,7 @@
 
 .art-meta {
   display: flex;
-  align-items: center;
-}
-
-.art-author-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.art-date {
+  justify-content: space-between;
   font-size: 12px;
   color: #868e96;
 }
