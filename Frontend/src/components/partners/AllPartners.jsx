@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Slider from "react-slick";
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './Partners.css';
@@ -12,13 +11,7 @@ const PartnersPage = () => {
     const [partners, setPartners] = useState([]);
     const [selectedPartner, setSelectedPartner] = useState(null);
     const [relatedPosts, setRelatedPosts] = useState([]);
-    const [mapCenter, setMapCenter] = useState({ lat: 51.560514, lng: 5.091052 }); // Default to Tilburg
     const history = useHistory();
-
-    const mapContainerStyle = {
-        width: '100%',
-        height: '400px'
-    };
 
     useEffect(() => {
         const fetchPartners = async () => {
@@ -28,9 +21,6 @@ const PartnersPage = () => {
                 setPartners(data);
                 if (data.length > 0) {
                     setSelectedPartner(data[0]);
-                    if (data[0].latitude && data[0].longitude) {
-                        setMapCenter({ lat: data[0].latitude, lng: data[0].longitude });
-                    }
                 }
             } catch (error) {
                 console.error("Error fetching partners:", error);
@@ -42,10 +32,8 @@ const PartnersPage = () => {
 
     const handlePartnerClick = (partner) => {
         setSelectedPartner(partner);
-        if (partner.latitude && partner.longitude) {
-            setMapCenter({ lat: partner.latitude, lng: partner.longitude });
-        }
     };
+
     useEffect(() => {
         if (selectedPartner) {
             const fetchRelatedPosts = async () => {
@@ -85,6 +73,7 @@ const PartnersPage = () => {
             },
         ],
     };
+
     return (
         <div className="partners-page">
             <h1>Onze partners</h1>
@@ -99,7 +88,7 @@ const PartnersPage = () => {
                             onClick={() => handlePartnerClick(partner)}
                         >
                             <div className="partner-logo">
-                                <img src={partner.logo_url} alt={partner.name} />
+                                <img src={partner.profile_image_url || partner.logo_url} alt={partner.name} />
                             </div>
                             <h3 className="partner-name">{partner.name}</h3>
                         </div>
@@ -115,7 +104,14 @@ const PartnersPage = () => {
 
                 {selectedPartner && (
                     <div className="selected-partner-image">
-                        <img src={selectedPartner.image} alt={selectedPartner.name} />
+                        <img
+                            src={selectedPartner.image || selectedPartner.profile_image_url}
+                            alt={selectedPartner.name}
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = selectedPartner.profile_image_url;
+                            }}
+                        />
                         <div className="partner-info-overlay">
                             <div className="partner-name-overlay-a">
                                 {selectedPartner.name}
@@ -129,7 +125,6 @@ const PartnersPage = () => {
                         </div>
                     </div>
                 )}
-
 
                 <div className="services-container">
                     <Heading title='Our Services' />
@@ -168,7 +163,7 @@ const PartnersPage = () => {
                 )}
                 {selectedPartner && (
                     <div className="load-more-container">
-                        <button className="load-more-button" >
+                        <button className="load-more-button">
                             Load More
                         </button>
                     </div>
