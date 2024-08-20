@@ -5,7 +5,7 @@
 
 .art-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -18,7 +18,7 @@
 
 .show-filters-btn {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #279f8d;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -88,7 +88,7 @@
 .art-category {
   display: inline-block;
   padding: 5px 10px;
-  background-color: #279f8d;
+  background-color: #000000;
   color: #fff;
   border-radius: 15px;
   font-size: 12px;
@@ -198,7 +198,7 @@
 .art-popup-category {
   display: inline-block;
   padding: 6px 12px;
-  background-color: #279f8d;
+  background-color: #000000;
   color: #fff;
   border-radius: 20px;
   font-size: 14px;

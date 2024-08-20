@@ -38,7 +38,6 @@ const AdminDashboard = () => {
       case "Partner Accounts":
         return <Partners />;
 
-
       case "Dashboard":
         return <Dashboard />;
 
@@ -73,11 +72,11 @@ const AdminDashboard = () => {
         <header className="main-header">
           <h2 className="page-title">{activeItem}</h2>
           <div className="header-actions">
-            <input
+            {/* <input
               type="text"
               placeholder="Search for something..."
               className="search-input"
-            />
+            /> */}
             <img
               src="https://via.placeholder.com/40x40"
               alt="User"
