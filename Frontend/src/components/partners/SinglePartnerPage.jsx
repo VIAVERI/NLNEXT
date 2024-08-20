@@ -7,29 +7,36 @@ import Heading from "../common/heading/Heading"
 
 const SinglePartnerPage = () => {
     const [partner, setPartner] = useState(null);
+    const [partnerServices, setPartnerServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { partnerId } = useParams();
 
     useEffect(() => {
-        const fetchPartner = async () => {
+        const fetchPartnerData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:5000/api/partners/${partnerId}`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch partner data: ${response.status} ${response.statusText}`);
+                const partnerResponse = await fetch(`http://localhost:5000/api/partners/${partnerId}`);
+                const servicesResponse = await fetch(`http://localhost:5000/api/services/partner/${partnerId}`);
+
+                if (!partnerResponse.ok || !servicesResponse.ok) {
+                    throw new Error(`Failed to fetch data: ${partnerResponse.status} ${partnerResponse.statusText}`);
                 }
-                const data = await response.json();
-                setPartner(data);
+
+                const partnerData = await partnerResponse.json();
+                const servicesData = await servicesResponse.json();
+
+                setPartner(partnerData);
+                setPartnerServices(servicesData);
             } catch (error) {
-                console.error("Error fetching partner:", error);
+                console.error("Error fetching data:", error);
                 setError(error.message);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchPartner();
+        fetchPartnerData();
     }, [partnerId]);
 
     if (loading) return <div>Loading...</div>;
@@ -90,9 +97,10 @@ const SinglePartnerPage = () => {
                 </div>
             </div>
 
+
             <div className="s-container">
                 <Heading title='Our Services' />
-                <OurServices />
+                <OurServices services={partnerServices} />
             </div>
             <div className="s-container">
                 <Heading title='Contact Us' />
