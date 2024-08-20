@@ -1,9 +1,8 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube, Send } from 'lucide-react';
+import { Facebook, Linkedin, Instagram, Globe, Phone, MapPin, Mail, Clock } from 'lucide-react';
 import './ContactUs.css'
 
-
-const ContactUs = ({ partner }) => {
+const PartnerContact = ({ partner }) => {
     return (
         <div className="contact-us-container">
             <div className="contact-section">
@@ -49,21 +48,8 @@ const ContactUs = ({ partner }) => {
 
                 </div>
             </div>
-
-            <div className="subscribe-section">
-                <h3>Subscribe</h3>
-                <div className='subscribe'>
-                    <h4 className='title'>Subscribe to our New Stories</h4>
-                    <form action=''>
-                        <input type='email' placeholder='Email Address...' />
-                        <button>
-                            <i className='fa fa-paper-plane'></i> SUBMIT
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
     );
 };
 
-export default ContactUs;
+export default PartnerContact;
