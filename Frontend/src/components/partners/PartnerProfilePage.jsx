@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import './PartnerProfilePage.css';
 import './EditPartnerProfile.css';
 import Heading from "../common/heading/Heading";
-import ContactUs from './ContactUs';
 import EditPartnerProfile from './EditPartnerProfile';
+import OurServices from './OurServices';
+import PartnerContact from './PartnerContact';
 
 const PartnerProfilePage = () => {
     const [partner, setPartner] = useState(null);
@@ -12,26 +13,43 @@ const PartnerProfilePage = () => {
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const { partnerId } = useParams();
+    const [partnerServices, setPartnerServices] = useState([]);
 
     useEffect(() => {
-        fetchPartnerProfile();
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                await Promise.all([
+                    fetchPartnerProfile(),
+                    fetchPartnerServices()
+                ]);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [partnerId]);
 
     const fetchPartnerProfile = async () => {
-        try {
-            setLoading(true);
-            const response = await fetch(`http://localhost:5000/api/partners/${partnerId}`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch partner data: ${response.status} ${response.statusText}`);
-            }
-            const data = await response.json();
-            setPartner(data);
-        } catch (error) {
-            console.error("Error fetching partner profile:", error);
-            setError(error.message);
-        } finally {
-            setLoading(false);
+        const response = await fetch(`http://localhost:5000/api/partners/${partnerId}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch partner data: ${response.status} ${response.statusText}`);
         }
+        const data = await response.json();
+        setPartner(data);
+    };
+
+    const fetchPartnerServices = async () => {
+        const response = await fetch(`http://localhost:5000/api/services/partner/${partnerId}`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch partner services: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        setPartnerServices(data);
     };
 
     const handleSave = async (updatedData) => {
@@ -56,6 +74,7 @@ const PartnerProfilePage = () => {
             setError(error.message);
         }
     };
+
 
     if (loading) return <div className="loading">Loading partner profile...</div>;
     if (error) return <div className="error">Error loading partner profile: {error}</div>;
@@ -94,18 +113,15 @@ const PartnerProfilePage = () => {
                         />
                     ) : (
                         <>
-                            <Heading title="Contact Us" />
-                            <div className="partner-contact-info">
-                                <p><strong>Email:</strong> {partner.email}</p>
-                                <p><strong>Address:</strong> {partner.address}</p>
-                                <p><strong>Phone:</strong> {partner.phone || "Not provided"}</p>
-                                <p><strong>Working Hours:</strong> {partner.working_hours || "Not provided"}</p>
-                                <p><strong>Website:</strong> {partner.web || "Not provided"}</p>
+                            <div className="s-container">
+                                <Heading title='Our Services' />
+                                <OurServices services={partnerServices} />
+                            </div>
+                            <div className="contact-us-section">
+                                <Heading title="Contact Us" />
+                                <PartnerContact partner={partner} />
                             </div>
                             <button onClick={() => setIsEditing(true)} className="edit-button">Edit Profile</button>
-                            <div className="containerpartner-contact-info">
-                                <ContactUs partner={partner} />
-                            </div>
                         </>
                     )}
                 </div>
@@ -115,3 +131,4 @@ const PartnerProfilePage = () => {
 };
 
 export default PartnerProfilePage;
+

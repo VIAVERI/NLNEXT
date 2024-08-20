@@ -77,7 +77,7 @@ const SinglePartnerPage = () => {
                         alt="Partner Location Map"
                         className="partner-map-image"
                     />
-                    <div className="partner-contact-info">
+                    <div className="address">
                         <p>{partner.address}</p>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ const SinglePartnerPage = () => {
             </div>
 
 
-            <div className="s-container">
+            <div className="m-container">
                 <Heading title='Our Services' />
                 <OurServices services={partnerServices} />
             </div>
