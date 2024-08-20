@@ -2,6 +2,18 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 
+
+// Route to get all partners
+router.get("/", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM partner");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching partners" });
+
 router.get("/", async (req, res) => {
   try {
     const result = await pool.query(`
@@ -15,6 +27,7 @@ router.get("/", async (req, res) => {
   } catch (error) {
     console.error("Error fetching partners:", error);
     res.status(500).json({ error: "An error occurred while fetching partners" });
+
   }
 });
 
