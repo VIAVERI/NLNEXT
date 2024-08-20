@@ -9,11 +9,16 @@ import {
   faExclamationTriangle,
   faBolt,
   faHomeAlt,
+  faLaptopHouse,
+  faHandsHelping,
+  faNetworkWired,
+  faCubes,
 } from "@fortawesome/free-solid-svg-icons";
 import "./admin.css";
 import logo from "../../../assets/logo.png";
 import Articles from "./Articles";
 import Partners from "./Partners";
+import Services from "./Services";
 
 import Dashboard from "./Dashboard";
 
@@ -23,11 +28,11 @@ const AdminDashboard = () => {
   const sidebarItems = [
     { name: "Dashboard", icon: faChartLine },
     { name: "Articles", icon: faNewspaper },
+    { name: "Services", icon: faNetworkWired },
     { name: "Partner Accounts", icon: faUserFriends },
     { name: "Leads", icon: faUserTag },
     { name: "Source", icon: faDatabase },
     { name: "Errors", icon: faExclamationTriangle },
-    { name: "Home", icon: faHomeAlt },
   ];
 
   const renderContent = () => {
@@ -40,6 +45,9 @@ const AdminDashboard = () => {
 
       case "Dashboard":
         return <Dashboard />;
+
+      case "Services":
+        return <Services />;
 
       default:
         return <p>Content for {activeItem} will be displayed here.</p>;
