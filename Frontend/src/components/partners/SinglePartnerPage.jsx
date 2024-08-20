@@ -41,10 +41,18 @@ const SinglePartnerPage = () => {
             <div className="partner-header-wrapper">
                 <div className="partner-header">
                     <div className="partner-image-container">
-                        <img src={partner.image} alt={partner?.name} className="partner-image" />
+                        <img
+                            src={partner.image || partner.profile_image_url}
+                            alt={partner.name}
+                            className="partner-image"
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = partner.profile_image_url;
+                            }}
+                        />
                         <div className="partner-name-overlay">
-                            <div className="partner-name">{partner?.name}</div>
-                            <div className="partner-description">{partner?.description}</div>
+                            <div className="partner-name">{partner.name}</div>
+                            <div className="partner-description">{partner.description}</div>
                         </div>
                     </div>
                 </div>
@@ -90,10 +98,8 @@ const SinglePartnerPage = () => {
                 <Heading title='Contact Us' />
                 <ContactUs partner={partner} />
             </div>
-        </div >
-
+        </div>
     );
 };
-
 
 export default SinglePartnerPage;

@@ -22,6 +22,9 @@ import "./App.css";
 import { auth } from "./firebase";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
+import PartnerProfilePage from "./components/partners/PartnerProfilePage";
+
+
 const db = getFirestore();
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -88,6 +91,7 @@ const App = () => {
                 <Route exact path="/culture" component={Culture} />
                 <Route exact path='/partners' component={AllPartners} />
                 <Route path="/partner/:partnerId" component={SinglePartnerPage} />
+                <Route path="/partner-profile/:partnerId" component={PartnerProfilePage} />
                 <Route exact path="/services" component={OurServices} />
                 <Route path="/favorites" exact component={FavoriteArticlePage} />
               </Switch>

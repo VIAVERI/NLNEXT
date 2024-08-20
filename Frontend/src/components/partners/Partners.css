@@ -1,5 +1,5 @@
 .partners-page {
-    font-family: 'Arial', sans-serif;
+    font-family: "Poppins", sans-serif;
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
@@ -21,15 +21,18 @@
     line-height: 1.6;
 }
 
+
 .partners-content {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 2.5fr 1.5fr;
+    /* Adjusted to give more space to the map */
     gap: 30px;
 }
 
 .partners-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    /* Slightly reduced minimum width */
     gap: 20px;
 }
 
@@ -72,6 +75,10 @@
 .partners-map img {
     width: 100%;
     height: auto;
+    min-height: 400px;
+    /* Set a minimum height */
+    object-fit: cover;
+    /* Ensure the image covers the area without distortion */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -147,9 +154,8 @@
 .load-more-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
     margin-bottom: 30px;
-    margin-left: 320px;
+    margin-left: 450px;
 }
 
 
@@ -160,6 +166,24 @@
 }
 
 @media (max-width: 768px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .slick-slider {
+        padding: 0 20px;
+    }
+
+    .slick-prev {
+        left: 0;
+    }
+
+    .slick-next {
+        right: 0;
+    }
+}
+
+@media (max-width: 968px) {
     .partners-content {
         grid-template-columns: 1fr;
     }
@@ -170,8 +194,9 @@
         position: static;
     }
 
-    .posts-grid {
-        grid-template-columns: 1fr;
+    .partners-map img {
+        min-height: 300px;
+        /* Adjust for smaller screens */
     }
 }
 
@@ -264,28 +289,4 @@
 
 .slick-next {
     right: -25px;
-}
-
-@media (max-width: 768px) {
-    .partners-content {
-        grid-template-columns: 1fr;
-    }
-
-    .partners-map {
-        grid-column: 1;
-        grid-row: auto;
-        position: static;
-    }
-
-    .slick-slider {
-        padding: 0 20px;
-    }
-
-    .slick-prev {
-        left: 0;
-    }
-
-    .slick-next {
-        right: 0;
-    }
 }

@@ -73,6 +73,7 @@ const PartnersPage = () => {
             },
         ],
     };
+
     return (
         <div className="partners-page">
             <h1>Onze partners</h1>
@@ -87,7 +88,7 @@ const PartnersPage = () => {
                             onClick={() => handlePartnerClick(partner)}
                         >
                             <div className="partner-logo">
-                                <img src={partner.logo_url} alt={partner.name} />
+                                <img src={partner.profile_image_url || partner.logo_url} alt={partner.name} />
                             </div>
                             <h3 className="partner-name">{partner.name}</h3>
                         </div>
@@ -103,7 +104,14 @@ const PartnersPage = () => {
 
                 {selectedPartner && (
                     <div className="selected-partner-image">
-                        <img src={selectedPartner.image} alt={selectedPartner.name} />
+                        <img
+                            src={selectedPartner.image || selectedPartner.profile_image_url}
+                            alt={selectedPartner.name}
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = selectedPartner.profile_image_url;
+                            }}
+                        />
                         <div className="partner-info-overlay">
                             <div className="partner-name-overlay-a">
                                 {selectedPartner.name}
@@ -117,7 +125,6 @@ const PartnersPage = () => {
                         </div>
                     </div>
                 )}
-
 
                 <div className="services-container">
                     <Heading title='Our Services' />
@@ -156,7 +163,7 @@ const PartnersPage = () => {
                 )}
                 {selectedPartner && (
                     <div className="load-more-container">
-                        <button className="load-more-button" >
+                        <button className="load-more-button">
                             Load More
                         </button>
                     </div>
