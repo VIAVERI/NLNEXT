@@ -32,7 +32,6 @@ const DashboardOverview = () => {
   useEffect(() => {
     // Fetch data from your API
     const fetchData = async () => {
-      // Replace these with actual API calls
       const partners = await fetch("/api/partners").then((res) => res.json());
       const articles = await fetch("/api/articles").then((res) => res.json());
       const partnerAccounts = await fetch("/api/partners_acc").then((res) =>
@@ -63,18 +62,16 @@ const DashboardOverview = () => {
   };
 
   const barData = {
-    labels: data.partnerAccounts
-      .slice(0, 5)
-      .map((partnerAccount) => partnerAccount.name),
+    labels: data.partners.slice(0, 5).map((partners) => partners.name),
     datasets: [
       {
         label: "Articles per Partner",
-        data: data.partnerAccounts
+        data: data.partners
           .slice(0, 5)
           .map(
-            (partnerAccount) =>
+            (partners) =>
               data.articles.filter(
-                (article) => article.author === partnerAccount.name
+                (article) => article.author === partners.name
               ).length
           ),
         backgroundColor: "#279f8d",
@@ -143,8 +140,8 @@ const DashboardOverview = () => {
           <div className="card partner-list">
             <h3>Partner Accounts</h3>
             <ul>
-              {data.partnerAccounts.slice(0, 5).map((partnerAccount) => (
-                <li key={partnerAccount.id}>{partnerAccount.name}</li>
+              {data.partners.slice(0, 6).map((partners) => (
+                <li key={partners.partner_id}>{partners.name}</li>
               ))}
             </ul>
           </div>
