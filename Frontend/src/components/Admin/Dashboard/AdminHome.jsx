@@ -13,6 +13,7 @@ import "./admin.css";
 import logo from "../../../assets/logo.png";
 import Articles from "./Articles";
 import Partners from "./Partners";
+import Dashboard from "./Dashboard";
 
 const AdminDashboard = () => {
   const [activeItem, setActiveItem] = useState("Blog Posts");
@@ -35,6 +36,8 @@ const AdminDashboard = () => {
       case "Partner Accounts":
         return <Partners />;
 
+      case "Dashboard":
+        return <Dashboard />;
       default:
         return <p>Content for {activeItem} will be displayed here.</p>;
     }
