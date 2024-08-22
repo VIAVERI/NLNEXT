@@ -4,30 +4,35 @@ import './SinglePartnerPage.css';
 import OurServices from './OurServices';
 import ContactUs from './ContactUs';
 import Heading from "../common/heading/Heading"
+import RelatedPosts from './RelatedPosts';
 
 const SinglePartnerPage = () => {
     const [partner, setPartner] = useState(null);
     const [partnerServices, setPartnerServices] = useState([]);
+    const [relatedPosts, setRelatedPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { partnerId } = useParams();
 
     useEffect(() => {
-        const fetchPartnerData = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
                 const partnerResponse = await fetch(`http://localhost:5000/api/partners/${partnerId}`);
                 const servicesResponse = await fetch(`http://localhost:5000/api/services/partner/${partnerId}`);
+                const postsResponse = await fetch(`http://localhost:5000/api/articles?author=${partnerId}`);
 
-                if (!partnerResponse.ok || !servicesResponse.ok) {
-                    throw new Error(`Failed to fetch data: ${partnerResponse.status} ${partnerResponse.statusText}`);
+                if (!partnerResponse.ok || !servicesResponse.ok || !postsResponse.ok) {
+                    throw new Error(`Failed to fetch data`);
                 }
 
                 const partnerData = await partnerResponse.json();
                 const servicesData = await servicesResponse.json();
+                const postsData = await postsResponse.json();
 
                 setPartner(partnerData);
                 setPartnerServices(servicesData);
+                setRelatedPosts(postsData.filter(post => post.author === partnerData.name));
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError(error.message);
@@ -36,7 +41,7 @@ const SinglePartnerPage = () => {
             }
         };
 
-        fetchPartnerData();
+        fetchData();
     }, [partnerId]);
 
     if (loading) return <div>Loading...</div>;
@@ -59,16 +64,15 @@ const SinglePartnerPage = () => {
                         />
                         <div className="partner-name-overlay">
                             <div className="partner-name">{partner.name}</div>
-                            <div className="partner-description">{partner.description}</div>
+                            <div className="partner-description">{partner.slogan}</div>
                         </div>
                     </div>
                 </div>
-                <div className="partner-key-points">
+                <div className="partner-key-points-w">
                     <ul>
-                        <li>High-quality repairs and maintenance</li>
-                        <li>Experienced and trained technicians</li>
-                        <li>Quality organization behind quality products</li>
-                        <li>Dedicated to helping you achieve maximum efficiency</li>
+                        {partner.key_points && partner.key_points.map((point, index) => (
+                            <li key={index}>{point}</li>
+                        ))}
                     </ul>
                 </div>
                 <div className="partner-map-overlay">
@@ -82,27 +86,28 @@ const SinglePartnerPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="partner-content">
+            <div className="partner-content-s">
                 <div className="partner-main">
-                    <h2 className="partner-headline">Innovating for a brighter future</h2>
+                    <h2 className="partner-headline">{partner.headline || "Innovating for a brighter future"}</h2>
                     <div className="partner-description-s">
-                        <p>Our teams are up to date with the latest technologies, media trends and are keen to prove themselves in this industry. That's what you want from a partner, not someone who is relying on the same way of doing things that worked 10 years, 5 years or even a year ago.</p>
+                        <p>{partner.description}</p>
 
                         <div className="highlight-quote">
-                            <p>Innovation is not just about new products. It's about reinventing business processes and building entirely new markets that meet untapped customer needs.</p>
+                            <p>{partner.highlight || "Innovation is not just about new products. It's about reinventing business processes and building entirely new markets that meet untapped customer needs."}</p>
                         </div>
-
-                        <p>In an ideal world, every collaboration would start with a deep understanding of needs. However, in reality, some project schedules and budgets don't allow for extensive research. That's where our expertise comes in - we bridge the gap between ideal scenarios and practical constraints, delivering solutions that exceed expectations.</p>
                     </div>
                 </div>
             </div>
-
-
-            <div className="m-container">
+            <div className="services-container">
                 <Heading title='Our Services' />
                 <OurServices services={partnerServices} />
             </div>
-            <div className="s-container">
+
+            <div className="m-container">
+                <RelatedPosts posts={relatedPosts} />
+            </div>
+
+            <div className="m-container">
                 <Heading title='Contact Us' />
                 <ContactUs partner={partner} />
             </div>

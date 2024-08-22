@@ -4,7 +4,7 @@
   /* #18  copy*/
   /*box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;*/
   position: relative;
-  margin: 15px 15px 15px 0;
+  margin: 20px 20px 20px 0;
   /*box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;*/
 }
 
@@ -22,6 +22,8 @@
 .popular .text h1 {
   padding: 20px 0 0 20px;
   margin: 0;
+  font-size: medium;
+  padding-right: 10px;
 }
 
 .popular .date {
@@ -33,4 +35,13 @@
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding: 5px 0 0 20px;
   margin-top: 5px;
+}
+
+.favorite-icon {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.favorite-icon.favorite {
+  color: rgb(221, 1, 1);
 }

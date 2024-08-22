@@ -55,7 +55,7 @@ const PartnersPage = () => {
                     const filteredPosts = data.filter(post => post.author === selectedPartner.name);
                     setRelatedPosts(filteredPosts);
                 } catch (error) {
-                    console.error("Error fetching related posts:", error);
+                    console.error("Error fetching related articles:", error);
                 }
             };
 
@@ -131,7 +131,7 @@ const PartnersPage = () => {
                                 {selectedPartner.name}
                             </div>
                             <div className="partner-description">
-                                {selectedPartner.description}
+                                {selectedPartner.slogan}
                             </div>
                             <button className="learn-more-button" onClick={handleLearnMore}>
                                 Learn More
@@ -148,7 +148,7 @@ const PartnersPage = () => {
 
                 {selectedPartner && relatedPosts.length > 0 && (
                     <section className='popularPost life'>
-                        <Heading title='Related Posts' />
+                        <Heading title='Related Articles' />
                         <div className='content'>
                             <Slider {...settings}>
                                 {relatedPosts.map((post) => (
