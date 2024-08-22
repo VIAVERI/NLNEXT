@@ -36,7 +36,6 @@ router.delete("/:articleId", async (req, res) => {
     }
 });
 
-// Get all favorite articles for a partner
 router.get("/", async (req, res) => {
     try {
         const { partnerId } = req.query;
