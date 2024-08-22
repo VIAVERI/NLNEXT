@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
         author, 
         published_at, 
         image_url,
+        rating,
         CASE 
           WHEN image_data IS NOT NULL THEN 
             encode(image_data, 'base64')
@@ -32,7 +33,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 // Get a single article
 router.get("/:id", async (req, res) => {
   try {
@@ -50,6 +50,42 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/popular", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        article_id, 
+        title, 
+        content, 
+        category, 
+        status, 
+        author, 
+        published_at, 
+        image_url,
+        rating,
+        CASE 
+          WHEN image_data IS NOT NULL THEN 
+            encode(image_data, 'base64')
+          ELSE 
+            NULL 
+        END AS image_data
+      FROM ARTICLE 
+      WHERE rating >= 4
+      ORDER BY rating DESC, published_at DESC
+    `);
+
+    console.log("Query result:", result);
+    console.log("Number of rows:", result.rows.length);
+    console.log("First row:", result.rows[0]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching popular articles:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching popular articles" });
+  }
+});
 // // Update an article
 // router.put("/:id", async (req, res) => {
 //   try {
