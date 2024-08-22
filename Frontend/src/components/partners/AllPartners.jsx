@@ -11,6 +11,7 @@ const PartnersPage = () => {
     const [partners, setPartners] = useState([]);
     const [selectedPartner, setSelectedPartner] = useState(null);
     const [relatedPosts, setRelatedPosts] = useState([]);
+    const [partnerServices, setPartnerServices] = useState([]);
     const history = useHistory();
 
     useEffect(() => {
@@ -30,8 +31,19 @@ const PartnersPage = () => {
         fetchPartners();
     }, []);
 
-    const handlePartnerClick = (partner) => {
+    const handlePartnerClick = async (partner) => {
         setSelectedPartner(partner);
+        await fetchPartnerServices(partner.partner_id);
+    };
+
+    const fetchPartnerServices = async (partnerId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/services/partner/${partnerId}`);
+            const data = await response.json();
+            setPartnerServices(data);
+        } catch (error) {
+            console.error("Error fetching partner services:", error);
+        }
     };
 
     useEffect(() => {
@@ -43,13 +55,15 @@ const PartnersPage = () => {
                     const filteredPosts = data.filter(post => post.author === selectedPartner.name);
                     setRelatedPosts(filteredPosts);
                 } catch (error) {
-                    console.error("Error fetching related posts:", error);
+                    console.error("Error fetching related articles:", error);
                 }
             };
 
             fetchRelatedPosts();
+            fetchPartnerServices(selectedPartner.partner_id);
         }
     }, [selectedPartner]);
+
 
     const handleLearnMore = () => {
         if (selectedPartner) {
@@ -117,7 +131,7 @@ const PartnersPage = () => {
                                 {selectedPartner.name}
                             </div>
                             <div className="partner-description">
-                                {selectedPartner.description}
+                                {selectedPartner.slogan}
                             </div>
                             <button className="learn-more-button" onClick={handleLearnMore}>
                                 Learn More
@@ -126,14 +140,15 @@ const PartnersPage = () => {
                     </div>
                 )}
 
+
                 <div className="services-container">
                     <Heading title='Our Services' />
-                    <OurServices />
+                    <OurServices services={partnerServices} />
                 </div>
 
                 {selectedPartner && relatedPosts.length > 0 && (
                     <section className='popularPost life'>
-                        <Heading title='Related Posts' />
+                        <Heading title='Related Articles' />
                         <div className='content'>
                             <Slider {...settings}>
                                 {relatedPosts.map((post) => (

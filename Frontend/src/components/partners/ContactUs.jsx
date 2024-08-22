@@ -1,31 +1,36 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube, Send } from 'lucide-react';
+import { Facebook, Linkedin, Instagram, Globe, Phone, MapPin, Mail, Clock, Send } from 'lucide-react';
 import './ContactUs.css'
 
-
 const ContactUs = ({ partner }) => {
+    const handleSocialClick = (url) => {
+        if (url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    };
+
     return (
         <div className="contact-us-container">
             <div className="contact-section">
                 <h3>Contact Information</h3>
                 <div className="info-item">
-                    <i className="fa fa-phone"></i>
+                    <Phone size={16} />
                     <p>{partner.phone}</p>
                 </div>
                 <div className="info-item">
-                    <i className="fa fa-map-marker"></i>
+                    <MapPin size={16} />
                     <p>{partner.address}</p>
                 </div>
                 <div className="info-item">
-                    <i className="fa fa-envelope"></i>
+                    <Mail size={16} />
                     <p>{partner.email}</p>
                 </div>
                 <div className="info-item">
-                    <i className="fa fa-globe"></i>
+                    <Globe size={16} />
                     <p>{partner.web}</p>
                 </div>
                 <div className="info-item">
-                    <i className="fa fa-clock"></i>
+                    <Clock size={16} />
                     <p>{partner.working_hours}</p>
                 </div>
             </div>
@@ -33,23 +38,21 @@ const ContactUs = ({ partner }) => {
             <div className="social-media-section">
                 <h3>Stay Connected</h3>
                 <div className='social-row'>
-                    <div className='socBox facebook'>
-                        <i className='fab fa-facebook-f'></i>
-                        <span>12,740 Likes</span>
+                    <div className='socBox facebook' onClick={() => handleSocialClick(partner.facebook)}>
+                        <Facebook size={16} />
+                        <span>Facebook</span>
                     </div>
-
-                    <div className='socBox twitter'>
-                        <i className='fab fa-linkedin'></i>
-                        <span>8,700 Followers</span>
+                    <div className='socBox twitter' onClick={() => handleSocialClick(partner.linkedin)}>
+                        <Linkedin size={16} />
+                        <span>LinkedIn</span>
                     </div>
-                    <div className='socBox instagram'>
-                        <i className='fab fa-instagram'></i>
-                        <span>22,700 Followers</span>
+                    <div className='socBox instagram' onClick={() => handleSocialClick(partner.instagram)}>
+                        <Instagram size={16} />
+                        <span>Instagram</span>
                     </div>
-
                 </div>
             </div>
-            {/* 
+
             <div className="subscribe-section">
                 <h3>Subscribe</h3>
                 <div className='subscribe'>
@@ -57,11 +60,11 @@ const ContactUs = ({ partner }) => {
                     <form action=''>
                         <input type='email' placeholder='Email Address...' />
                         <button>
-                            <i className='fa fa-paper-plane'></i> SUBMIT
+                            <Send size={16} /> SUBMIT
                         </button>
                     </form>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };

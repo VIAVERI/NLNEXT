@@ -3,6 +3,7 @@
     justify-content: space-between;
     background-color: #f8f9fa;
     padding: 2rem;
+    padding-left: 80px;
 }
 
 .contact-section,
@@ -117,6 +118,55 @@ h3 {
 
 .subscribe button:hover {
     background-color: #cc0000;
+}
+
+@media (max-width: 1024px) {
+    .contact-us-container {
+        flex-direction: column;
+    }
+
+    .contact-section,
+    .social-media-section,
+    .subscribe-section {
+        flex-basis: 100%;
+        max-width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .social-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .socBox {
+        flex-basis: calc(50% - 5px);
+        width: auto;
+    }
+
+    .subscribe {
+        width: 100%;
+    }
+}
+
+.info-item svg,
+.socBox svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+    color: #269d8d;
+}
+
+.socBox svg {
+    color: white;
+}
+
+.subscribe button svg {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.socBox {
+    cursor: pointer;
 }
 
 @media (max-width: 1024px) {

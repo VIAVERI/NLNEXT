@@ -16,6 +16,7 @@ import AllPartners from "./components/partners/AllPartners";
 import SinglePartnerPage from "./components/partners/SinglePartnerPage"
 import OurServices from "./components/partners/OurServices";
 import FavoriteArticlePage from "./components/favoriteArticles/FavoriteArticlesPage"
+import SubmitArticlePage from "./components/partners/SubmitArticlePage";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import "./App.css";
@@ -69,7 +70,6 @@ const App = () => {
   }, []);
 
   return (
-
     <Router>
       <ReactNotifications />
       <Switch>
@@ -94,6 +94,7 @@ const App = () => {
                 <Route path="/partner-profile/:partnerId" component={PartnerProfilePage} />
                 <Route exact path="/services" component={OurServices} />
                 <Route path="/favorites" exact component={FavoriteArticlePage} />
+                <Route path="/submit-article" component={SubmitArticlePage} /> {/* Add this new route */}
               </Switch>
               <Footer />
             </>
@@ -101,8 +102,7 @@ const App = () => {
         />
       </Switch>
     </Router>
-
   );
 };
 
-export default App
+export default App;

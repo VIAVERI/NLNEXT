@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./Popular.css";
-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Heading from "../../../common/heading/Heading";
+import { Heart } from 'lucide-react';
 
 const Popular = () => {
   const [articles, setArticles] = useState([]);
+  const [favorites, setFavorites] = useState({});
+  const partnerId = 1; // Replace with actual partner ID from authentication
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/articles"); // Ensure this is the correct API endpoint
+        const response = await fetch("http://localhost:5000/api/articles");
         const data = await response.json();
         setArticles(data);
       } catch (error) {
@@ -20,9 +22,47 @@ const Popular = () => {
       }
     };
 
-    fetchArticles();
-  }, []);
+    const fetchFavorites = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/favorites?partnerId=${partnerId}`);
+        const data = await response.json();
+        const favoriteMap = data.reduce((acc, fav) => {
+          acc[fav.article_id] = true;
+          return acc;
+        }, {});
+        setFavorites(favoriteMap);
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
 
+    fetchArticles();
+    fetchFavorites();
+  }, [partnerId]);
+
+  const toggleFavorite = async (articleId) => {
+    try {
+      if (favorites[articleId]) {
+        await fetch(`http://localhost:5000/api/favorites/${articleId}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ partnerId })
+        });
+      } else {
+        await fetch('http://localhost:5000/api/favorites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ partnerId, articleId })
+        });
+      }
+      setFavorites(prev => ({
+        ...prev,
+        [articleId]: !prev[articleId]
+      }));
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
   const settings = {
     className: "center",
     centerMode: false,
@@ -70,6 +110,11 @@ const Popular = () => {
                     <i className="fas fa-comments"></i>
                     <label>{article.rating}</label>
                   </div>
+                  <Heart
+                    size={16} // Reduced size from 24 to 16
+                    className={`favorite-icon ${favorites[article.article_id] ? 'favorite' : ''}`}
+                    onClick={() => toggleFavorite(article.article_id)}
+                  />
                 </div>
               </div>
             </div>
@@ -81,3 +126,4 @@ const Popular = () => {
 };
 
 export default Popular;
+
