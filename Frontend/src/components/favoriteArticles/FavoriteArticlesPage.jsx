@@ -4,14 +4,14 @@ import { MessageSquare, Heart, Calendar } from "lucide-react";
 import Side from "../home/sideContent/side/Side";
 import "./FavoriteArticlesPage.css";
 
-const ArticleCard = ({ article }) => (
+const ArticleCard = ({ article, onRemoveFavorite }) => (
   <div className="article-card">
     <div className="article-image">
       <img src={article.image_url} alt={article.title} />
       {article.rating && (
         <div className="article-rating">{article.rating}</div>
       )}
-      <div className="favorite-icon">
+      <div className="favorite-icon" onClick={() => onRemoveFavorite(article.article_id)}>
         <Heart size={24} color="red" fill="red" />
       </div>
     </div>
@@ -35,22 +35,34 @@ const ArticleCard = ({ article }) => (
 );
 
 const FavoriteArticlesPage = () => {
-  const [articles, setArticles] = useState([]);
+  const [favoriteArticles, setFavoriteArticles] = useState([]);
+  const partnerId = 1; // Replace with actual partner ID from authentication
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/articles");
-        setArticles(response.data);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      }
-    };
-
-    fetchArticles();
+    fetchFavoriteArticles();
   }, []);
 
-  const groupedArticles = articles.reduce((acc, article) => {
+  const fetchFavoriteArticles = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/favorites?partnerId=${partnerId}`);
+      setFavoriteArticles(response.data);
+    } catch (error) {
+      console.error("Error fetching favorite articles:", error);
+    }
+  };
+
+  const handleRemoveFavorite = async (articleId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/favorites/${articleId}`, {
+        data: { partnerId }
+      });
+      setFavoriteArticles(prevArticles => prevArticles.filter(article => article.article_id !== articleId));
+    } catch (error) {
+      console.error("Error removing article from favorites:", error);
+    }
+  };
+
+  const groupedArticles = favoriteArticles.reduce((acc, article) => {
     (acc[article.category] = acc[article.category] || []).push(article);
     return acc;
   }, {});
@@ -63,15 +75,23 @@ const FavoriteArticlesPage = () => {
             <div key={category} className="category-section">
               <div className="articles-wrapper">
                 <h2 className="category-title">{category.toUpperCase()}</h2>
-
                 <div className="articles-container">
                   {categoryArticles.map((article) => (
-                    <ArticleCard key={article.id} article={article} />
+                    <ArticleCard
+                      key={article.article_id}
+                      article={article}
+                      onRemoveFavorite={handleRemoveFavorite}
+                    />
                   ))}
                 </div>
               </div>
             </div>
           ))}
+          {favoriteArticles.length === 0 && (
+            <div className="no-favorites">
+              <p>You haven't favorited any articles yet.</p>
+            </div>
+          )}
         </section>
         <section className="sideContent">
           <Side />

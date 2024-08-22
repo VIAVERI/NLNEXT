@@ -1,0 +1,131 @@
+.submit-article-page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.submit-article-page h1 {
+    text-align: center;
+    color: #269d8d;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #269d8d;
+    box-shadow: 0 0 0 2px rgba(38, 157, 141, 0.2);
+}
+
+.form-group textarea {
+    height: 250px;
+    resize: vertical;
+}
+
+/* Style for file input */
+.form-group input[type="file"] {
+    border: 1px dashed #269d8d;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+.form-group input[type="file"]:hover {
+    background-color: #e6f3f1;
+}
+
+/* Image preview styles */
+.image-preview {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #269d8d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #1c7d71;
+    transform: translateY(-2px);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .submit-article-page {
+        padding: 30px 20px;
+        margin: 20px auto;
+    }
+
+    .submit-article-page h1 {
+        font-size: 2em;
+    }
+}
+
+/* Custom scrollbar for textarea */
+.form-group textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-group textarea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb {
+    background: #269d8d;
+    border-radius: 4px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb:hover {
+    background: #1c7d71;
+}

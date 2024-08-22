@@ -22,7 +22,8 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(`
-      SELECT p.partner_id, p.name, p.description, p.image, p.address, p.web, p.phone, working_hours, p.facebook, p.instagram, p.linkedin,
+      SELECT p.partner_id, p.name, p.description, p.image, p.address, p.web, p.phone, p.working_hours, p.facebook, p.instagram, p.linkedin,
+             p.key_points, p.headline, p.highlight, p.slogan,
              pa.profile_image_url, pa.email
       FROM partner p
       LEFT JOIN partners_account pa ON p.partner_id = pa.partner_id

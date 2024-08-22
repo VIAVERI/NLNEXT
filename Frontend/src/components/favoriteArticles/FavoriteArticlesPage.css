@@ -183,3 +183,14 @@
     padding: 20px;
   }
 }
+
+.no-favorites {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.popular .comment .fa-star {
+  color: gold;
+}

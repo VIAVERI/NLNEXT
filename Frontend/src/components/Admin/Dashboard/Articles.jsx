@@ -2,22 +2,26 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./articles.css";
 
-const ArticleCard = ({ article, onClick }) => (
-  <div className="art-card" onClick={() => onClick(article)}>
-    <img src={article.image_url} alt={article.title} className="art-image" />
-    <div className="art-content">
-      <span className="art-category">{article.category}</span>
-      <h3 className="art-title">{article.title}</h3>
-      <p className="art-excerpt">{article.content.substring(0, 100)}...</p>
-      <div className="art-meta">
-        <span className="art-author">{article.author}</span>
-        <span className="art-date">
-          {new Date(article.published_at).toLocaleDateString()}
-        </span>
+const ArticleCard = ({ article, onClick }) => {
+  const imageSource = article.image_url || (article.image_data ? `data:image/jpeg;base64,${article.image_data}` : null);
+
+  return (
+    <div className="art-card" onClick={() => onClick(article)}>
+      {imageSource && <img src={imageSource} alt={article.title} className="art-image" />}
+      <div className="art-content">
+        <span className="art-category">{article.category}</span>
+        <h3 className="art-title">{article.title}</h3>
+        <p className="art-excerpt">{article.content.substring(0, 100)}...</p>
+        <div className="art-meta">
+          <span className="art-author">{article.author}</span>
+          <span className="art-date">
+            {new Date(article.published_at).toLocaleDateString()}
+          </span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ArticlePopup = ({ article, onClose, onStatusChange }) => {
   const [status, setStatus] = useState(article.status);
@@ -44,7 +48,7 @@ const ArticlePopup = ({ article, onClose, onStatusChange }) => {
           &times;
         </button>
         <img
-          src={article.image_url}
+          src={article.image_url || (article.image_data ? `data:image/jpeg;base64,${article.image_data}` : null)}
           alt={article.title}
           className="art-popup-image"
         />
