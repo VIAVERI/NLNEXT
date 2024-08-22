@@ -17,7 +17,6 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  margin-left: 85%;
 }
 
 .ptn-grid {
@@ -138,4 +137,29 @@
 
 .ptn-status-option:hover {
   opacity: 0.8;
+}
+
+.ptn-tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.ptn-tab {
+  padding: 10px 20px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+}
+
+.ptn-tab.active {
+  background-color: #279f8d;
+  color: white;
+}
+
+.ptn-organization {
+  font-size: 0.9em;
+  color: #666;
+  margin: 5px 0;
 }

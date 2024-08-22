@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./articles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const ArticleCard = ({ article, onClick }) => {
   const imageSource = article.image_url || (article.image_data ? `data:image/jpeg;base64,${article.image_data}` : null);
@@ -150,8 +152,8 @@ const Articles = () => {
   return (
     <div className="art-page">
       <div className="art-header">
-        <h1 className="art-page-title">Articles</h1>
         <button className="show-filters-btn" onClick={toggleFilter}>
+          <FontAwesomeIcon icon={faFilter} style={{ marginRight: "8px" }} />
           {isFilterOpen ? "Hide Filters" : "Show Filters"}
         </button>
       </div>

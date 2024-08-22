@@ -1,19 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Upload, User } from "lucide-react";
 import { Store } from "react-notifications-component";
 import "./partnerAcc.css";
 import axios from "axios";
 
-const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
+const CreateAccount = ({ onClose, onCreateAccount }) => {
+  const [isPartner, setIsPartner] = useState(true);
+  const [partners, setPartners] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     external_system_id: "",
     login_credentials: "",
+    password: "",
     notes: "",
+    partner_organization: "",
+    status: "Pending",
   });
   const [profileImage, setProfileImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
+
+  useEffect(() => {
+    if (!isPartner) {
+      fetchPartners();
+    }
+  }, [isPartner]);
+
+  const fetchPartners = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/partners");
+      setPartners(response.data);
+    } catch (error) {
+      console.error("Error fetching partners:", error);
+      showNotification(
+        "Error",
+        "Failed to fetch partners. Please try again.",
+        "danger"
+      );
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,15 +52,82 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
     } else {
       setProfileImage(null);
       setPreviewUrl("");
+      showNotification(
+        "Invalid File",
+        "Please select an image file.",
+        "warning"
+      );
     }
+  };
+
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      showNotification("Error", "Name is required.", "warning");
+      return false;
+    }
+    if (!isValidEmail(formData.email)) {
+      showNotification(
+        "Error",
+        "Please enter a valid email address.",
+        "warning"
+      );
+      return false;
+    }
+    if (isPartner && !formData.login_credentials) {
+      showNotification("Error", "Password is required.", "warning");
+      return false;
+    }
+    if (!isPartner && !formData.password) {
+      showNotification("Error", "Password is required.", "warning");
+      return false;
+    }
+    if (!isPartner && !formData.partner_organization) {
+      showNotification(
+        "Error",
+        "Please select a partner organization.",
+        "warning"
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const isValidEmail = (email) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const showNotification = (title, message, type) => {
+    Store.addNotification({
+      title: title,
+      message: message,
+      type: type,
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animate__animated", "animate__fadeIn"],
+      animationOut: ["animate__animated", "animate__fadeOut"],
+      dismiss: { duration: 5000, onScreen: true },
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
+    if (!validateForm()) return;
 
-    Object.keys(formData).forEach((key) => {
-      data.append(key, formData[key]);
+    const data = new FormData();
+    const fieldsToInclude = isPartner
+      ? ["name", "email", "external_system_id", "login_credentials", "notes"]
+      : [
+          "name",
+          "email",
+          "partner_organization",
+          "password",
+          "notes",
+          "status",
+        ];
+
+    fieldsToInclude.forEach((key) => {
+      data.append(key, formData[key] || "");
     });
 
     if (profileImage) {
@@ -43,64 +135,40 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/partners_acc/create_partner",
-        data
-      );
+      const endpoint = isPartner
+        ? "http://localhost:5000/api/partners_acc/create_partner"
+        : "http://localhost:5000/api/users/create_user";
+      const response = await axios.post(endpoint, data);
 
-      if (response.data) {
-        // Send email with account details
-        await sendAccountEmail(
-          formData.email,
-          formData.name,
-          formData.login_credentials
-        );
+      console.log("Response received:", response.data);
+
+      if (typeof onCreateAccount === "function") {
+        onCreateAccount(response.data);
       }
 
-      const result = response.data;
-      onCreatePartner(result);
       onClose();
-      Store.addNotification({
-        title: "Success!",
-        message: "Partner account created successfully!",
-        type: "success",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 4000,
-          onScreen: true,
-        },
-      });
+      showNotification(
+        "Success",
+        `${isPartner ? "Partner" : "User"} account created successfully!`,
+        "success"
+      );
     } catch (error) {
-      Store.addNotification({
-        title: "Error!",
-        message: "Failed to create partner account. Please try again.",
-        type: "danger",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 4000,
-          onScreen: true,
-        },
-      });
-    }
-  };
-
-  const sendAccountEmail = async (email, name, login_credentials) => {
-    try {
-      await axios.post("http://localhost:5000/api/send-email", {
-        to: email,
-        subject: "Your New Partner Account",
-        name: name,
-        password: login_credentials,
-      });
-    } catch (error) {
-      console.error("Error sending email:", error);
-      // Handle error (e.g., show error message to user)
+      console.error("Error creating account:", error);
+      let errorMessage = "An unknown error occurred.";
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        errorMessage =
+          error.response.data.error || JSON.stringify(error.response.data);
+      } else if (error.request) {
+        errorMessage = "No response received from server.";
+      } else {
+        errorMessage = error.message;
+      }
+      showNotification(
+        "Error",
+        `Failed to create account. ${errorMessage}`,
+        "danger"
+      );
     }
   };
 
@@ -108,12 +176,28 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
     <div className="partner-modal-overlay">
       <div className="partner-modal-content">
         <div className="partner-modal-header">
-          <h2>Create Partner Account</h2>
+          <h2>Create {isPartner ? "Partner" : "User"} Account</h2>
           <button onClick={onClose} className="partner-close-button">
             <X size={24} />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="partner-form">
+          <div className="partner-toggle">
+            <button
+              type="button"
+              className={`toggle-button ${isPartner ? "active" : ""}`}
+              onClick={() => setIsPartner(true)}
+            >
+              Partner
+            </button>
+            <button
+              type="button"
+              className={`toggle-button ${!isPartner ? "active" : ""}`}
+              onClick={() => setIsPartner(false)}
+            >
+              User
+            </button>
+          </div>
           <div className="partner-image-upload">
             <input
               type="file"
@@ -152,7 +236,7 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
               value={formData.name}
               onChange={handleChange}
               required
-              placeholder="Enter partner's name"
+              placeholder={`Enter ${isPartner ? "partner's" : "user's"} name`}
             />
           </div>
           <div className="partner-form-group">
@@ -164,29 +248,53 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter partner's email"
+              placeholder={`Enter ${isPartner ? "partner's" : "user's"} email`}
             />
           </div>
+          {isPartner && (
+            <div className="partner-form-group">
+              <label htmlFor="external_system_id">External System ID</label>
+              <input
+                type="text"
+                id="external_system_id"
+                name="external_system_id"
+                value={formData.external_system_id}
+                onChange={handleChange}
+                placeholder="Enter external system ID (optional)"
+              />
+            </div>
+          )}
+          {!isPartner && (
+            <div className="partner-form-group">
+              <label htmlFor="partner_organization">Partner/Organization</label>
+              <select
+                id="partner_organization"
+                name="partner_organization"
+                value={formData.partner_organization}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select a partner</option>
+                {partners.map((partner) => (
+                  <option key={partner.id} value={partner.id}>
+                    {partner.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className="partner-form-group">
-            <label htmlFor="external_system_id">External System ID</label>
+            <label htmlFor={isPartner ? "login_credentials" : "password"}>
+              Password
+            </label>
             <input
-              type="text"
-              id="external_system_id"
-              name="external_system_id"
-              value={formData.external_system_id}
+              type="password"
+              id={isPartner ? "login_credentials" : "password"}
+              name={isPartner ? "login_credentials" : "password"}
+              value={isPartner ? formData.login_credentials : formData.password}
               onChange={handleChange}
-              placeholder="Enter external system ID (optional)"
-            />
-          </div>
-          <div className="partner-form-group">
-            <label htmlFor="login_credentials">Password</label>
-            <input
-              type="text"
-              id="login_credentials"
-              name="login_credentials"
-              value={formData.login_credentials}
-              onChange={handleChange}
-              placeholder="Enter login credentials (optional)"
+              required
+              placeholder="Enter password"
             />
           </div>
           <div className="partner-form-group">
@@ -201,7 +309,7 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
             ></textarea>
           </div>
           <button type="submit" className="partner-submit-button">
-            Create Partner Account
+            Create {isPartner ? "Partner" : "User"} Account
           </button>
         </form>
       </div>
@@ -209,4 +317,4 @@ const CreatePartnerAccount = ({ onClose, onCreatePartner }) => {
   );
 };
 
-export default CreatePartnerAccount;
+export default CreateAccount;
