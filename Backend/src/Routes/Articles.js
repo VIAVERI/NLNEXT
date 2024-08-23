@@ -50,59 +50,24 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/popular", async (req, res) => {
+
+router.put("/:id", async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT 
-        article_id, 
-        title, 
-        content, 
-        category, 
-        status, 
-        author, 
-        published_at, 
-        image_url,
-        rating,
-        CASE 
-          WHEN image_data IS NOT NULL THEN 
-            encode(image_data, 'base64')
-          ELSE 
-            NULL 
-        END AS image_data
-      FROM ARTICLE 
-      WHERE rating >= 4
-      ORDER BY rating DESC, published_at DESC
-    `);
-
-    console.log("Query result:", result);
-    console.log("Number of rows:", result.rows.length);
-    console.log("First row:", result.rows[0]);
-
-    res.json(result.rows);
+    const { id } = req.params;
+    const { title, content, category, image_url } = req.body;
+    const result = await pool.query(
+      "UPDATE ARTICLE SET title = $1, content = $2, category = $3, image_url = $4 WHERE article_id = $5 RETURNING *",
+      [title, content, category, image_url, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+    res.json(result.rows[0]);
   } catch (error) {
-    console.error("Error fetching popular articles:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching popular articles" });
+    console.error("Error updating article:", error);
+    res.status(500).json({ error: "An error occurred while updating the article" });
   }
 });
-// // Update an article
-// router.put("/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { title, content, category, status } = req.body;
-//     const result = await pool.query(
-//       "UPDATE ARTICLE SET title = $1, content = $2, category = $3, status = $4 WHERE article_id = $5 RETURNING *",
-//       [title, content, category, status, id]
-//     );
-//     res.json(result.rows[0]);
-//   } catch (error) {
-//     console.error("Error updating article:", error);
-//     res
-//       .status(500)
-//       .json({ error: "An error occurred while updating the article" });
-//   }
-// });
 
 // Update an article
 router.patch("/:id", async (req, res) => {
