@@ -14,7 +14,7 @@ const Popular = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/articles");
+        const response = await fetch("http://localhost:5000/api/popular");
         const data = await response.json();
         setArticles(data);
       } catch (error) {
@@ -63,6 +63,7 @@ const Popular = () => {
       console.error("Error toggling favorite:", error);
     }
   };
+
   const settings = {
     className: "center",
     centerMode: false,
@@ -84,6 +85,15 @@ const Popular = () => {
     ],
   };
 
+  const getImageSource = (article) => {
+    if (article.image_url) {
+      return article.image_url;
+    } else if (article.image_data) {
+      return `data:image/jpeg;base64,${article.image_data}`;
+    }
+    return null; // Return null if no image is available
+  };
+
   return (
     <section className="popular">
       <Heading title="Popular" />
@@ -94,7 +104,9 @@ const Popular = () => {
               <div className="box shadow">
                 <div className="images row">
                   <div className="img">
-                    <img src={article.image_url} alt={article.title} />
+                    {getImageSource(article) && (
+                      <img src={getImageSource(article)} alt={article.title} />
+                    )}
                   </div>
                   <div className="category category1">
                     <span>{article.category}</span>
@@ -111,7 +123,7 @@ const Popular = () => {
                     <label>{article.rating}</label>
                   </div>
                   <Heart
-                    size={16} // Reduced size from 24 to 16
+                    size={16}
                     className={`favorite-icon ${favorites[article.article_id] ? 'favorite' : ''}`}
                     onClick={() => toggleFavorite(article.article_id)}
                   />
@@ -126,4 +138,3 @@ const Popular = () => {
 };
 
 export default Popular;
-

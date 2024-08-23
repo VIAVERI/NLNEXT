@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './SinglePartnerPage.css';
-import OurServices from './OurServices';
-import ContactUs from './ContactUs';
+import OurServices from './components/OurServices';
+import ContactUs from './components/ContactUs';
 import Heading from "../common/heading/Heading"
-import RelatedPosts from './RelatedPosts';
+import RelatedPosts from './components/RelatedPosts';
 
 const SinglePartnerPage = () => {
     const [partner, setPartner] = useState(null);
