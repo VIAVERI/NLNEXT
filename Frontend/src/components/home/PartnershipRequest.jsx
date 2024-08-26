@@ -65,7 +65,7 @@ const PartnershipRequest = () => {
                     margin: '4px 2px',
                     cursor: 'pointer',
                     borderRadius: '4px',
-                    border: 'none',
+                    border: '3px',
                     boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
                     transition: '0.3s'
                 }}
