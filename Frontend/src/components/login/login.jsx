@@ -22,7 +22,10 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
         const userData = userDoc.data();
         if (userData.role === "admin") {
           history.push("/admin-dashboard");
-          onSuccessfulLogin(); // Redirect admin users to the admin dashboard
+          onSuccessfulLogin();
+          // } else if (userData.role === "partner") {
+          //   history.push("/partner-admin");
+          //   onSuccessfulLogin();
         } else {
           onSuccessfulLogin(); // Redirect non-admin users as before
         }
