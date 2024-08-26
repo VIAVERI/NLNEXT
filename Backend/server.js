@@ -23,10 +23,16 @@ const partnerRoutes = require("./src/Routes/Partners");
 const serviceRoutes = require("./src/Routes/Services");
 const partnersAccRoutes = require("./src/Routes/partnersAccount");
 const emailRoutes = require("./src/Routes/Email");
-const favoritesRoutes = require("./src/Routes/Favorites"); // Add this line
+
+const favoritesRoutes = require("./src/Routes/Favorites");
+const userRoutes = require("./src/Routes/Users");
 const popularRoutes = require("./src/Routes/Popular"); // Add this line
 const searchRoutes = require("./src/Routes/Search");
 const partnershipRequestRoutes = require("./src/Routes/PartnershipRequest");
+
+
+
+
 
 // Use routes
 app.use("/api/articles", articleRoutes);
@@ -40,6 +46,7 @@ app.use("/api/favorites", favoritesRoutes);
 app.use("/api/popular", popularRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/partnership-request", partnershipRequestRoutes);
+app.use("/api/users", userRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
