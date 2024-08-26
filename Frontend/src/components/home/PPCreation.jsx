@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './PPCreation.css';
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
+const db = getFirestore();
+const auth = getAuth();
 
 const PPCreation = () => {
     const history = useHistory();
@@ -72,7 +77,16 @@ const PPCreation = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Partner profile created:', result);
-                history.push(`/partner-profile/${result.partner_id}`);
+
+                // Update Firestore document
+                const user = auth.currentUser;
+                if (user) {
+                    await updateDoc(doc(db, "users", user.uid), {
+                        profile_completed: true
+                    });
+                }
+
+                history.push(`/partner-admin`);
             } else {
                 throw new Error('Failed to create partner profile');
             }
@@ -81,7 +95,6 @@ const PPCreation = () => {
             // Handle error (show error message to user)
         }
     };
-
     const renderStep = () => {
         switch (step) {
             case 1:
