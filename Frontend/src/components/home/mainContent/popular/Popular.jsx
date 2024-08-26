@@ -9,36 +9,37 @@ import { Heart } from 'lucide-react';
 const Popular = () => {
   const [articles, setArticles] = useState([]);
   const [favorites, setFavorites] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
   const partnerId = 1; // Replace with actual partner ID from authentication
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/popular");
-        const data = await response.json();
-        setArticles(data);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      }
-    };
-
-    const fetchFavorites = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/favorites?partnerId=${partnerId}`);
-        const data = await response.json();
-        const favoriteMap = data.reduce((acc, fav) => {
-          acc[fav.article_id] = true;
-          return acc;
-        }, {});
-        setFavorites(favoriteMap);
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
-      }
-    };
-
     fetchArticles();
     fetchFavorites();
   }, [partnerId]);
+
+  const fetchArticles = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/popular");
+      const data = await response.json();
+      setArticles(data);
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+    }
+  };
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/favorites?partnerId=${partnerId}`);
+      const data = await response.json();
+      const favoriteMap = data.reduce((acc, fav) => {
+        acc[fav.article_id] = true;
+        return acc;
+      }, {});
+      setFavorites(favoriteMap);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+    }
+  };
 
   const toggleFavorite = async (articleId) => {
     try {
@@ -63,6 +64,15 @@ const Popular = () => {
       console.error("Error toggling favorite:", error);
     }
   };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredArticles = articles.filter(article =>
+    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    article.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const settings = {
     className: "center",
@@ -91,15 +101,24 @@ const Popular = () => {
     } else if (article.image_data) {
       return `data:image/jpeg;base64,${article.image_data}`;
     }
-    return null; // Return null if no image is available
+    return null;
   };
 
   return (
     <section className="popular">
       <Heading title="Popular" />
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search popular articles..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="search-input"
+        />
+      </div>
       <div className="content">
         <Slider {...settings}>
-          {articles.map((article) => (
+          {filteredArticles.map((article) => (
             <div className="items" key={article.article_id}>
               <div className="box shadow">
                 <div className="images row">

@@ -1,0 +1,134 @@
+.pp-creation-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.pp-creation-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.pp-creation-progress {
+    margin-bottom: 30px;
+}
+
+.pp-creation-progress-bar {
+    background-color: #e0e0e0;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.pp-creation-progress-fill {
+    background-color: #279f8d;
+    height: 100%;
+    transition: width 0.5s ease-in-out;
+}
+
+.pp-creation-step-info {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.pp-creation-step {
+    margin-bottom: 30px;
+}
+
+.pp-creation-step h2 {
+    font-size: 20px;
+    color: #279f8d;
+    margin-bottom: 20px;
+}
+
+.pp-creation-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.pp-creation-input:focus {
+    outline: none;
+    border-color: #279f8d;
+    box-shadow: 0 0 0 2px rgba(39, 159, 141, 0.2);
+}
+
+.pp-creation-textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.pp-creation-file-input {
+    margin-bottom: 15px;
+}
+
+.pp-creation-button {
+    background-color: #279f8d;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.pp-creation-button:hover {
+    background-color: #1c7d71;
+}
+
+.pp-creation-button-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.pp-creation-button-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.pp-creation-key-points {
+    margin-bottom: 15px;
+}
+
+.pp-creation-key-point-input {
+    width: calc(100% - 50px);
+    margin-right: 10px;
+}
+
+.pp-creation-add-key-point {
+    width: 40px;
+    height: 40px;
+    background-color: #279f8d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pp-creation-add-key-point:hover {
+    background-color: #1c7d71;
+}
+
+.pp-creation-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
