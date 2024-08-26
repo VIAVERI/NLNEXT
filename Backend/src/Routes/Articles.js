@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const { pool } = require("../db");
 
 router.get("/", async (req, res) => {
   try {
@@ -50,7 +50,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -65,7 +64,9 @@ router.put("/:id", async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error("Error updating article:", error);
-    res.status(500).json({ error: "An error occurred while updating the article" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the article" });
   }
 });
 
@@ -128,17 +129,20 @@ router.patch("/:id", async (req, res) => {
 router.get("/article-image/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query("SELECT image_data FROM ARTICLE WHERE article_id = $1", [id]);
+    const result = await pool.query(
+      "SELECT image_data FROM ARTICLE WHERE article_id = $1",
+      [id]
+    );
 
     if (result.rows.length > 0 && result.rows[0].image_data) {
-      res.contentType('image/jpeg'); // Adjust content type as needed
+      res.contentType("image/jpeg"); // Adjust content type as needed
       res.send(result.rows[0].image_data);
     } else {
-      res.status(404).send('Image not found');
+      res.status(404).send("Image not found");
     }
   } catch (error) {
     console.error("Error retrieving image:", error);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 module.exports = router;

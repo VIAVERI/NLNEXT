@@ -4,12 +4,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Heading from "../../../common/heading/Heading";
-import { Heart } from 'lucide-react';
+import { Heart } from "lucide-react";
 
 const Popular = () => {
   const [articles, setArticles] = useState([]);
   const [favorites, setFavorites] = useState({});
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const partnerId = 1; // Replace with actual partner ID from authentication
 
   useEffect(() => {
@@ -29,7 +29,9 @@ const Popular = () => {
 
   const fetchFavorites = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/favorites?partnerId=${partnerId}`);
+      const response = await fetch(
+        `http://localhost:5000/api/favorites?partnerId=${partnerId}`
+      );
       const data = await response.json();
       const favoriteMap = data.reduce((acc, fav) => {
         acc[fav.article_id] = true;
@@ -45,20 +47,20 @@ const Popular = () => {
     try {
       if (favorites[articleId]) {
         await fetch(`http://localhost:5000/api/favorites/${articleId}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ partnerId })
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ partnerId }),
         });
       } else {
-        await fetch('http://localhost:5000/api/favorites', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ partnerId, articleId })
+        await fetch("http://localhost:5000/api/favorites", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ partnerId, articleId }),
         });
       }
-      setFavorites(prev => ({
+      setFavorites((prev) => ({
         ...prev,
-        [articleId]: !prev[articleId]
+        [articleId]: !prev[articleId],
       }));
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -69,9 +71,10 @@ const Popular = () => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredArticles = articles.filter(article =>
-    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    article.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredArticles = articles.filter(
+    (article) =>
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const settings = {
@@ -135,7 +138,9 @@ const Popular = () => {
                   <h1 className="title">{article.title.slice(0, 40)}...</h1>
                   <div className="date">
                     <i className="fas fa-calendar-days"></i>
-                    <label>{new Date(article.published_at).toLocaleDateString()}</label>
+                    <label>
+                      {new Date(article.published_at).toLocaleDateString()}
+                    </label>
                   </div>
                   <div className="comment">
                     <i className="fas fa-comments"></i>
@@ -143,7 +148,9 @@ const Popular = () => {
                   </div>
                   <Heart
                     size={16}
-                    className={`favorite-icon ${favorites[article.article_id] ? 'favorite' : ''}`}
+                    className={`favorite-icon ${
+                      favorites[article.article_id] ? "favorite" : ""
+                    }`}
                     onClick={() => toggleFavorite(article.article_id)}
                   />
                 </div>
