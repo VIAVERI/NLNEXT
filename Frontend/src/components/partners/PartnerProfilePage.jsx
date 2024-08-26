@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import './PartnerProfilePage.css';
 import './EditPartnerProfile.css';
 import Heading from "../common/heading/Heading";
@@ -13,10 +15,22 @@ const PartnerProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const { partnerId } = useParams();
+    const [currentUser, setCurrentUser] = useState(null);
     const [partnerServices, setPartnerServices] = useState([]);
     const [relatedPosts, setRelatedPosts] = useState([]);
+    const { partnerId } = useParams();
     const history = useHistory();
+    const auth = getAuth();
+    const db = getFirestore();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [auth]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +42,6 @@ const PartnerProfilePage = () => {
                     fetchRelatedPosts()
                 ]);
             } catch (error) {
-                console.error("Error fetching data:", error);
                 setError(error.message);
             } finally {
                 setLoading(false);
@@ -44,7 +57,6 @@ const PartnerProfilePage = () => {
             throw new Error(`Failed to fetch partner data: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
-        console.log("Fetched partner data:", data);
         setPartner(data);
     };
 
@@ -58,24 +70,14 @@ const PartnerProfilePage = () => {
     };
 
     const fetchRelatedPosts = async () => {
-        try {
-            const response = await fetch(`http://localhost:5000/api/articles`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch articles: ${response.status} ${response.statusText}`);
-            }
-            const data = await response.json();
-            console.log("Fetched all articles:", data);
-
-            if (partner) {
-                const filteredPosts = data.filter(post => post.author === partner.name);
-                console.log("Filtered posts for partner:", partner.name, filteredPosts);
-                setRelatedPosts(filteredPosts);
-            } else {
-                console.log("Partner data not available yet");
-            }
-        } catch (error) {
-            console.error("Error fetching related articles:", error);
-            setError(error.message);
+        const response = await fetch(`http://localhost:5000/api/articles`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch articles: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        if (partner) {
+            const filteredPosts = data.filter(post => post.author === partner.name);
+            setRelatedPosts(filteredPosts);
         }
     };
 
@@ -89,9 +91,7 @@ const PartnerProfilePage = () => {
         try {
             const response = await fetch(`http://localhost:5000/api/partners/${partnerId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedData),
             });
 
@@ -103,7 +103,6 @@ const PartnerProfilePage = () => {
             setPartner(updatedPartner);
             setIsEditing(false);
         } catch (error) {
-            console.error("Error updating partner profile:", error);
             setError(error.message);
         }
     };
@@ -111,8 +110,6 @@ const PartnerProfilePage = () => {
     const handleSubmitArticle = () => {
         if (partner && partner.name) {
             history.push(`/submit-article?author=${encodeURIComponent(partner.name)}`);
-        } else {
-            console.error('Partner name is not available');
         }
     };
 
@@ -128,22 +125,14 @@ const PartnerProfilePage = () => {
         <div className="partner-profile-page">
             <div className="partner-header-wrapper">
                 <div className="partner-header">
-                    <img
-                        src={partner.image}
-                        alt={partner.name}
-                        className="partner-image"
-                    />
+                    <img src={partner.image} alt={partner.name} className="partner-image" />
                     <div className="partner-name-overlay">
                         <div className="partner-name">{partner.name}</div>
                         <div className="partner-description">{partner.slogan}</div>
                     </div>
                 </div>
                 <div className="profile-image-container">
-                    <img
-                        src={partner.profile_image_url}
-                        alt={`${partner.name} profile`}
-                        className="profile-image"
-                    />
+                    <img src={partner.profile_image_url} alt={`${partner.name} profile`} className="profile-image" />
                 </div>
             </div>
             <div className="partner-key-points">
@@ -169,7 +158,6 @@ const PartnerProfilePage = () => {
                                     <OurServices services={partnerServices} />
                                 </div>
                             </div>
-
                             <div>
                                 <RelatedPosts
                                     posts={relatedPosts}
@@ -177,19 +165,23 @@ const PartnerProfilePage = () => {
                                     onEditPost={handleEditPost}
                                 />
                             </div>
-
-                            <div className="button-container">
-                                <button onClick={handleSubmitArticle} className="action-button submit-article-button">Submit Article</button>
-                            </div>
                             <div>
                                 <Heading title="Contact Us" />
                                 <PartnerContact partner={partner} />
                             </div>
-                            <div className="button-container">
-                                <button onClick={() => setIsEditing(true)} className="action-button edit-button">Edit Profile</button>
-                            </div>
                         </>
                     )}
+                    <div className="button-container">
+                        <button onClick={handleSubmitArticle} className="action-button submit-article-button">
+                            Submit Article
+                        </button>
+                        <button
+                            onClick={() => setIsEditing(!isEditing)}
+                            className="action-button edit-button"
+                        >
+                            {isEditing ? "Cancel Editing" : "Edit Profile"}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
