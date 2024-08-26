@@ -101,7 +101,7 @@ const App = () => {
         <PrivateRoute
           path="/partner-admin"
           component={PartnerAdminDashboard}
-          allowedRoles={["padmin"]}
+          allowedRoles={["partner"]}
         />
         <Route
           path="/"

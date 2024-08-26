@@ -23,9 +23,9 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
         if (userData.role === "admin") {
           history.push("/admin-dashboard");
           onSuccessfulLogin();
-        } else if (userData.role === "padmin") {
-          history.push("/partner-admin");
-          onSuccessfulLogin();
+          // } else if (userData.role === "partner") {
+          //   history.push("/partner-admin");
+          //   onSuccessfulLogin();
         } else {
           onSuccessfulLogin(); // Redirect non-admin users as before
         }
