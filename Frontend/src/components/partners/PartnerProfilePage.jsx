@@ -4,9 +4,9 @@ import './PartnerProfilePage.css';
 import './EditPartnerProfile.css';
 import Heading from "../common/heading/Heading";
 import EditPartnerProfile from './EditPartnerProfile';
-import OurServices from './OurServices';
-import PartnerContact from './PartnerContact';
-import RelatedPosts from './RelatedPosts';
+import OurServices from './components/OurServices';
+import PartnerContact from './components/PartnerContact';
+import RelatedPosts from './components/RelatedPosts';
 
 const PartnerProfilePage = () => {
     const [partner, setPartner] = useState(null);
@@ -44,6 +44,7 @@ const PartnerProfilePage = () => {
             throw new Error(`Failed to fetch partner data: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
+        console.log("Fetched partner data:", data);
         setPartner(data);
     };
 
@@ -57,13 +58,32 @@ const PartnerProfilePage = () => {
     };
 
     const fetchRelatedPosts = async () => {
-        const response = await fetch(`http://localhost:5000/api/articles?author=${partnerId}`);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch related articles: ${response.status} ${response.statusText}`);
+        try {
+            const response = await fetch(`http://localhost:5000/api/articles`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch articles: ${response.status} ${response.statusText}`);
+            }
+            const data = await response.json();
+            console.log("Fetched all articles:", data);
+
+            if (partner) {
+                const filteredPosts = data.filter(post => post.author === partner.name);
+                console.log("Filtered posts for partner:", partner.name, filteredPosts);
+                setRelatedPosts(filteredPosts);
+            } else {
+                console.log("Partner data not available yet");
+            }
+        } catch (error) {
+            console.error("Error fetching related articles:", error);
+            setError(error.message);
         }
-        const data = await response.json();
-        setRelatedPosts(data);
     };
+
+    useEffect(() => {
+        if (partner) {
+            fetchRelatedPosts();
+        }
+    }, [partner]);
 
     const handleSave = async (updatedData) => {
         try {
@@ -95,6 +115,11 @@ const PartnerProfilePage = () => {
             console.error('Partner name is not available');
         }
     };
+
+    const handleEditPost = (postId) => {
+        history.push(`/edit-article/${postId}`);
+    };
+
     if (loading) return <div className="loading">Loading partner profile...</div>;
     if (error) return <div className="error">Error loading partner profile: {error}</div>;
     if (!partner) return <div className="not-found">No partner data found for ID: {partnerId}</div>;
@@ -146,8 +171,13 @@ const PartnerProfilePage = () => {
                             </div>
 
                             <div>
-                                <RelatedPosts posts={relatedPosts} />
+                                <RelatedPosts
+                                    posts={relatedPosts}
+                                    isPartnerProfile={true}
+                                    onEditPost={handleEditPost}
+                                />
                             </div>
+
                             <div className="button-container">
                                 <button onClick={handleSubmitArticle} className="action-button submit-article-button">Submit Article</button>
                             </div>
@@ -162,9 +192,8 @@ const PartnerProfilePage = () => {
                     )}
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
 export default PartnerProfilePage;
-

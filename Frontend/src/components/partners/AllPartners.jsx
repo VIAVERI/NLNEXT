@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import './Partners.css';
-import OurServices from './OurServices';
-import Heading from "../common/heading/Heading"
+import OurServices from './components/OurServices';
+import Heading from "../common/heading/Heading";
+import RelatedPosts from './components/RelatedPosts';  // Import the RelatedPosts component
 
 const PartnersPage = () => {
     const [partners, setPartners] = useState([]);
@@ -19,9 +17,10 @@ const PartnersPage = () => {
             try {
                 const response = await fetch("http://localhost:5000/api/partners");
                 const data = await response.json();
-                setPartners(data);
-                if (data.length > 0) {
-                    setSelectedPartner(data[0]);
+                const sortedPartners = data.sort((a, b) => a.name.localeCompare(b.name));
+                setPartners(sortedPartners);
+                if (sortedPartners.length > 0) {
+                    setSelectedPartner(sortedPartners[0]);
                 }
             } catch (error) {
                 console.error("Error fetching partners:", error);
@@ -64,28 +63,10 @@ const PartnersPage = () => {
         }
     }, [selectedPartner]);
 
-
     const handleLearnMore = () => {
         if (selectedPartner) {
             history.push(`/partner/${selectedPartner.partner_id}`);
         }
-    };
-
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 800,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
     };
 
     return (
@@ -140,48 +121,13 @@ const PartnersPage = () => {
                     </div>
                 )}
 
-
                 <div className="services-container">
                     <Heading title='Our Services' />
                     <OurServices services={partnerServices} />
                 </div>
 
                 {selectedPartner && relatedPosts.length > 0 && (
-                    <section className='popularPost life'>
-                        <Heading title='Related Articles' />
-                        <div className='content'>
-                            <Slider {...settings}>
-                                {relatedPosts.map((post) => (
-                                    <div className='items' key={post.article_id}>
-                                        <div className='box shadow'>
-                                            <div className='images'>
-                                                <div className='img'>
-                                                    <img src={post.image_url} alt={post.title} />
-                                                </div>
-                                                <div className='category category1'>
-                                                    <span>{post.category}</span>
-                                                </div>
-                                            </div>
-                                            <div className='text'>
-                                                <h1 className='title'>{post.title.slice(0, 40)}...</h1>
-                                                <div className='date'>
-                                                    <i className='fas fa-calendar-days'></i>
-                                                    <label>{new Date(post.published_at).toLocaleDateString()}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </Slider>
-                        </div>
-                    </section>
-                )}
-                {selectedPartner && (
-                    <div className="load-more-container">
-                        <button className="load-more-button">
-                            Load More
-                        </button>
-                    </div>
+                    <RelatedPosts posts={relatedPosts} />
                 )}
             </div>
         </div>
