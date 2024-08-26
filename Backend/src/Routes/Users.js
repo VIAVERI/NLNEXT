@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 const multer = require("multer");
 const path = require("path");
+const authenticatePartner = require("../middleware/authenticatePartner");
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -58,15 +59,42 @@ router.post(
   }
 );
 
-//get all users
-router.get("/", async (req, res) => {
+router.get("/", authenticatePartner, async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM users ORDER BY id ASC");
-    res.json(result.rows);
+    const { partnerOrganization } = req;
+
+    if (!partnerOrganization) {
+      return res
+        .status(400)
+        .json({ message: "Partner organization not found" });
+    }
+
+    // Fetch users from PostgreSQL
+    const pgResult = await pool.query(
+      "SELECT * FROM users WHERE partner_organization = $1",
+      [partnerOrganization]
+    );
+
+    // Fetch users from Firebase
+    const firebaseUsers = await admin
+      .auth()
+      .listUsers()
+      .then((listUsersResult) => {
+        return listUsersResult.users.filter(
+          (user) =>
+            user.customClaims &&
+            user.customClaims.partner_organization === partnerOrganization
+        );
+      });
+
+    // Combine and return the results
+    res.status(200).json({
+      pgUsers: pgResult.rows,
+      firebaseUsers: firebaseUsers,
+    });
   } catch (error) {
     console.error("Error fetching users:", error);
-    res.status(500).json({ error: "An error occurred while fetching users" });
+    res.status(500).json({ message: "Internal server error", error });
   }
 });
-
 module.exports = router;
