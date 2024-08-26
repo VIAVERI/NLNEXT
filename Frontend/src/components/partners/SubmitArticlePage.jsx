@@ -9,6 +9,7 @@ const SubmitArticlePage = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [author, setAuthor] = useState('');
+    const [showPreview, setShowPreview] = useState(false);
     const history = useHistory();
     const location = useLocation();
 
@@ -60,6 +61,70 @@ const SubmitArticlePage = () => {
         }
     };
 
+    const togglePreview = () => {
+        setShowPreview(!showPreview);
+    };
+
+    const applyFormatting = (tag) => {
+        const textarea = document.getElementById('content');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = content.substring(start, end);
+        const beforeText = content.substring(0, start);
+        const afterText = content.substring(end);
+
+        const formattedText = `<${tag}>${selectedText}</${tag}>`;
+        setContent(beforeText + formattedText + afterText);
+
+        // Reset selection
+        setTimeout(() => {
+            textarea.focus();
+            textarea.setSelectionRange(start, end + 2 * tag.length + 5);
+        }, 0);
+    };
+
+    const renderFormattedContent = (text) => {
+        return text.replace(/<(\w+)>(.*?)<\/\1>/g, (match, tag, content) => {
+            switch (tag) {
+                case 'b': return `<strong>${content}</strong>`;
+                case 'i': return `<em>${content}</em>`;
+                case 'u': return `<u>${content}</u>`;
+                default: return match;
+            }
+        });
+    };
+
+    const ArticlePreview = () => (
+        <div className="article-preview">
+            <h1 className="title">{title}</h1>
+            <div className="author">
+                <span>by</span>
+                <p>{author} on</p>
+                <label>{new Date().toLocaleDateString()}</label>
+            </div>
+            <div className="social">
+                <div className="socBox">
+                    <i className="fab fa-facebook-f"></i>
+                    <span>SHARE</span>
+                </div>
+                <div className="socBox">
+                    <i className="fab fa-twitter"></i>
+                    <span>TWITTER</span>
+                </div>
+                <div className="socBox">
+                    <i className="fab fa-pinterest"></i>
+                </div>
+                <div className="socBox">
+                    <i className="fa fa-envelope"></i>
+                </div>
+            </div>
+            <div className="desctop">
+                <p dangerouslySetInnerHTML={{ __html: renderFormattedContent(content) }}></p>
+            </div>
+            {imageUrl && <img src={imageUrl} alt={title} />}
+        </div>
+    );
+
     return (
         <div className="submit-article-page">
             <h1>Submit a New Article</h1>
@@ -76,6 +141,11 @@ const SubmitArticlePage = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="content">Content:</label>
+                    <div className="formatting-toolbar">
+                        <button type="button" onClick={() => applyFormatting('b')}>B</button>
+                        <button type="button" onClick={() => applyFormatting('i')}>I</button>
+                        <button type="button" onClick={() => applyFormatting('u')}>U</button>
+                    </div>
                     <textarea
                         id="content"
                         value={content}
@@ -126,8 +196,14 @@ const SubmitArticlePage = () => {
                         readOnly
                     />
                 </div>
-                <button type="submit" className="submit-button">Submit Article</button>
+                <div className="button-group">
+                    <button type="button" className="preview-button" onClick={togglePreview}>
+                        {showPreview ? 'Hide Preview' : 'Show Preview'}
+                    </button>
+                    <button type="submit" className="submit-button">Submit Article</button>
+                </div>
             </form>
+            {showPreview && <ArticlePreview />}
         </div>
     );
 };
