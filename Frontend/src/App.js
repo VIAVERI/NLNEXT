@@ -13,18 +13,17 @@ import Culture from "./components/culture/Culture";
 import AdminDashboard from "./components/Admin/Dashboard/AdminHome";
 import SignInSignUp from "./components/login/login";
 import AllPartners from "./components/partners/AllPartners";
-import SinglePartnerPage from "./components/partners/SinglePartnerPage"
+import SinglePartnerPage from "./components/partners/SinglePartnerPage";
 import OurServices from "./components/partners/OurServices";
-import FavoriteArticlePage from "./components/favoriteArticles/FavoriteArticlesPage"
+import FavoriteArticlePage from "./components/favoriteArticles/FavoriteArticlesPage";
 import SubmitArticlePage from "./components/partners/SubmitArticlePage";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import "./App.css";
 import { auth } from "./firebase";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-
+import PartnerAdminDashboard from "./components/PartnerAdmin/PartnerAdmin";
 import PartnerProfilePage from "./components/partners/PartnerProfilePage";
-
 
 const db = getFirestore();
 
@@ -58,7 +57,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-
 const App = () => {
   const [user, setUser] = useState(null);
 
@@ -88,13 +86,28 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={Homepages} />
                 <Route path="/singlepage/:id" exact component={SinglePage} />
-                <Route exact path="/culture" component={Culture} />
-                <Route exact path='/partners' component={AllPartners} />
-                <Route path="/partner/:partnerId" component={SinglePartnerPage} />
-                <Route path="/partner-profile/:partnerId" component={PartnerProfilePage} />
+                <Route
+                  exact
+                  path="/culture"
+                  component={PartnerAdminDashboard}
+                />
+                <Route exact path="/partners" component={AllPartners} />
+                <Route
+                  path="/partner/:partnerId"
+                  component={SinglePartnerPage}
+                />
+                <Route
+                  path="/partner-profile/:partnerId"
+                  component={PartnerProfilePage}
+                />
                 <Route exact path="/services" component={OurServices} />
-                <Route path="/favorites" exact component={FavoriteArticlePage} />
-                <Route path="/submit-article" component={SubmitArticlePage} /> {/* Add this new route */}
+                <Route
+                  path="/favorites"
+                  exact
+                  component={FavoriteArticlePage}
+                />
+                <Route path="/submit-article" component={SubmitArticlePage} />{" "}
+                {/* Add this new route */}
               </Switch>
               <Footer />
             </>
