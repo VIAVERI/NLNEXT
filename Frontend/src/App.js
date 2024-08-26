@@ -20,6 +20,7 @@ import FavoriteArticlePage from "./components/favoriteArticles/FavoriteArticlesP
 
 import SubmitArticlePage from "./components/partners/SubmitArticlePage";
 import EditArticle from "./components/partners/EditArticle";
+import PPCreation from "./components/home/PPCreation"
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import "./App.css";
@@ -108,6 +109,7 @@ const App = () => {
                 <Route path="/favorites" exact component={FavoriteArticlePage} />
                 <Route path="/submit-article" component={SubmitArticlePage} />
                 <Route path="/edit-article/:id" component={EditArticle} />
+                <Route path="/partner-profile-creation" component={PPCreation} />
 
               </Switch>
               <Footer />

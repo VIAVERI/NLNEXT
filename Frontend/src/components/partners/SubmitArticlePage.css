@@ -76,39 +76,88 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.preview-button,
 .submit-button {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    background-color: #269d8d;
-    color: white;
+    padding: 10px 20px;
     border: none;
     border-radius: 6px;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    height: 50px;
+}
+
+.preview-button {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.preview-button:hover {
+    background-color: #e0e0e0;
+}
+
+.submit-button {
+    background-color: #269d8d;
+    color: white;
 }
 
 .submit-button:hover {
     background-color: #1c7d71;
-    transform: translateY(-2px);
 }
 
 .submit-button:active {
-    transform: translateY(0);
+    transform: translateY(2px);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .submit-article-page {
-        padding: 30px 20px;
-        margin: 20px auto;
-    }
+.article-preview {
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
 
-    .submit-article-page h1 {
-        font-size: 2em;
-    }
+.article-preview .title {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.article-preview .author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.article-preview .author p {
+    margin: 0 5px;
+}
+
+.article-preview .social {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.article-preview .socBox {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.article-preview .desctop {
+    margin-bottom: 20px;
+}
+
+.article-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
 }
 
 /* Custom scrollbar for textarea */
@@ -128,4 +177,62 @@
 
 .form-group textarea::-webkit-scrollbar-thumb:hover {
     background: #1c7d71;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .submit-article-page {
+        padding: 30px 20px;
+        margin: 20px auto;
+    }
+
+    .submit-article-page h1 {
+        font-size: 2em;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .preview-button,
+    .submit-button {
+        width: 100%;
+    }
+}
+
+.formatting-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.formatting-toolbar button {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.formatting-toolbar button:hover {
+    background-color: #e0e0e0;
+}
+
+.article-preview .desctop p {
+    line-height: 1.6;
+}
+
+.article-preview .desctop strong {
+    font-weight: bold;
+}
+
+.article-preview .desctop em {
+    font-style: italic;
+}
+
+.article-preview .desctop u {
+    text-decoration: underline;
 }
