@@ -49,10 +49,10 @@ const Header = () => {
     try {
       const response = await fetch(`http://localhost:5000/api/partners`);
       if (!response.ok) {
-        throw new Error('Failed to fetch partners data');
+        throw new Error("Failed to fetch partners data");
       }
       const partners = await response.json();
-      const matchingPartner = partners.find(p => p.email === email);
+      const matchingPartner = partners.find((p) => p.email === email);
       setPartner(matchingPartner || null);
     } catch (error) {
       console.error("Error fetching partner data:", error);
@@ -90,8 +90,6 @@ const Header = () => {
     history.push("/");
   };
 
-
-
   return (
     <>
       <header className={isLoginModalOpen ? "blur" : ""}>
@@ -107,12 +105,23 @@ const Header = () => {
               <li className={location.pathname === "/culture" ? "active" : ""}>
                 <Link to="/culture">Culture</Link>
               </li>
-              <li className={location.pathname === "/favorites" ? "active" : ""}>
+              <li
+                className={location.pathname === "/favorites" ? "active" : ""}
+              >
                 <Link to="/favorites">Favorites</Link>
               </li>
               <li className={location.pathname === "/partners" ? "active" : ""}>
                 <Link to="/partners">Partners</Link>
               </li>
+              {partner && (
+                <li
+                  className={
+                    location.pathname === "/partner-admin" ? "active" : ""
+                  }
+                >
+                  <Link to="/partner-admin">Partner Portal</Link>
+                </li>
+              )}
             </ul>
             <div className="icons">
               <label className="switch">
@@ -126,7 +135,11 @@ const Header = () => {
               <i className="fa fa-search" aria-hidden="true"></i>
               <div className="profile-icon" onClick={navigateToProfile}>
                 <img
-                  src={partner?.profile_image_url || user?.photoURL || "https://i.pravatar.cc/150?img=3"}
+                  src={
+                    partner?.profile_image_url ||
+                    user?.photoURL ||
+                    "https://i.pravatar.cc/150?img=3"
+                  }
                   alt="Profile"
                 />
               </div>

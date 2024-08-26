@@ -1,0 +1,59 @@
+.uar-container {
+  padding: 20px;
+}
+
+.uar-add-user-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.uar-add-user-form input,
+.uar-add-user-form select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.uar-add-user-form button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.uar-user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.uar-user-table th,
+.uar-user-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.uar-user-table th {
+  background-color: #f2f2f2;
+}
+
+.uar-action-btn {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.uar-edit {
+  background-color: #2196f3;
+  color: white;
+}
+
+.uar-delete {
+  background-color: #f44336;
+  color: white;
+}

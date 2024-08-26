@@ -1,84 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChartLine,
+  faNewspaper,
+  faUserFriends,
+  faUserTag,
+  faBuilding,
+} from "@fortawesome/free-solid-svg-icons";
 import "./PartnerAdmin.css";
-
-const dummyData = {
-  name: "Acme Corporation",
-  domain: "acme.com",
-  totalUsers: 10000,
-  activeUsers: 8500,
-  totalContent: 1200,
-  totalRoles: 25,
-  recentActivity: [
-    { user: "John Doe", action: "Created new article", date: "2023-08-24" },
-    { user: "Jane Smith", action: "Updated user roles", date: "2023-08-23" },
-    { user: "Bob Johnson", action: "Invited new user", date: "2023-08-22" },
-    { user: "Alice Brown", action: "Published content", date: "2023-08-21" },
-    { user: "Charlie Wilson", action: "Modified settings", date: "2023-08-20" },
-  ],
-};
+import logo from "../../assets/logo.png";
+import UsersAndRoles from "./UserRoles";
 
 const PartnerAdminDashboard = () => {
+  const [activeItem, setActiveItem] = useState("Overview");
+
+  const sidebarItems = [
+    { name: "Overview", icon: faChartLine },
+    { name: "Manage Content", icon: faNewspaper },
+    { name: "Users & Roles", icon: faUserFriends },
+    { name: "Organization Profile", icon: faBuilding },
+    { name: "Analytics", icon: faUserTag },
+  ];
+
+  const renderContent = () => {
+    switch (activeItem) {
+      case "Users & Roles":
+        return <UsersAndRoles />;
+      case "Overview":
+        return <h2>Overview Content</h2>;
+      case "Manage Content":
+        return <h2>Manage Content Page</h2>;
+      case "Organization Profile":
+        return <h2>Organization Profile Page</h2>;
+      case "Analytics":
+        return <h2>Analytics Page</h2>;
+      default:
+        return <p>Content for {activeItem} will be displayed here.</p>;
+    }
+  };
+
   return (
-    <div className="pad-dashboard">
-      <aside className="pad-sidebar">
-        <nav>
-          <a href="#" className="pad-nav-item">
-            Overview
-          </a>
-          <a href="#" className="pad-nav-item">
-            Manage Content
-          </a>
-          <a href="#" className="pad-nav-item">
-            Users & Roles
-          </a>
-          <a href="#" className="pad-nav-item">
-            Organization Profile
-          </a>
-          <a href="#" className="pad-nav-item">
-            Analytics
-          </a>
-        </nav>
-      </aside>
-      <main className="pad-main-content">
-        <div className="pad-header">
-          <div>
-            <h1>{dummyData.name}</h1>
-            <p>
-              {dummyData.domain} • {dummyData.totalUsers} users
-            </p>
-          </div>
-          <button className="pad-invite-button">Invite User</button>
+    <div className="partner-admin-dashboard">
+      <aside className="partner-sidebar">
+        <div className="partner-sidebar-header">
+          <img src={logo} alt="NLnext Logo" className="partner-sidebar-logo" />
+          <h1 className="partner-sidebar-title">Partner Dashboard</h1>
         </div>
-
-        <div className="pad-metrics">
-          <div className="pad-card">
-            <h2>Active Users</h2>
-            <p className="pad-metric">{dummyData.activeUsers}</p>
-          </div>
-          <div className="pad-card">
-            <h2>Total Content</h2>
-            <p className="pad-metric">{dummyData.totalContent}</p>
-          </div>
-          <div className="pad-card">
-            <h2>Roles</h2>
-            <p className="pad-metric">{dummyData.totalRoles}</p>
-          </div>
-        </div>
-
-        <div className="pad-card pad-activity">
-          <h2>Recent Activity</h2>
+        <nav className="partner-sidebar-nav">
           <ul>
-            {dummyData.recentActivity.map((activity, index) => (
-              <li key={index}>
-                <div>
-                  <p className="pad-activity-user">{activity.user}</p>
-                  <p className="pad-activity-action">{activity.action}</p>
-                </div>
-                <span className="pad-activity-date">{activity.date}</span>
+            {sidebarItems.map((item) => (
+              <li
+                key={item.name}
+                className={activeItem === item.name ? "active" : ""}
+                onClick={() => setActiveItem(item.name)}
+              >
+                <FontAwesomeIcon
+                  icon={item.icon}
+                  className="partner-sidebar-icon"
+                />
+                {item.name}
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
+      </aside>
+      <main className="partner-main-content">
+        <header className="partner-main-header">
+          <h2 className="partner-page-title">{activeItem}</h2>
+          <div className="partner-header-actions">
+            <img
+              src="https://via.placeholder.com/40x40"
+              alt="User"
+              className="partner-user-avatar"
+            />
+          </div>
+        </header>
+        <div className="partner-content-area">{renderContent()}</div>
       </main>
     </div>
   );
