@@ -30,4 +30,6 @@ node_modules/
 Frontend/node_modules/
 Backend/node_modules/
 
-Backend/src/config/nlnext-go-firebase-adminsdk-ntti0-2da10c4eb9.json
+
+
+echo "Backend/src/config/nlnext-go-firebase-adminsdk-ntti0-2da10c4eb9.json" >> .gitignore
