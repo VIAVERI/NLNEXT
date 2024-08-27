@@ -58,22 +58,22 @@ h2 {
   margin-bottom: 20px;
 }
 
-.search-container {
+.u-search-container {
   position: relative;
-  padding-top: 15px;
+  padding-top: 35px;
 }
 
-.search-input {
+.u-search-input {
   padding: 8px 30px 8px 10px;
   width: 200px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.search-button {
+.u-search-button {
   position: absolute;
   right: 25px;
-  top: 60%;
+  top: 75%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -87,6 +87,9 @@ h2 {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  width: 100px;
+  height: 50px;
+  font-weight: bold;
 }
 
 .users-table {
@@ -141,7 +144,8 @@ h2 {
 .role-tag {
   padding: 2px 8px;
   border-radius: 12px;
-  font-size: 0.8em;
+  font-size: 1em;
+  font-weight: bold;
 }
 
 .role-tag.manager {
@@ -261,4 +265,35 @@ h2 {
   color: #666;
   font-size: 20px;
   cursor: pointer;
+}
+
+.action-button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button svg {
+  margin-right: 5px;
+}
+
+.action-button.edit {
+  background-color: #4caf50;
+  color: white;
+  width: 100px;
+  height: auto;
+  font-size: medium;
+}
+
+.action-button.delete {
+  background-color: #f44336;
+  color: white;
+  width: 100px;
+  height: auto;
+  font-size: medium;
 }

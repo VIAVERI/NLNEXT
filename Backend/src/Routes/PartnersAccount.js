@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const { pool } = require("../db");
 const multer = require("multer");
 const path = require("path");
-const axios = require('axios');
+const axios = require("axios");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -23,7 +23,9 @@ router.get("/", async (req, res) => {
     );
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while fetching partners" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching partners" });
   }
 });
 
@@ -32,18 +34,26 @@ router.post(
   upload.single("profile_image"),
   async (req, res) => {
     try {
-      const { name, email, external_system_id, login_credentials, notes } = req.body;
+      const { name, email, external_system_id, login_credentials, notes } =
+        req.body;
       let profile_image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
       const newPartner = await pool.query(
         "INSERT INTO PARTNERs_ACCOUNT (name, email, external_system_id, login_credentials, notes, profile_image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-        [name, email, external_system_id, login_credentials, notes, profile_image_url]
+        [
+          name,
+          email,
+          external_system_id,
+          login_credentials,
+          notes,
+          profile_image_url,
+        ]
       );
 
-      await axios.post('http://localhost:5000/api/send-email', {
+      await axios.post("http://localhost:5000/api/send-email", {
         to: email,
         name: name,
-        password: login_credentials
+        password: login_credentials,
       });
 
       res.json(newPartner.rows[0]);
@@ -72,7 +82,9 @@ router.put("/:id/status", async (req, res) => {
 
     res.json(updatedPartner.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while updating partner status" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating partner status" });
   }
 });
 
