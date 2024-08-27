@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import "./UserRoles.css";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
-  const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [partnerOrganization, setPartnerOrganization] = useState(null);
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [newUserEmail, setNewUserEmail] = useState("");
 
   useEffect(() => {
     const auth = getAuth();
@@ -50,7 +51,11 @@ const UserManagement = () => {
   const fetchUsers = async (user, partnerOrg) => {
     try {
       const token = await user.getIdToken();
-      const response = await fetch(`/api/users/${partnerOrg}`);
+      const response = await fetch(`/api/users/${partnerOrg}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -66,17 +71,77 @@ const UserManagement = () => {
     }
   };
 
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/employers/create_employe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: newUserEmail,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create employee");
+      }
+      const data = await response.json();
+      console.log("Employee created successfully:", data);
+
+      // Refresh the list of users
+      fetchUsers(await getAuth().currentUser, partnerOrganization);
+
+      // Optionally send an invitation email
+      sendEmailInvitation(newUserEmail);
+
+      // Close the modal
+      setShowAddUserModal(false);
+      setNewUserEmail("");
+    } catch (error) {
+      console.error("Error creating employee:", error);
+      setError("Failed to create employee");
+    }
+  };
+
+  const sendEmailInvitation = async (email) => {
+    try {
+      const response = await fetch("/api/send-invite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          partnerOrganization,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      console.log("Invitation email sent successfully");
+    } catch (error) {
+      console.error("Error sending email invitation:", error);
+      setError("Failed to send email invitation");
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="user-management">
+    <div className="user-management-container">
       <div className="connected-avatars-container">
         {users.map((member) => (
           <div key={member.id} className="avatar-wrapper">
             <div className="avatar-container">
               <img
-                src={member.profile_image_url}
+                src={
+                  member.profile_image_url || "https://via.placeholder.com/40"
+                }
                 alt={member.name}
                 className="avatar"
               />
@@ -85,21 +150,22 @@ const UserManagement = () => {
                 <span className="email">{member.email}</span>
               </div>
             </div>
-            {teamMembers.length > 1 &&
-              member.id !== teamMembers[teamMembers.length - 1].id && (
-                <div className="connector"></div>
-              )}
+            {users.length > 1 && member.id !== users[users.length - 1].id && (
+              <div className="connector"></div>
+            )}
           </div>
         ))}
 
         <div className="avatar-wrapper">
-          <div className="avatar-container add-member">
+          <div
+            className="avatar-container add-member"
+            onClick={() => setShowAddUserModal(true)}
+          >
             <span>+</span>
           </div>
         </div>
       </div>
 
-      {/* <p>{partnerOrganization || "Not set"}</p> */}
       <section className="all-users-section">
         <div className="table-controls">
           <div className="u-search-container">
@@ -110,7 +176,12 @@ const UserManagement = () => {
             />
             <button className="u-search-button">🔍</button>
           </div>
-          <button className="add-user-button">Add User</button>
+          <button
+            className="add-user-button"
+            onClick={() => setShowAddUserModal(true)}
+          >
+            Add User
+          </button>
         </div>
         <table className="users-table">
           <thead>
@@ -154,6 +225,30 @@ const UserManagement = () => {
           </tbody>
         </table>
       </section>
+
+      {showAddUserModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button
+              className="close-modal"
+              onClick={() => setShowAddUserModal(false)}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <h2>Add New Member</h2>
+            <form onSubmit={handleAddUser}>
+              <input
+                type="email"
+                value={newUserEmail}
+                onChange={(e) => setNewUserEmail(e.target.value)}
+                placeholder="Enter user's email"
+                required
+              />
+              <button type="submit">Send Invitation</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

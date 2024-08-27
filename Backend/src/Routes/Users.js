@@ -147,4 +147,18 @@ router.get("/:partner_organization", async (req, res) => {
       .json({ error: "Failed to fetch users", details: error.message });
   }
 });
+
+//get all users
+
+router.get("/", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM users");
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Database error:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch users", details: error.message });
+  }
+});
 module.exports = router;
