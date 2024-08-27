@@ -29,6 +29,7 @@ const userRoutes = require("./src/Routes/Users");
 const popularRoutes = require("./src/Routes/Popular"); // Add this linec
 const searchRoutes = require("./src/Routes/Search");
 const partnershipRequestRoutes = require("./src/Routes/PartnershipRequest");
+const partnerServicesRoutes = require("./src/Routes/PartnerServices");
 
 // Use routes
 app.use("/api/articles", articleRoutes);
@@ -44,6 +45,7 @@ app.use("/api/search", searchRoutes);
 app.use("/api/partnership-request", partnershipRequestRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/employers", employerRoutes);
+app.use("/api/partner-services", partnerServicesRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

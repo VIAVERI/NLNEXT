@@ -5,11 +5,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 const ArticleCard = ({ article, onClick }) => {
-  const imageSource = article.image_url || (article.image_data ? `data:image/jpeg;base64,${article.image_data}` : null);
+  const imageSource =
+    article.image_url ||
+    (article.image_data
+      ? `data:image/jpeg;base64,${article.image_data}`
+      : null);
 
   return (
     <div className="art-card" onClick={() => onClick(article)}>
-      {imageSource && <img src={imageSource} alt={article.title} className="art-image" />}
+      {imageSource && (
+        <img src={imageSource} alt={article.title} className="art-image" />
+      )}
       <div className="art-content">
         <span className="art-category">{article.category}</span>
         <h3 className="art-title">{article.title}</h3>
@@ -50,7 +56,12 @@ const ArticlePopup = ({ article, onClose, onStatusChange }) => {
           &times;
         </button>
         <img
-          src={article.image_url || (article.image_data ? `data:image/jpeg;base64,${article.image_data}` : null)}
+          src={
+            article.image_url ||
+            (article.image_data
+              ? `data:image/jpeg;base64,${article.image_data}`
+              : null)
+          }
           alt={article.title}
           className="art-popup-image"
         />
@@ -58,7 +69,7 @@ const ArticlePopup = ({ article, onClose, onStatusChange }) => {
         <p className="art-popup-category">{article.category}</p>
         <p className="art-popup-content">{article.content}</p>
         <div className="art-popup-meta">
-          <p>Author: {article.author}</p>
+          <p>Partner: {article.author}</p>
           <p>
             Published: {new Date(article.published_at).toLocaleDateString()}
           </p>
@@ -88,29 +99,37 @@ const Articles = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [partnerFilter, setPartnerFilter] = useState("all");
   const [categories, setCategories] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/articles");
-        setArticles(response.data);
-        setFilteredArticles(response.data);
+        const [articlesResponse, partnersResponse] = await Promise.all([
+          axios.get("http://localhost:5000/api/articles"),
+          axios.get("http://localhost:5000/api/partners"),
+        ]);
+
+        setArticles(articlesResponse.data);
+        setFilteredArticles(articlesResponse.data);
 
         const uniqueCategories = [
-          ...new Set(response.data.map((article) => article.category)),
+          ...new Set(articlesResponse.data.map((article) => article.category)),
         ];
         setCategories(uniqueCategories);
 
+        setPartners(partnersResponse.data);
+
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch articles");
+        setError("Failed to fetch data");
         setLoading(false);
       }
     };
 
-    fetchArticles();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -124,8 +143,12 @@ const Articles = () => {
       result = result.filter((article) => article.category === categoryFilter);
     }
 
+    if (partnerFilter !== "all") {
+      result = result.filter((article) => article.author === partnerFilter);
+    }
+
     setFilteredArticles(result);
-  }, [statusFilter, categoryFilter, articles]);
+  }, [statusFilter, categoryFilter, partnerFilter, articles]);
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -192,6 +215,19 @@ const Articles = () => {
               {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
+                </option>
+              ))}
+            </select>
+
+            <h3>Filter by Partner:</h3>
+            <select
+              value={partnerFilter}
+              onChange={(e) => setPartnerFilter(e.target.value)}
+            >
+              <option value="all">All Partners</option>
+              {partners.map((partner) => (
+                <option key={partner.id} value={partner.name}>
+                  {partner.name}
                 </option>
               ))}
             </select>

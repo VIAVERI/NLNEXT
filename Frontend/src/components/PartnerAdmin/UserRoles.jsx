@@ -93,8 +93,8 @@ const UserManagement = () => {
       // Refresh the list of users
       fetchUsers(await getAuth().currentUser, partnerOrganization);
 
-      // Optionally send an invitation email
-      sendEmailInvitation(newUserEmail);
+      // // Optionally send an invitation email
+      // sendEmailInvitation(newUserEmail);
 
       // Close the modal
       setShowAddUserModal(false);
@@ -105,29 +105,29 @@ const UserManagement = () => {
     }
   };
 
-  const sendEmailInvitation = async (email) => {
-    try {
-      const response = await fetch("/api/send-invite", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          partnerOrganization,
-        }),
-      });
+  // const sendEmailInvitation = async (email) => {
+  //   try {
+  //     const response = await fetch("/api/send-invite", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         partnerOrganization,
+  //       }),
+  //     });
 
-      if (!response.ok) {
-        throw new Error("Failed to send email");
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to send email");
+  //     }
 
-      console.log("Invitation email sent successfully");
-    } catch (error) {
-      console.error("Error sending email invitation:", error);
-      setError("Failed to send email invitation");
-    }
-  };
+  //     console.log("Invitation email sent successfully");
+  //   } catch (error) {
+  //     console.error("Error sending email invitation:", error);
+  //     setError("Failed to send email invitation");
+  //   }
+  // };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
