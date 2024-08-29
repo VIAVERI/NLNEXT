@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { MessageSquare, Heart, Calendar } from "lucide-react";
-import Side from "../home/sideContent/side/Side";
+import Side from "../../sideContent/side/Side";
 import "./FavoriteArticlesPage.css";
+import { AuthContext } from '../../../../contexts/AuthContext';  // Make sure this path is correct
 
 const ArticleCard = ({ article, onRemoveFavorite }) => (
   <div className="article-card">
@@ -36,11 +37,13 @@ const ArticleCard = ({ article, onRemoveFavorite }) => (
 
 const FavoriteArticlesPage = () => {
   const [favoriteArticles, setFavoriteArticles] = useState([]);
-  const partnerId = 1; // Replace with actual partner ID from authentication
+  const { user, partnerId } = useContext(AuthContext);  // Use useContext here
 
   useEffect(() => {
-    fetchFavoriteArticles();
-  }, []);
+    if (partnerId) {
+      fetchFavoriteArticles();
+    }
+  }, [partnerId]);
 
   const fetchFavoriteArticles = async () => {
     try {
@@ -66,6 +69,9 @@ const FavoriteArticlesPage = () => {
     (acc[article.category] = acc[article.category] || []).push(article);
     return acc;
   }, {});
+
+  if (!user) return <div>Please log in to view your favorite articles.</div>;
+  if (!partnerId) return <div>Only partners can have favorite articles.</div>;
 
   return (
     <main className="favorite-articles-page">

@@ -6,7 +6,6 @@
     color: #333;
     background-color: #ffffff;
     overflow-x: hidden;
-    /* Prevent horizontal scroll */
 }
 
 .partner-header-wrapper {
@@ -122,8 +121,6 @@
     width: 100%;
 }
 
-
-
 .button-container {
     display: flex;
     justify-content: center;
@@ -131,56 +128,81 @@
     margin-top: 30px;
 }
 
-.action-button {
-    padding: 10px 20px;
+.partner-profile-page .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.partner-profile-page .action-button {
+    padding: 12px 24px;
     font-size: 16px;
-    color: white;
+    color: white !important;
+    /* Force white text */
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    /* Add a text shadow for better visibility on light backgrounds */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.submit-article-button {
-    background-color: #4a90e2;
+.partner-profile-page .submit-article-button {
+    background-color: #4a90e2 !important;
+    /* Force blue background */
+    box-shadow: 0 2px 4px rgba(74, 144, 226, 0.3);
 }
 
-.submit-article-button:hover {
-    background-color: #3a7bc8;
+.partner-profile-page .submit-article-button:hover {
+    background-color: #3a7bc8 !important;
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.5);
 }
 
-.edit-button {
-    background-color: #269d8d;
+.partner-profile-page .edit-button {
+    background-color: #269d8d !important;
+    /* Force green background */
+    box-shadow: 0 2px 4px rgba(38, 157, 141, 0.3);
 }
 
-.edit-button:hover {
-    background-color: #1a7f73;
+.partner-profile-page .edit-button:hover {
+    background-color: #1a7f73 !important;
+    box-shadow: 0 4px 8px rgba(38, 157, 141, 0.5);
 }
 
-.action-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* Ensure buttons are visible on white backgrounds */
+.partner-profile-page .action-button:not(:hover) {
+    border: 1px solid #ddd;
 }
 
-.edit-button {
-    background-color: #269d8d;
+/* Improve visibility for mobile devices */
+@media (max-width: 768px) {
+    .partner-profile-page .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .partner-profile-page .action-button {
+        width: 100%;
+        max-width: 200px;
+        margin-bottom: 10px;
+    }
 }
 
-.edit-button:hover {
-    background-color: #1a7f73;
+.popularPost.life {
+    overflow: hidden;
 }
 
-.submit-article-button {
-    background-color: #4a90e2;
+.popularPost .box {
+    margin: 10px;
 }
 
-.submit-article-button:hover {
-    background-color: #3a7bc8;
+.popularPost img {
+    max-width: 100%;
+    height: auto;
 }
 
 @media (max-width: 768px) {
@@ -200,6 +222,7 @@
     .action-button {
         width: 100%;
         max-width: 200px;
+        margin-bottom: 10px;
     }
 
     .profile-image-container {
@@ -210,18 +233,8 @@
     .partner-key-points {
         padding: 20px 3%;
     }
-}
 
-/* Add these styles for the RelatedPosts component */
-.popularPost.life {
-    overflow: hidden;
-}
-
-.popularPost .box {
-    margin: 10px;
-}
-
-.popularPost img {
-    max-width: 100%;
-    height: auto;
+    .partner-key-points ul {
+        margin-left: 0;
+    }
 }

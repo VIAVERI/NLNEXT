@@ -3,6 +3,8 @@ import { X, Upload, User } from "lucide-react";
 import { Store } from "react-notifications-component";
 import "./partnerAcc.css";
 import axios from "axios";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const CreateAccount = ({ onClose, onCreateAccount }) => {
   const [isPartner, setIsPartner] = useState(true);
@@ -115,16 +117,7 @@ const CreateAccount = ({ onClose, onCreateAccount }) => {
     if (!validateForm()) return;
 
     const data = new FormData();
-    const fieldsToInclude = isPartner
-      ? ["name", "email", "external_system_id", "login_credentials", "notes"]
-      : [
-          "name",
-          "email",
-          "partner_organization",
-          "password",
-          "notes",
-          "status",
-        ];
+    const fieldsToInclude = ["name", "email", "external_system_id", "login_credentials", "notes"];
 
     fieldsToInclude.forEach((key) => {
       data.append(key, formData[key] || "");
@@ -135,12 +128,33 @@ const CreateAccount = ({ onClose, onCreateAccount }) => {
     }
 
     try {
-      const endpoint = isPartner
-        ? "http://localhost:5000/api/partners_acc/create_partner"
-        : "http://localhost:5000/api/users/create_user";
-      const response = await axios.post(endpoint, data);
-
+      // Create partner account in PostgreSQL
+      const response = await axios.post("http://localhost:5000/api/partners_acc/create_partner", data);
       console.log("Response received:", response.data);
+
+      // Create Firebase user
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.login_credentials);
+      const user = userCredential.user;
+
+      // Create user document in Firestore
+      const db = getFirestore();
+      await setDoc(doc(db, "users", user.uid), {
+        createdAt: new Date(),
+        email: formData.email,
+        name: formData.name,
+        role: "partner",
+        status: "pending",
+        partnerId: response.data.id, // Assuming the API returns the partner ID
+        profile_completed: false
+      });
+
+      // Send email with login credentials
+      await axios.post("http://localhost:5000/api/send-email", {
+        to: formData.email,
+        name: formData.name,
+        password: formData.login_credentials
+      });
 
       if (typeof onCreateAccount === "function") {
         onCreateAccount(response.data);
@@ -149,24 +163,14 @@ const CreateAccount = ({ onClose, onCreateAccount }) => {
       onClose();
       showNotification(
         "Success",
-        `${isPartner ? "Partner" : "User"} account created successfully!`,
+        "Partner account created successfully!",
         "success"
       );
     } catch (error) {
       console.error("Error creating account:", error);
-      let errorMessage = "An unknown error occurred.";
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        errorMessage =
-          error.response.data.error || JSON.stringify(error.response.data);
-      } else if (error.request) {
-        errorMessage = "No response received from server.";
-      } else {
-        errorMessage = error.message;
-      }
       showNotification(
         "Error",
-        `Failed to create account. ${errorMessage}`,
+        `Failed to create account. ${error.message}`,
         "danger"
       );
     }

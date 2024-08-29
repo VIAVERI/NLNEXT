@@ -13,11 +13,10 @@ router.post("/", async (req, res) => {
         res.json(result.rows[0]);
     } catch (error) {
         console.error("Error adding favorite:", error);
-        res.status(500).json({ error: "An error occurred while adding the favorite" });
+        res.status(500).json({ error: "An error occurred while adding the favorite", details: error.message });
     }
 });
 
-// Remove an article from favorites
 router.delete("/:articleId", async (req, res) => {
     try {
         const { articleId } = req.params;
@@ -32,7 +31,7 @@ router.delete("/:articleId", async (req, res) => {
         res.json({ message: "Favorite removed successfully" });
     } catch (error) {
         console.error("Error removing favorite:", error);
-        res.status(500).json({ error: "An error occurred while removing the favorite" });
+        res.status(500).json({ error: "An error occurred while removing the favorite", details: error.message });
     }
 });
 

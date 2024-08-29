@@ -30,40 +30,6 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post(
-    "/create_partner",
-    upload.single("profile_image"),
-    async (req, res) => {
-        try {
-            const { name, email, external_system_id, login_credentials, notes } =
-                req.body;
-            let profile_image_url = null;
-
-            if (req.file) {
-                profile_image_url = `/uploads/${req.file.filename}`;
-            }
-
-            const newPartner = await pool.query(
-                "INSERT INTO PARTNERs_ACCOUNT (name, email, external_system_id, login_credentials, notes, profile_image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-                [
-                    name,
-                    email,
-                    external_system_id,
-                    login_credentials,
-                    notes,
-                    profile_image_url,
-                ]
-            );
-            res.json(newPartner.rows[0]);
-        } catch (error) {
-            console.error("Error creating partner account:", error);
-            res.status(500).json({
-                error: "An error occurred while creating partner account",
-                details: error.message,
-            });
-        }
-    }
-);
 
 router.put("/:id/status", async (req, res) => {
     try {

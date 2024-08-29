@@ -18,22 +18,37 @@ const PartnerProfilePage = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [partnerServices, setPartnerServices] = useState([]);
     const [relatedPosts, setRelatedPosts] = useState([]);
+    const [isPartner, setIsPartner] = useState(false);
     const { partnerId } = useParams();
     const history = useHistory();
     const auth = getAuth();
     const db = getFirestore();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setCurrentUser(user);
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setIsPartner(userData.role === 'partner');
+                }
+            } else {
+                setIsPartner(false);
+            }
             setLoading(false);
         });
 
         return () => unsubscribe();
-    }, [auth]);
+    }, [auth, db]);
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!partnerId || partnerId === 'null') {
+                setError("Invalid partner ID");
+                setLoading(false);
+                return;
+            }
             try {
                 setLoading(true);
                 await Promise.all([
@@ -114,7 +129,7 @@ const PartnerProfilePage = () => {
     };
 
     const handleEditPost = (postId) => {
-        history.push(`/edit-article/${postId}`);
+        history.push(`/edit-article/${postId}?partnerId=${partnerId}`);
     };
 
     if (loading) return <div className="loading">Loading partner profile...</div>;
@@ -163,6 +178,7 @@ const PartnerProfilePage = () => {
                                     posts={relatedPosts}
                                     isPartnerProfile={true}
                                     onEditPost={handleEditPost}
+                                    partnerId={partnerId}
                                 />
                             </div>
                             <div>
@@ -172,15 +188,19 @@ const PartnerProfilePage = () => {
                         </>
                     )}
                     <div className="button-container">
-                        <button onClick={handleSubmitArticle} className="action-button submit-article-button">
-                            Submit Article
-                        </button>
-                        <button
-                            onClick={() => setIsEditing(!isEditing)}
-                            className="action-button edit-button"
-                        >
-                            {isEditing ? "Cancel Editing" : "Edit Profile"}
-                        </button>
+                        {isPartner && (
+                            <>
+                                <button onClick={handleSubmitArticle} className="action-button submit-article-button">
+                                    Submit Article
+                                </button>
+                                <button
+                                    onClick={() => setIsEditing(!isEditing)}
+                                    className="action-button edit-button"
+                                >
+                                    {isEditing ? "Cancel Editing" : "Edit Profile"}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

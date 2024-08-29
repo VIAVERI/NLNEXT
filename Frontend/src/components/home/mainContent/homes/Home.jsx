@@ -8,33 +8,20 @@ import Popular from "../popular/Popular"
 import Ppost from "../Ppost/Ppost"
 import PartnershipRequest from "../../PartnershipRequest"
 import "./style.css"
+import { useAuth } from '../../../../contexts/AuthContext';
 
 const Homes = () => {
+  const { partnerId } = useAuth();
   return (
     <>
       <main>
         <div className='container'>
           <section className='mainContent'>
             <PartnershipRequest />
-            <Popular />
+            <Popular partnerId={partnerId} />
             <Ppost />
             <Life />
             <Music />
-            {/* New link to Partner Profile Creation */}
-            <Link
-              to="/partner-profile-creation"
-              style={{
-                display: 'inline-block',
-                padding: '10px 20px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                textDecoration: 'none',
-                borderRadius: '5px',
-                marginTop: '20px'
-              }}
-            >
-              Create Partner Profile
-            </Link>
           </section>
           <section className='sideContent'>
             <Side />

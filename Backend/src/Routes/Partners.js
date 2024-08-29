@@ -72,4 +72,70 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const {
+      name,
+      description,
+      image,
+      address,
+      web,
+      phone,
+      working_hours,
+      facebook,
+      instagram,
+      linkedin,
+      key_points,
+      headline,
+      highlight,
+      slogan,
+      email,
+      profile_image_url
+    } = req.body;
+
+    console.log('Received data:', req.body);
+
+    // Format key_points as a PostgreSQL array literal
+    const keyPointsArray = Array.isArray(key_points) ? key_points : [];
+    const keyPointsFormatted = `{${keyPointsArray.map(point => `"${point.replace(/"/g, '\\"')}"`).join(',')}}`;
+
+    // Create a new partner record
+    const partnerResult = await client.query(`
+      INSERT INTO partner (name, description, image, address, web, phone, working_hours, facebook, instagram, linkedin, key_points, headline, highlight, slogan)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      RETURNING partner_id
+    `, [name, description, image, address, web, phone, working_hours, facebook, instagram, linkedin, keyPointsFormatted, headline, highlight, slogan]);
+
+    const partnerId = partnerResult.rows[0].partner_id;
+
+    if (!partnerId) {
+      throw new Error('Failed to get partner_id after insertion');
+    }
+
+    // Insert a new partners_account record or update if email exists
+    await client.query(`
+      INSERT INTO partners_account (partner_id, email, profile_image_url, name)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (email) DO UPDATE
+      SET partner_id = EXCLUDED.partner_id, 
+          profile_image_url = EXCLUDED.profile_image_url,
+          name = EXCLUDED.name
+    `, [partnerId, email, profile_image_url, name]);
+
+    await client.query('COMMIT');
+
+    res.status(201).json({ partner_id: partnerId, message: "Partner created successfully" });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error("Error creating partner:", error);
+    res.status(500).json({ error: "An error occurred while creating the partner", details: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+
 module.exports = router;

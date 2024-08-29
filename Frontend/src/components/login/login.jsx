@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./login.css";
 import { registerUser, signInUser } from "../../firebase";
 import { Store } from "react-notifications-component";
-import { useHistory } from "react-router-dom"; // Import useHistory for navigation
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { useHistory } from "react-router-dom";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 const db = getFirestore();
 
@@ -23,11 +23,15 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
         if (userData.role === "admin") {
           history.push("/admin-dashboard");
           onSuccessfulLogin();
-          // } else if (userData.role === "partner") {
-          //   history.push("/partner-admin");
-          //   onSuccessfulLogin();
+        } else if (userData.role === "partner") {
+          if (userData.profile_completed) {
+            history.push("/");
+          } else {
+            history.push("/partner-profile-creation");
+          }
+          onSuccessfulLogin();
         } else {
-          onSuccessfulLogin(); // Redirect non-admin users as before
+          onSuccessfulLogin();
         }
       } else {
         console.log("No such user document!");
@@ -51,6 +55,13 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
     e.preventDefault();
     try {
       const user = await registerUser(email, password, name);
+      // Set initial user data in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name,
+        email,
+        role: "partner", // Assuming all sign-ups are partners
+        profile_completed: false
+      });
       Store.addNotification({
         title: "Wonderful!",
         message: "User registered successfully!",
@@ -64,7 +75,7 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
           onScreen: true,
         },
       });
-      checkUserRole(user); // Check role after successful registration
+      checkUserRole(user);
     } catch (error) {
       setError(error.message);
       Store.addNotification({
@@ -128,12 +139,12 @@ const SignInSignUp = ({ onSuccessfulLogin }) => {
     }
   };
 
+
   return (
     <div className="auth-body">
       <div
-        className={`auth-container ${
-          isSignUpActive ? "auth-right-panel-active" : ""
-        }`}
+        className={`auth-container ${isSignUpActive ? "auth-right-panel-active" : ""
+          }`}
         id="auth-container"
       >
         <div className="auth-form-container auth-sign-up-container">

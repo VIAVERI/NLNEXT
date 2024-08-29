@@ -74,7 +74,7 @@ const Header = () => {
 
   const navigateToProfile = () => {
     if (user) {
-      if (partner) {
+      if (partner && partner.partner_id) {
         history.push(`/partner-profile/${partner.partner_id}`);
       } else {
         history.push("/profile");

@@ -21,7 +21,7 @@ const articleRoutes = require("./src/Routes/Articles");
 const partnerProfileRoutes = require("./src/Routes/PartnersProfile");
 const partnerRoutes = require("./src/Routes/Partners");
 const serviceRoutes = require("./src/Routes/Services");
-const partnersAccRoutes = require("./src/Routes/partnersAccount");
+const partnersAccRoutes = require("./src/Routes/PartnersAccount");
 const emailRoutes = require("./src/Routes/Email");
 
 const favoritesRoutes = require("./src/Routes/Favorites");

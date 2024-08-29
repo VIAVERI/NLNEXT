@@ -5,16 +5,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Heading from "../../../common/heading/Heading";
 import { Heart } from 'lucide-react';
+import { useAuth } from '../../../../contexts/AuthContext';  // Update the path as needed
 
 const Popular = () => {
   const [articles, setArticles] = useState([]);
   const [favorites, setFavorites] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
-  const partnerId = 1; // Replace with actual partner ID from authentication
+  const { partnerId } = useAuth();
 
   useEffect(() => {
-    fetchArticles();
-    fetchFavorites();
+    if (partnerId) {
+      fetchArticles();
+      fetchFavorites();
+    }
   }, [partnerId]);
 
   const fetchArticles = async () => {
@@ -44,17 +47,25 @@ const Popular = () => {
   const toggleFavorite = async (articleId) => {
     try {
       if (favorites[articleId]) {
-        await fetch(`http://localhost:5000/api/favorites/${articleId}`, {
+        const response = await fetch(`http://localhost:5000/api/favorites/${articleId}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ partnerId })
         });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to remove favorite');
+        }
       } else {
-        await fetch('http://localhost:5000/api/favorites', {
+        const response = await fetch('http://localhost:5000/api/favorites', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ partnerId, articleId })
         });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to add favorite');
+        }
       }
       setFavorites(prev => ({
         ...prev,
@@ -62,6 +73,7 @@ const Popular = () => {
       }));
     } catch (error) {
       console.error("Error toggling favorite:", error);
+      // You might want to show an error message to the user here
     }
   };
 

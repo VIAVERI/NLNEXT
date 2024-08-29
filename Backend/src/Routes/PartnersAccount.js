@@ -36,15 +36,9 @@ router.post(
       let profile_image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
       const newPartner = await pool.query(
-        "INSERT INTO PARTNERs_ACCOUNT (name, email, external_system_id, login_credentials, notes, profile_image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-        [name, email, external_system_id, login_credentials, notes, profile_image_url]
+        "INSERT INTO PARTNERs_ACCOUNT (name, email, external_system_id, login_credentials, notes, profile_image_url, account_status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [name, email, external_system_id, login_credentials, notes, profile_image_url, 'pending']
       );
-
-      await axios.post('http://localhost:5000/api/send-email', {
-        to: email,
-        name: name,
-        password: login_credentials
-      });
 
       res.json(newPartner.rows[0]);
     } catch (error) {

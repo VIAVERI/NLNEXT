@@ -54,7 +54,25 @@ const SubmitArticlePage = () => {
             }
 
             alert('Article submitted successfully!');
-            history.push('/partner-profile'); // Replace with the correct route
+
+            // Fetch partner ID based on author name
+            const partnerResponse = await fetch(`http://localhost:5000/api/partners`);
+            if (partnerResponse.ok) {
+                const partners = await partnerResponse.json();
+                console.log('Fetched partners:', partners);
+
+                // Find the partner whose name matches the article's author
+                const matchingPartner = partners.find(partner => partner.name === author);
+                if (matchingPartner) {
+                    history.push(`/partner-profile/${matchingPartner.partner_id}`);
+                } else {
+                    console.log('No matching partner found, redirecting to partners list');
+                    history.push('/partners');
+                }
+            } else {
+                console.log('Failed to fetch partners, redirecting to partners list');
+                history.push('/partners');
+            }
         } catch (error) {
             console.error('Error submitting article:', error);
             alert('Failed to submit article. Please try again.');

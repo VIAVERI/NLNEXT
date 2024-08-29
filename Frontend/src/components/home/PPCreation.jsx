@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import './PPCreation.css';
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import axios from 'axios';
+import { Store } from "react-notifications-component";
 
 const db = getFirestore();
 const auth = getAuth();
@@ -13,9 +15,7 @@ const PPCreation = () => {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        image: null,
-        profile_image_url: '',
-        email: '',
+        image: '',  // Changed to store URL
         address: '',
         web: '',
         phone: '',
@@ -26,22 +26,34 @@ const PPCreation = () => {
         key_points: [''],
         headline: '',
         highlight: '',
-        slogan: ''
+        slogan: '',
+        email: '',
+        profile_image_url: ''  // Changed to store URL
     });
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setFormData(prevData => ({
+                        ...prevData,
+                        name: userData.name || '',
+                        email: userData.email || ''
+                    }));
+                }
+            }
+        };
+        fetchUserData();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevData => ({
             ...prevData,
             [name]: value
-        }));
-    };
-
-    const handleFileUpload = (e, fieldName) => {
-        const file = e.target.files[0];
-        setFormData(prevData => ({
-            ...prevData,
-            [fieldName]: file
         }));
     };
 
@@ -64,27 +76,49 @@ const PPCreation = () => {
     const handleNext = () => setStep(step + 1);
     const handlePrevious = () => setStep(step - 1);
 
+    const showNotification = (title, message, type) => {
+        Store.addNotification({
+            title: title,
+            message: message,
+            type: type,
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: { duration: 5000, onScreen: true },
+        });
+    };
+
     const handleSubmit = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/partners', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+            // Ensure key_points is an array
+            const dataToSubmit = {
+                ...formData,
+                key_points: Array.isArray(formData.key_points) ? formData.key_points : []
+            };
 
-            if (response.ok) {
-                const result = await response.json();
+            console.log('Submitting data:', dataToSubmit);
+
+            const response = await axios.post('http://localhost:5000/api/partners', dataToSubmit);
+
+            if (response.status === 201) {
+                const result = response.data;
                 console.log('Partner profile created:', result);
 
                 // Update Firestore document
                 const user = auth.currentUser;
                 if (user) {
                     await updateDoc(doc(db, "users", user.uid), {
-                        profile_completed: true
+                        profile_completed: true,
+                        partnerId: result.partner_id
                     });
                 }
+
+                showNotification(
+                    "Success",
+                    "Partner profile created successfully!",
+                    "success"
+                );
 
                 history.push(`/partner-admin`);
             } else {
@@ -92,9 +126,24 @@ const PPCreation = () => {
             }
         } catch (error) {
             console.error('Error creating partner profile:', error);
-            // Handle error (show error message to user)
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+                console.error('Response status:', error.response.status);
+                console.error('Response headers:', error.response.headers);
+            } else if (error.request) {
+                console.error('No response received:', error.request);
+            } else {
+                console.error('Error setting up request:', error.message);
+            }
+            showNotification(
+                "Error",
+                `Failed to create partner profile. ${error.response?.data?.error || error.message}`,
+                "danger"
+            );
         }
+
     };
+
     const renderStep = () => {
         switch (step) {
             case 1:
@@ -116,22 +165,22 @@ const PPCreation = () => {
                             onChange={handleInputChange}
                             placeholder="Company Description"
                         />
-                        <div className="pp-creation-file-input">
-                            <label>Company Logo:</label>
-                            <input
-                                type="file"
-                                onChange={(e) => handleFileUpload(e, 'image')}
-                                accept="image/*"
-                            />
-                        </div>
-                        <div className="pp-creation-file-input">
-                            <label>Profile Image:</label>
-                            <input
-                                type="file"
-                                onChange={(e) => handleFileUpload(e, 'profile_image_url')}
-                                accept="image/*"
-                            />
-                        </div>
+                        <input
+                            className="pp-creation-input"
+                            type="url"
+                            name="image"
+                            value={formData.image}
+                            onChange={handleInputChange}
+                            placeholder="Company Logo URL"
+                        />
+                        <input
+                            className="pp-creation-input"
+                            type="url"
+                            name="profile_image_url"
+                            value={formData.profile_image_url}
+                            onChange={handleInputChange}
+                            placeholder="Profile Image URL"
+                        />
                     </div>
                 );
             case 2:
