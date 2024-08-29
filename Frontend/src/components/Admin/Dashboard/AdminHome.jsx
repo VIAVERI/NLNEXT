@@ -50,7 +50,7 @@ const AdminDashboard = () => {
         return <Services />;
 
       default:
-        return <p>Content for {activeItem} will be displayed here.</p>;
+        return <Dashboard />;
     }
   };
 

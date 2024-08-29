@@ -88,4 +88,34 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+//get partner by name
+
+router.get("/:name", async (req, res) => {
+  try {
+    const { name } = req.params;
+    const result = await pool.query(
+      `
+      SELECT p.partner_id, p.name, p.description, p.image, p.address, p.web, p.phone, p.working_hours, p.facebook, p.instagram, p.linkedin,
+             p.key_points, p.headline, p.highlight, p.slogan,
+             pa.profile_image_url, pa.email
+      FROM partner p
+      LEFT JOIN partners_account pa ON p.partner_id = pa.partner_id
+      WHERE p.name = $1
+    `,
+      [name]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Partner not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error fetching partner:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the partner" });
+  }
+});
+
 module.exports = router;

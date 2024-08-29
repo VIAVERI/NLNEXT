@@ -46,4 +46,45 @@ router.post("/send-email", async (req, res) => {
   }
 });
 
+// Load the email template
+const emailTemplateUser = fs.readFileSync(
+  path.join(__dirname, "..", "views", "invite.handlebars"),
+  "utf8"
+);
+const compiledTemplateUser = hbs.compile(emailTemplateUser);
+
+router.post("/send-invite", async (req, res) => {
+  const { to, name, inviteLink, unsubscribeLink } = req.body;
+
+  // Render the email HTML
+  const htmlContent = compiledTemplateUser({
+    name: name,
+    inviteLink: inviteLink,
+    unsubscribeLink: unsubscribeLink,
+  });
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "dilsha99t@gmail.com", // your email
+      pass: "geat evme knpr iuqu",
+    },
+  });
+
+  try {
+    let info = await transporter.sendMail({
+      from: '"NLNEXT" <dilsha99t@gmail.com>',
+      to: to,
+      subject: "Join Our Team at NLNEXT",
+      html: htmlContent,
+    });
+
+    console.log("Message sent: %s", info.messageId);
+    res.status(200).json({ message: "Invitation sent successfully" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ error: "Failed to send invitation" });
+  }
+});
+
 module.exports = router;

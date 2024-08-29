@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
-const pool = require("../db"); // Import the shared pool instance
-
+const { pool } = require("../db");
+// Import the shared pool instance
 
 // Route to get all services
 router.get("/", async (req, res) => {
@@ -18,20 +17,27 @@ router.get("/", async (req, res) => {
 });
 
 // Route to get services for a specific partner
-router.get('/partner/:partnerId', async (req, res) => {
-    try {
-        const { partnerId } = req.params;
-        const result = await pool.query(`
+router.get("/partner/:partnerId", async (req, res) => {
+  try {
+    const { partnerId } = req.params;
+    const result = await pool.query(
+      `
             SELECT s.* 
             FROM services s
             JOIN partner_services ps ON s.service_id = ps.service_id
             WHERE ps.partner_id = $1
-        `, [partnerId]);
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'An error occurred while fetching services for the partner' });
-    }
+        `,
+      [partnerId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({
+        error: "An error occurred while fetching services for the partner",
+      });
+  }
 });
 
 // Route to get a single service by ID

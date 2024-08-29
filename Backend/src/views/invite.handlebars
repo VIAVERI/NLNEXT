@@ -1,0 +1,52 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to NLNEXT</title>
+    <style>
+      body, html { margin: 0; padding: 0; font-family: Arial, sans-serif;
+      line-height: 1.6; color: #333; background-color: #f4f4f4; } .container {
+      max-width: 600px; margin: 20px auto; background-color: #ffffff; border:
+      1px solid #e1e1e1; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); } .header {
+      background-color: #0f0934; padding: 20px; text-align: center; } .logo {
+      color: #ffffff; font-size: 28px; font-weight: bold; text-decoration: none;
+      } .content { padding: 30px; } h1 { color: #0f0934; margin-top: 0; } p {
+      margin-bottom: 20px; } .button { display: inline-block; background-color:
+      #e67e23; color: #ffffff; padding: 12px 24px; text-decoration: none;
+      border-radius: 4px; font-weight: bold; } .footer { background-color:
+      #f8f8f8; color: #888; text-align: center; padding: 20px; font-size: 12px;
+      } .footer a { color: #666; text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <a href="https://www.nlnext.com" class="logo">NLNEXT</a>
+      </div>
+      <div class="content">
+        <h1>Welcome to the Team, {{name}}!</h1>
+        <p>We are delighted to invite you to join our exceptional team at
+          NLNEXT. Your skills and experience will be a valuable addition to our
+          organization, and we're excited about the contributions you'll make.</p>
+        <p>To get started, please click the button below to accept your
+          invitation and set up your account:</p>
+        <p style="text-align: center;">
+          <a href="{{inviteLink}}" class="button">Accept Invitation</a>
+        </p>
+        <p>Once you've completed the setup process, you'll have access to our
+          team resources and be ready to hit the ground running.</p>
+        <p>If you have any questions or need assistance, please don't hesitate
+          to reach out to our HR department at
+          <a href="mailto:hr@nlnext.com">hr@nlnext.com</a>.</p>
+        <p>We look forward to working with you and achieving great things
+          together!</p>
+        <p>Best regards,<br />The NLNEXT Team</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2024 NLNEXT. All rights reserved.</p>
+        <p>If you believe you've received this email in error, please
+          <a href="{{unsubscribeLink}}">unsubscribe</a>.</p>
+      </div>
+    </div>
+  </body>
+</html>

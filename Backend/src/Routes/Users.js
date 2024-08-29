@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const { pool } = require("../db");
 const multer = require("multer");
 const path = require("path");
 const authenticatePartner = require("../middleware/authenticatePartner");
+const admin = require("firebase-admin");
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -59,42 +60,105 @@ router.post(
   }
 );
 
-router.get("/", authenticatePartner, async (req, res) => {
+// router.get("/", authenticatePartner, async (req, res) => {
+//   try {
+//     const { partnerOrganization } = req;
+
+//     if (!partnerOrganization) {
+//       return res
+//         .status(400)
+//         .json({ message: "Partner organization not found" });
+//     }
+
+//     // Fetch users from PostgreSQL
+//     const pgResult = await pool.query(
+//       "SELECT * FROM users WHERE partner_organization = $1",
+//       [partnerOrganization]
+//     );
+
+//     // Fetch users from Firebase
+//     const firebaseUsers = await admin
+//       .auth()
+//       .listUsers()
+//       .then((listUsersResult) => {
+//         return listUsersResult.users.filter(
+//           (user) =>
+//             user.customClaims &&
+//             user.customClaims.partner_organization === partnerOrganization
+//         );
+//       });
+
+//     // Combine and return the results
+//     res.status(200).json({
+//       pgUsers: pgResult.rows,
+//       firebaseUsers: firebaseUsers,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching users:", error);
+//     res.status(500).json({ message: "Internal server error", error });
+//   }
+// });
+
+// router.get("/", authenticatePartner, async (req, res) => {
+//   const partnerOrg = req.query.partner;
+
+//   try {
+//     const result = await pool.query(
+//       "SELECT * FROM users WHERE partner_organization = $1",
+//       [partnerOrg]
+//     );
+
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error("Error fetching users:", error);
+//     res.status(500).json({ error: "Failed to fetch users" });
+//   }
+// });
+
+// router.get("/", authenticatePartner, async (req, res) => {
+//   try {
+//     const result = await pool.query(
+//       "SELECT id, name, email, role, profile_image_url FROM users WHERE partner_organization = $1",
+//       [req.partnerOrganization]
+//     );
+
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error("Database error:", error);
+//     res
+//       .status(500)
+//       .json({ error: "Failed to fetch users", details: error.message });
+//   }
+// });
+
+//get user by partner organization
+router.get("/:partner_organization", async (req, res) => {
   try {
-    const { partnerOrganization } = req;
-
-    if (!partnerOrganization) {
-      return res
-        .status(400)
-        .json({ message: "Partner organization not found" });
-    }
-
-    // Fetch users from PostgreSQL
-    const pgResult = await pool.query(
+    const { partner_organization } = req.params;
+    const result = await pool.query(
       "SELECT * FROM users WHERE partner_organization = $1",
-      [partnerOrganization]
+      [partner_organization]
     );
-
-    // Fetch users from Firebase
-    const firebaseUsers = await admin
-      .auth()
-      .listUsers()
-      .then((listUsersResult) => {
-        return listUsersResult.users.filter(
-          (user) =>
-            user.customClaims &&
-            user.customClaims.partner_organization === partnerOrganization
-        );
-      });
-
-    // Combine and return the results
-    res.status(200).json({
-      pgUsers: pgResult.rows,
-      firebaseUsers: firebaseUsers,
-    });
+    res.json(result.rows);
   } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({ message: "Internal server error", error });
+    console.error("Database error:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch users", details: error.message });
+  }
+});
+
+//get all users
+
+router.get("/", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM users");
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Database error:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch users", details: error.message });
   }
 });
 module.exports = router;
