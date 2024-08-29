@@ -28,14 +28,7 @@ router.delete("/:articleId", async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Favorite not found" });
     }
-    res.json({ message: "Favorite removed successfully" });
-  } catch (error) {
-    console.error("Error removing favorite:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while removing the favorite" });
-  }
-});
+  });
 
 router.get("/", async (req, res) => {
   try {
