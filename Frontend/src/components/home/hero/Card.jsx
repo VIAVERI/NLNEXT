@@ -1,47 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Card = ({
-  item: { article_id, title, category, author, image_url, image_data, published_at },
+  item: { article_id, title, category, author, image_url, published_at },
 }) => {
-  const [imageSource, setImageSource] = useState(null);
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
-
-  useEffect(() => {
-
-    if (image_data) {
-      console.log('Image data:', image_data ? 'Present' : 'Not present');
-      console.log('Image URL:', image_url);
-      setImageSource(`data:image/jpeg;base64,${image_data}`);
-    } else if (image_url) {
-      setImageSource(image_url);
-    } else {
-      setImageSource('path/to/placeholder-image.jpg');
-    }
-  }, [image_data, image_url]);
-
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-    setImageSource('path/to/placeholder-image.jpg');
-  };
+  const imageSource = image_url || "https://via.placeholder.com/300x200";
+  console.log("Card imageSource:", imageSource);
 
   return (
     <div className="box">
-      <div className="img">
-        {imageLoading && <div className="loading-placeholder">Loading...</div>}
-        {imageError && <div className="error-placeholder">Image failed to load</div>}
+      <div
+        className="img"
+        style={{ width: "100%", height: "200px", overflow: "hidden" }}
+      >
         <img
           src={imageSource}
           alt={title}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          style={{ display: imageLoading ? 'none' : 'block' }}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://via.placeholder.com/300x200";
+          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
       <div className="text">

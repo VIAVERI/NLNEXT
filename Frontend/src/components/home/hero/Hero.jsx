@@ -10,9 +10,11 @@ const Hero = () => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/articles");
-        const shuffledArticles = response.data.sort(() => 0.5 - Math.random());
-        const selectedArticles = shuffledArticles.slice(0, 4);
-        setArticles(selectedArticles);
+        console.log("API Response:", response.data); // Log the entire response
+        const shuffledArticles = response.data
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 4);
+        setArticles(shuffledArticles);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
