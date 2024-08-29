@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../db");
+const { pool } = require("../db");
 
 // Add an article to favorites
 router.post("/", async (req, res) => {
@@ -45,7 +45,9 @@ router.get("/", async (req, res) => {
         res.json(result.rows);
     } catch (error) {
         console.error("Error fetching favorites:", error);
-        res.status(500).json({ error: "An error occurred while fetching favorites" });
+        res
+            .status(500)
+            .json({ error: "An error occurred while fetching favorites" });
     }
 });
 

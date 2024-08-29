@@ -1,5 +1,6 @@
 const { Pool } = require("pg");
 require("dotenv").config();
+const admin = require("firebase-admin");
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -13,4 +14,15 @@ const pool = new Pool({
   },
 });
 
-module.exports = pool;
+// Initialize Firebase Admin SDK
+const serviceAccount = require("./config/nlnext-go-firebase-adminsdk-ntti0-2da10c4eb9.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+});
+
+module.exports = {
+  pool,
+  admin,
+};
