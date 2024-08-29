@@ -32,7 +32,9 @@ const Popular = () => {
 
   const fetchFavorites = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/favorites?partnerId=${partnerId}`);
+      const response = await fetch(
+        `http://localhost:5000/api/favorites?partnerId=${partnerId}`
+      );
       const data = await response.json();
       const favoriteMap = data.reduce((acc, fav) => {
         acc[fav.article_id] = true;
@@ -67,9 +69,9 @@ const Popular = () => {
           throw new Error(errorData.error || 'Failed to add favorite');
         }
       }
-      setFavorites(prev => ({
+      setFavorites((prev) => ({
         ...prev,
-        [articleId]: !prev[articleId]
+        [articleId]: !prev[articleId],
       }));
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -81,9 +83,10 @@ const Popular = () => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredArticles = articles.filter(article =>
-    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    article.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredArticles = articles.filter(
+    (article) =>
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const settings = {
@@ -147,7 +150,9 @@ const Popular = () => {
                   <h1 className="title">{article.title.slice(0, 40)}...</h1>
                   <div className="date">
                     <i className="fas fa-calendar-days"></i>
-                    <label>{new Date(article.published_at).toLocaleDateString()}</label>
+                    <label>
+                      {new Date(article.published_at).toLocaleDateString()}
+                    </label>
                   </div>
                   <div className="comment">
                     <i className="fas fa-comments"></i>
@@ -155,7 +160,8 @@ const Popular = () => {
                   </div>
                   <Heart
                     size={16}
-                    className={`favorite-icon ${favorites[article.article_id] ? 'favorite' : ''}`}
+                    className={`favorite-icon ${favorites[article.article_id] ? "favorite" : ""
+                      }`}
                     onClick={() => toggleFavorite(article.article_id)}
                   />
                 </div>

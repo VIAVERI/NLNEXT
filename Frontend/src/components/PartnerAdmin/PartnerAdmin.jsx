@@ -11,6 +11,7 @@ import {
 import "./PartnerAdmin.css";
 import logo from "../../assets/logo.png";
 import UsersAndRoles from "./UserRoles";
+import PartnerOverview from "./Overview";
 
 // Firebase imports
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -88,7 +89,7 @@ const PartnerAdminDashboard = () => {
       case "Users & Roles":
         return <UsersAndRoles />;
       case "Overview":
-        return <h2>Overview Content</h2>;
+        return <PartnerOverview partner={partner} />;
       case "Manage Content":
         return <h2>Manage Content Page</h2>;
       case "Organization Profile":

@@ -58,22 +58,22 @@ h2 {
   margin-bottom: 20px;
 }
 
-.search-container {
+.u-search-container {
   position: relative;
-  padding-top: 15px;
+  padding-top: 35px;
 }
 
-.search-input {
+.u-search-input {
   padding: 8px 30px 8px 10px;
   width: 200px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.search-button {
+.u-search-button {
   position: absolute;
   right: 25px;
-  top: 60%;
+  top: 75%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -87,6 +87,9 @@ h2 {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  width: 100px;
+  height: 50px;
+  font-weight: bold;
 }
 
 .users-table {
@@ -141,7 +144,8 @@ h2 {
 .role-tag {
   padding: 2px 8px;
   border-radius: 12px;
-  font-size: 0.8em;
+  font-size: 1em;
+  font-weight: bold;
 }
 
 .role-tag.manager {
@@ -261,4 +265,138 @@ h2 {
   color: #666;
   font-size: 20px;
   cursor: pointer;
+}
+
+.action-button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button svg {
+  margin-right: 5px;
+}
+
+.action-button.edit {
+  background-color: #4caf50;
+  color: white;
+  width: 100px;
+  height: auto;
+  font-size: medium;
+}
+
+.action-button.delete {
+  background-color: #f44336;
+  color: white;
+  width: 100px;
+  height: auto;
+  font-size: medium;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal */
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+/* Close button */
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.close-modal:hover {
+  color: #333;
+}
+
+/* Modal title */
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+/* Form inside modal */
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input field */
+.modal input[type="email"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.modal input[type="email"]:focus {
+  outline: none;
+  border-color: #279f8d;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Submit button */
+.modal button[type="submit"] {
+  padding: 10px 15px;
+  background-color: #279f8d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal button[type="submit"]:hover {
+  background-color: #279f8d;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .modal {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .modal h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal input[type="email"],
+  .modal button[type="submit"] {
+    font-size: 0.9rem;
+  }
 }
